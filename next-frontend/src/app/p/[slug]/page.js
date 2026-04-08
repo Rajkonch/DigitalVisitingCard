@@ -1,4 +1,4 @@
-import "../../styles/UserProfile.css"; // Reuse styling logic or create new one
+import "../../../styles/UserProfile.css"; // Reuse styling logic or create new one
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
