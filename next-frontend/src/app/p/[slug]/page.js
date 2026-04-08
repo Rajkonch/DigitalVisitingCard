@@ -1,8 +1,7 @@
-import api from "@/utils/api";
 import "../../styles/UserProfile.css"; // Reuse styling logic or create new one
 
 export async function generateMetadata({ params }) {
-  const { slug } = params;
+  const { slug } = await params;
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cards/${slug}`);
     const card = await res.json();
@@ -18,7 +17,7 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function PublicProfilePage({ params }) {
-  const { slug } = params;
+  const { slug } = await params;
   
   // This is a Server Component, but we'll probably want a client component for the fancy animations
   // So I'll just pass the data to a client component
