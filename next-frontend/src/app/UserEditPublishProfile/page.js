@@ -585,15 +585,149 @@ export default function UserEditPublishProfile() {
                   <div className="web-dot"></div><div className="web-dot"></div><div className="web-dot"></div>
                   <div style={{ marginLeft: 'auto', fontSize: '10px', color: profile.subTextColor, opacity: 0.6 }}>prism.qr/{profile.name.toLowerCase().replace(/\s+/g, '-')}</div>
                 </div>
-                <div className="web-preview-container no-scrollbar" style={{ background: profile.bgColor }}>
-                  <div className="web-preview-content" style={{ background: 'white' }}>
+                <div className="web-preview-container" style={{ background: profile.bgColor, overflowY: 'auto', maxHeight: '70vh' }}>
+                  <div className="web-preview-content" style={{ background: 'white', padding: '2rem' }}>
                     <div className="web-profile-intro" style={{ textAlign: 'center', marginBottom: '3rem' }}>
                       <div className="preview-avatar circle" style={{ width: '140px', height: '140px', borderColor: profile.themeColor, margin: '0 auto' }}>
                         <img src={profile.avatar} alt="Profile" />
                       </div>
-                      <h2 style={{ fontSize: '3rem', marginTop: '1.5rem', fontWeight: 800, color: profile.textColor }}>{profile.name}</h2>
-                      <p className="designation" style={{ color: profile.themeColor, fontSize: '1.125rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em' }}>{profile.designation}</p>
-                      <p className="bio" style={{ fontSize: '1.1rem', marginTop: '1.5rem', maxWidth: '700px', margin: '1.5rem auto', lineHeight: 1.6, color: profile.subTextColor }}>{profile.bio}</p>
+                      <h2 style={{ fontSize: '2.5rem', marginTop: '1.5rem', fontWeight: 800, color: profile.textColor }}>{profile.name}</h2>
+                      <p className="designation" style={{ color: profile.themeColor, fontSize: '1rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em' }}>{profile.designation}</p>
+                      {(profile.showMobile || profile.showEmail || profile.showAddress) && (
+                        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '1.5rem', marginTop: '1rem' }}>
+                          {profile.showMobile && profile.mobile && (<div className="contact-preview-item" style={{ color: profile.subTextColor }}><span className="material-symbols-outlined" style={{ color: profile.themeColor, fontSize: '1.1rem' }}>call</span>{profile.mobile}</div>)}
+                          {profile.showEmail && profile.email && (<div className="contact-preview-item" style={{ color: profile.subTextColor }}><span className="material-symbols-outlined" style={{ color: profile.themeColor, fontSize: '1.1rem' }}>mail</span>{profile.email}</div>)}
+                          {profile.showAddress && profile.address && (<div className="contact-preview-item" style={{ color: profile.subTextColor }}><span className="material-symbols-outlined" style={{ color: profile.themeColor, fontSize: '1.1rem' }}>location_on</span>{profile.address}</div>)}
+                        </div>
+                      )}
+                      <p className="bio" style={{ fontSize: '0.95rem', marginTop: '1rem', maxWidth: '600px', margin: '1rem auto 0', lineHeight: 1.6, color: profile.subTextColor }}>{profile.bio}</p>
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '2rem', marginTop: '2rem', textAlign: 'left' }}>
+                      {sectionOrder.map(sectionKey => {
+                        if (profile.cardType === 'shopkeeper' && ["projects", "experience", "hobbies"].includes(sectionKey)) return null;
+                        if (profile.cardType === 'business' && sectionKey === "products") return null;
+
+                        if (sectionKey === "links" && dynamicSections.some(s => s.isActive)) {
+                          return (
+                            <div key="links" style={{ gridColumn: '1 / -1' }}>
+                              <div className="preview-links-grid" style={{ justifyContent: 'center', marginBottom: '1rem' }}>
+                                {dynamicSections.filter(s => s.isActive).map(s => (
+                                  <div key={s.id} className="preview-link-circle" style={{ width: '56px', height: '56px', color: profile.themeColor, background: `${profile.themeColor}15` }}>
+                                    {s.icon ? <img src={s.icon} className="custom-icon" /> : <span className="material-symbols-outlined" style={{ fontSize: '1.5rem' }}>link</span>}
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          );
+                        }
+
+                        if (sectionKey === "products" && products.some(p => p.isActive)) {
+                          return (
+                            <div key="products" style={{ gridColumn: '1 / -1' }}>
+                              <h5 style={{ color: profile.themeColor, fontSize: '1.1rem', marginBottom: '1rem' }}>Product Catalog</h5>
+                              <div className="web-product-grid">
+                                {products.filter(p => p.isActive).map(p => (
+                                  <div key={p.id} className="web-product-card" style={{ opacity: p.isOutOfStock ? 0.7 : 1 }}>
+                                    <div className="web-product-img">
+                                      {p.icon ? <img src={p.icon} /> : <span className="material-symbols-outlined" style={{ fontSize: '2.5rem', color: '#eee' }}>image</span>}
+                                    </div>
+                                    <div className="web-product-info">
+                                      <p className="p-bold" style={{ color: profile.textColor }}>{p.title}</p>
+                                      <div className="price-row">
+                                        <span className="current-price" style={{ color: profile.themeColor }}>₹{p.price - (p.price * (p.offer || 0) / 100)}</span>
+                                        {p.offer > 0 && <span className="original-price">₹{p.price}</span>}
+                                        {p.offer > 0 && <span className="product-tag offer">{p.offer}% OFF</span>}
+                                      </div>
+                                      {p.isOutOfStock && <span className="product-tag out">Out of Stock</span>}
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          );
+                        }
+
+                        if (sectionKey === "projects" && projects.some(p => p.isActive)) {
+                          return (
+                            <div key="projects" className="preview-list-section">
+                              <h5 style={{ color: profile.themeColor, fontSize: '1.1rem' }}>Projects Portfolio</h5>
+                              {projects.filter(p => p.isActive).map(p => (
+                                <div key={p.id} className="mini-card-preview" style={{ background: `${profile.textColor}05`, padding: '1rem' }}>
+                                  <p className="p-bold" style={{ color: profile.textColor }}>{p.title}</p>
+                                  <p className="p-sub" style={{ color: profile.subTextColor }}>{p.type}</p>
+                                  <p style={{ fontSize: '0.8rem', color: profile.subTextColor, lineHeight: 1.4 }}>{p.description}</p>
+                                </div>
+                              ))}
+                            </div>
+                          );
+                        }
+
+                        if (sectionKey === "experience" && experiences.some(e => e.isActive)) {
+                          return (
+                            <div key="experience" className="preview-list-section">
+                              <h5 style={{ color: profile.themeColor, fontSize: '1.1rem' }}>Work Experience</h5>
+                              {experiences.filter(e => e.isActive).map(e => (
+                                <div key={e.id} className="mini-card-preview" style={{ background: `${profile.textColor}05`, padding: '1rem' }}>
+                                  <p className="p-bold" style={{ color: profile.textColor }}>{e.role}</p>
+                                  <p className="p-sub" style={{ color: profile.subTextColor }}>{e.company} • {e.start} - {e.isCurrent ? 'Present' : e.end}</p>
+                                </div>
+                              ))}
+                            </div>
+                          );
+                        }
+
+                        if (sectionKey === "custom" && customHeadings.some(h => h.isActive)) {
+                          return (
+                            <div key="custom">
+                              {customHeadings.filter(h => h.isActive).map(h => (
+                                <div key={h.id} className="preview-list-section">
+                                  <h5 style={{ color: profile.themeColor, fontSize: '1.1rem' }}>{h.title}</h5>
+                                  {h.items.filter(it => it.isActive).map(it => (
+                                    <div key={it.id} className="mini-card-preview" style={{ background: `${profile.textColor}05`, padding: '0.75rem 1rem' }}>
+                                      <p className="p-bold" style={{ color: profile.textColor }}>{it.title}</p>
+                                      <p className="p-sub" style={{ color: profile.subTextColor }}>{it.subtitle}</p>
+                                    </div>
+                                  ))}
+                                </div>
+                              ))}
+                            </div>
+                          );
+                        }
+
+                        if (sectionKey === "daily" && dailyActivities.some(a => a.isActive)) {
+                          return (
+                            <div key="daily" className="preview-list-section">
+                              <h5 style={{ color: profile.themeColor, fontSize: '1.1rem' }}>Daily Routine</h5>
+                              {dailyActivities.filter(a => a.isActive).map(a => (
+                                <div key={a.id} className="mini-card-preview" style={{ background: `${profile.textColor}05`, padding: '0.75rem 1rem', display: 'flex', justifyContent: 'space-between' }}>
+                                  <p className="p-bold" style={{ color: profile.textColor }}>{a.title}</p>
+                                  <span style={{ fontSize: '0.75rem', color: profile.themeColor, fontWeight: 800 }}>{a.time}</span>
+                                </div>
+                              ))}
+                            </div>
+                          );
+                        }
+
+                        if (sectionKey === "languages" && languages.some(l => l.isActive)) {
+                          return (
+                            <div key="languages" className="preview-list-section">
+                              <h5 style={{ color: profile.themeColor, fontSize: '1.1rem' }}>Languages</h5>
+                              <div className="tags-preview">{languages.filter(l => l.isActive).map(l => <span key={l.id} style={{ color: profile.textColor, background: `${profile.themeColor}15` }}>{l.name}</span>)}</div>
+                            </div>
+                          );
+                        }
+
+                        if (sectionKey === "hobbies" && hobbies.some(h => h.isActive)) {
+                          return (
+                            <div key="hobbies" className="preview-list-section">
+                              <h5 style={{ color: profile.themeColor, fontSize: '1.1rem' }}>Hobbies</h5>
+                              <div className="tags-preview">{hobbies.filter(h => h.isActive).map(h => <span key={h.id} style={{ color: profile.textColor, background: `${profile.themeColor}15` }}>{h.name}</span>)}</div>
+                            </div>
+                          );
+                        }
+                        return null;
+                      })}
                     </div>
                   </div>
                 </div>
