@@ -87,7 +87,7 @@ export default function UserDashboard() {
             <span className="material-symbols-outlined">home</span>
             <span>Home</span>
           </a>
-          <a className="nav-item" onClick={() => router.push('/edit-profile')} style={{ cursor: 'pointer' }}>
+          <a className="nav-item" onClick={() => router.push('/UserProfile')} style={{ cursor: 'pointer' }}>
             <span className="material-symbols-outlined">person</span>
             <span>Profile</span>
           </a>
@@ -123,14 +123,14 @@ export default function UserDashboard() {
                 <span className="material-symbols-outlined">menu</span>
               </button>
               <div className="header-welcome">
-                <h2>Welcome back, {user?.name || "Member"}</h2>
+                <h2 style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '100%' }}>Welcome back, {user?.name || "Member"}</h2>
               </div>
             </div>
             <div className="header-actions">
               <button className="icon-btn">
                 <span className="material-symbols-outlined">notifications</span>
               </button>
-              <div className="user-avatar" onClick={() => router.push('/edit-profile')} style={{ cursor: 'pointer' }}>
+              <div className="user-avatar" onClick={() => router.push('/UserProfile')} style={{ cursor: 'pointer' }}>
                 <img
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPIK-w9GXEfApkbrMLYb-yFwUn6EAZLzI4MXrZe20usvcEB59_mLWzUCyo0E-nKq3_i78AIPEqgEFSNFE8v6jlbkQIbhYieXHVa9TU3s7aw2jQo77-pTrY7_zYtKh9YiIluDOTLhZHP3cZzLeodZMUB4rIP_MjAlZlycFRe84ig-GjhymoBrGQtBaZsIMIKDPzKp8gp-VIXUQFr6m_B-WOZQRdNxiIwkQbxgXZzaFWiWD8ykNy-sV3HSE44SV1GVsgKzOdNybXWuKi"
                   alt="User"
@@ -141,7 +141,7 @@ export default function UserDashboard() {
 
           <div className="bento-grid">
             {/* Quick Edit Card */}
-            <div className="card quick-action-card" onClick={() => router.push("/edit-profile")}>
+            <div className="card quick-action-card" onClick={() => router.push("/UserEditPublishProfile")}>
               <span className="material-symbols-outlined">edit_square</span>
               <div>
                 <h3>Profile<br />Editor</h3>
