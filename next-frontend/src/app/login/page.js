@@ -56,7 +56,7 @@ function LoginContent() {
         if (userData.role === "admin") {
           router.push("/AdminDashboard");
         } else {
-          router.push("/dashboard");
+          router.push("/UserDashboard");
         }
       }, 1200);
 
@@ -139,7 +139,7 @@ function LoginContent() {
 
       <div className="login-animation-wrapper">
         <div className={`auth-container entrance-bounce-active ${isRegister ? "right-panel-active" : ""}`}>
-          
+
           {/* Register Form */}
           <div className="form-container sign-up-container">
             <form className="auth-form" onSubmit={handleRegister}>
