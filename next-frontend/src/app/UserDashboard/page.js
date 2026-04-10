@@ -123,7 +123,7 @@ export default function UserDashboard() {
                 <span className="material-symbols-outlined">menu</span>
               </button>
               <div className="header-welcome" style={{ flex: 1, minWidth: 0 }}>
-                <h2 style={{ margin: 0, fontSize: 'clamp(1.25rem, 3vw, 1.875rem)', fontWeight: 800, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Welcome back, {user?.name || "Member"}</h2>
+                <h2 style={{ margin: 0, padding: '0 4px', fontSize: 'clamp(1.25rem, 3vw, 1.875rem)', fontWeight: 800, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Welcome back, {user?.name || "Member"}</h2>
               </div>
             </div>
             <div className="header-actions">
