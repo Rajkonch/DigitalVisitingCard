@@ -27,4 +27,9 @@ app.use('/api/upload', uploadRoutes); // 👈 Added upload route
 
 app.get('/', (req, res) => res.send('Digital Visiting Card API Running'));
 
+// Ping route to keep server awake (UptimeRobot)
+app.get('/api/ping', (req, res) => {
+  res.status(200).json({ status: 'alive', message: 'Server is awake' });
+});
+
 module.exports = app;

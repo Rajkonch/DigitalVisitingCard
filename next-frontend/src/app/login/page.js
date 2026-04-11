@@ -11,6 +11,7 @@ function LoginContent() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    mobile: "",
     password: "",
   });
   const [loading, setLoading] = useState(false);
@@ -75,6 +76,7 @@ function LoginContent() {
       const payload = {
         name: formData.name,
         email: formData.email,
+        mobile: formData.mobile,
         password: formData.password,
       };
       const res = await API.post("/auth/register", payload);
@@ -158,6 +160,12 @@ function LoginContent() {
                   <div className="icon-input">
                     <span className="material-symbols-outlined">mail</span>
                     <input type="email" name="email" placeholder="Email Address" value={formData.email} onChange={handleInputChange} required />
+                  </div>
+                </div>
+                <div className="input-field">
+                  <div className="icon-input">
+                    <span className="material-symbols-outlined">call</span>
+                    <input type="text" name="mobile" placeholder="Mobile Number" value={formData.mobile} onChange={handleInputChange} required />
                   </div>
                 </div>
                 <div className="input-field">

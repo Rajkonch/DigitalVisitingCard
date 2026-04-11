@@ -34,6 +34,15 @@ exports.getCard = async (req, res) => {
     if(!card) return res.status(404).json({ message: 'Card not found' });
 
     // 👇 COUNT INCREASE
+    const today = new Date().setHours(0, 0, 0, 0);
+    const lastView = card.lastViewDate ? new Date(card.lastViewDate).setHours(0, 0, 0, 0) : 0;
+    
+    if (today === lastView) {
+      card.todayViewsCount += 1;
+    } else {
+      card.todayViewsCount = 1;
+      card.lastViewDate = Date.now();
+    }
     card.viewsCount += 1;
     await card.save();
 

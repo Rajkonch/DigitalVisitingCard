@@ -20,8 +20,15 @@ export default function UserProfile() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) { router.push("/login"); return; }
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) setUser(JSON.parse(storedUser));
+    
+    API.get("/auth/profile").then(res => {
+      setUser(res.data);
+      localStorage.setItem("user", JSON.stringify(res.data));
+    }).catch(err => {
+      console.error(err);
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) setUser(JSON.parse(storedUser));
+    });
   }, [router]);
 
   useEffect(() => {
@@ -124,7 +131,7 @@ export default function UserProfile() {
               </div>
               <div className="detail-row">
                 <span className="detail-label">Mobile Number</span>
-                <span className="detail-value">+91 98XXX XXXXX</span>
+                <span className="detail-value">{user?.mobile || "+91 98XXX XXXXX"}</span>
               </div>
               <div className="detail-row">
                 <span className="detail-label">Account Created</span>

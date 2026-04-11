@@ -93,6 +93,8 @@ const cardSchema = new mongoose.Schema({
   qrCodeUrl: String,
   isActive: { type: Boolean, default: true },
   viewsCount: { type: Number, default: 0 },
+  todayViewsCount: { type: Number, default: 0 },
+  lastViewDate: { type: Date, default: null },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Card', cardSchema);
