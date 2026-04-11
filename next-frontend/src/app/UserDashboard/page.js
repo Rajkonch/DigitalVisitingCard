@@ -69,12 +69,14 @@ export default function UserDashboard() {
       {/* SideNavBar */}
       <aside className={`sidebar ${isSidebarOpen ? "sidebar-open" : ""}`}>
         <div className="sidebar-logo-section">
-          <div className="logo-icon">
-            <span className="material-symbols-outlined">play_prism</span>
-          </div>
-          <div className="logo-text">
-            <h1>Prism QR</h1>
-            <p>Premium Tier</p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <div className="logo-icon">
+              <span className="material-symbols-outlined">play_prism</span>
+            </div>
+            <div className="logo-text">
+              <h1>Prism QR</h1>
+              <p>Premium Tier</p>
+            </div>
           </div>
           {/* Mobile Close Button */}
           <button className="mobile-close-btn" onClick={toggleSidebar}>

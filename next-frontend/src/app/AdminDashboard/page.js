@@ -76,13 +76,18 @@ export default function AdminDashboard() {
 
       <aside className={`admin-sidebar ${isSidebarOpen ? 'open' : ''}`}>
         <div className="sidebar-header">
-          <div className="logo-box">
-            <span className="material-symbols-outlined">play_prism</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <div className="logo-box">
+              <span className="material-symbols-outlined">play_prism</span>
+            </div>
+            <div className="brand-info">
+              <h2>Prism Workspace</h2>
+              <p>Premium Tier</p>
+            </div>
           </div>
-          <div className="brand-info">
-            <h2>Prism Workspace</h2>
-            <p>Premium Tier</p>
-          </div>
+          <button className="mobile-close-btn" onClick={() => setIsSidebarOpen(false)}>
+            <span className="material-symbols-outlined">close</span>
+          </button>
         </div>
 
         <nav className="sidebar-nav">

@@ -31,11 +31,11 @@
   position: fixed;
   left: 0;
   top: 0;
-  height: 100vh;
+  height: 100dvh;
   width: 260px;
   box-sizing: border-box;
   background-color: var(--surface-container-low);
-  padding: 1.5rem;
+  padding: 1.5rem 1.5rem 2rem 1.5rem;
   display: flex;
   flex-direction: column;
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
@@ -43,14 +43,23 @@
   border-bottom-right-radius: 1.5rem;
   z-index: 200;
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-y: auto;
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 4px;
+}
+.sidebar::-webkit-scrollbar-thumb {
+  background: var(--surface-container-high);
+  border-radius: 4px;
 }
 
 .sidebar-logo-section {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  justify-content: space-between;
   margin-bottom: 2rem;
-  padding: 0 0.5rem;
+  padding: 0;
 }
 
 .logo-icon {
