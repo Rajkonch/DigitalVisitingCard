@@ -9,6 +9,7 @@ export default function Login() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    mobile: "",
     password: "",
   });
   const [loading, setLoading] = useState(false);
@@ -68,6 +69,7 @@ export default function Login() {
       const payload = {
         name: formData.name,
         email: formData.email,
+        mobile: formData.mobile,
         password: formData.password,
       };
       const res = await API.post("/auth/register", payload);
@@ -143,6 +145,7 @@ export default function Login() {
           <div className="form-container sign-up-container">
             <form className="auth-form" onSubmit={handleRegister}>
               <div className="content-wrapper">
+                <img src="/logo.png" alt="Logo" style={{ height: '50px', marginBottom: '1rem', objectFit: 'contain' }} />
                 <span className="subtitle-badge">Join the Sanctuary</span>
                 <h2>Create your identity</h2>
                 <p className="auth-subtitle">Design dynamic QR codes that capture the spirit of your brand in high-fidelity.</p>
@@ -158,6 +161,13 @@ export default function Login() {
                   <div className="icon-input">
                     <span className="material-symbols-outlined">mail</span>
                     <input type="email" name="email" placeholder="Email Address" value={formData.email} onChange={handleInputChange} required />
+                  </div>
+                </div>
+
+                <div className="input-field">
+                  <div className="icon-input">
+                    <span className="material-symbols-outlined">call</span>
+                    <input type="text" name="mobile" placeholder="Mobile Number" value={formData.mobile} onChange={handleInputChange} required />
                   </div>
                 </div>
 
@@ -183,6 +193,7 @@ export default function Login() {
           <div className="form-container sign-in-container">
             <form className="auth-form" onSubmit={handleLogin}>
               <div className="content-wrapper">
+                <img src="/logo.png" alt="Logo" style={{ height: '50px', marginBottom: '1rem', objectFit: 'contain' }} />
                 <span className="subtitle-badge">Welcome Back</span>
                 <h2>Sign in to Prism</h2>
                 <p className="auth-subtitle">Please enter your details to access your smart digital network.</p>

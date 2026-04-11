@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import API from '../api';
 import './UserProfile.css';
 
 const UserProfile = () => {
@@ -21,6 +22,10 @@ const UserProfile = () => {
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
+    API.get("/auth/profile").then(res => {
+      setUser(res.data);
+      localStorage.setItem("user", JSON.stringify(res.data));
+    }).catch(err => console.error(err));
   }, []);
 
   // Lock scroll when sidebar/modals are open
@@ -58,12 +63,8 @@ const UserProfile = () => {
       {/* Sidebar */}
       <aside className={`sidebar ${isSidebarOpen ? "sidebar-open" : ""}`}>
         <div className="sidebar-logo-section">
-          <div className="logo-icon">
-            <span className="material-symbols-outlined">play_prism</span>
-          </div>
-          <div className="logo-text">
-            <h1>Prism QR</h1>
-            <p>Premium Tier</p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.5rem 0' }}>
+             <img src="/logo.png" alt="Logo" style={{ height: '40px', width: 'auto', objectFit: 'contain' }} />
           </div>
           {/* Mobile Close Button (matching dashboard logic) */}
           <button className="mobile-close-btn" onClick={() => setIsSidebarOpen(false)}>
@@ -123,7 +124,7 @@ const UserProfile = () => {
               </div>
               <div className="detail-row">
                 <span className="detail-label">Mobile Number</span>
-                <span className="detail-value">+91 98XXX XXXXX</span>
+                <span className="detail-value">{user?.mobile || "1234567890"}</span>
               </div>
               <div className="detail-row">
                 <span className="detail-label">Account Created</span>

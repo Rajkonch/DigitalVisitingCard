@@ -59,23 +59,26 @@ export default function UserDashboard() {
     router.push("/login");
   };
 
-  const handleDownloadQR = (e) => {
+  const handleDownloadQR = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-    if (cards.length > 0 && cards[0].qrCodeUrl) {
-      const link = document.createElement("a");
-      link.href = cards[0].qrCodeUrl;
-      link.download = `QR_${cards[0].slug || 'prism'}.png`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } else if (cards.length > 0 && cards[0].qrCode) {
-      const link = document.createElement("a");
-      link.href = cards[0].qrCode;
-      link.download = `QR_${cards[0].slug || 'prism'}.png`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+    const url = cards[0]?.qrCodeUrl || cards[0]?.qrCode;
+    if (url) {
+      try {
+        const response = await fetch(url);
+        const blob = await response.blob();
+        const blobUrl = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = blobUrl;
+        link.download = `QR_${cards[0]?.slug || 'prism'}.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(blobUrl);
+      } catch (err) {
+        console.error("Download failed, opening in new tab", err);
+        window.open(url, '_blank');
+      }
     }
   };
 
@@ -89,14 +92,8 @@ export default function UserDashboard() {
       {/* SideNavBar */}
       <aside className={`sidebar ${isSidebarOpen ? "sidebar-open" : ""}`}>
         <div className="sidebar-logo-section">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <div className="logo-icon">
-              <span className="material-symbols-outlined">play_prism</span>
-            </div>
-            <div className="logo-text">
-              <h1>Prism QR</h1>
-              <p>Premium Tier</p>
-            </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.5rem 0' }}>
+            <img src="/logo.png" alt="Logo" style={{ height: '40px', width: 'auto', objectFit: 'contain' }} />
           </div>
           {/* Mobile Close Button */}
           <button className="mobile-close-btn" onClick={toggleSidebar}>

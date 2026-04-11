@@ -105,7 +105,9 @@ export default function Home() {
       {/* NAVBAR */}
       <header className="header-nav z-index-top">
         <nav className="navbar-glass compact-nav">
-          <div className="logo-text">Prism QR</div>
+          <div className="logo-text">
+            <img src="/logo.png" alt="Logo" style={{ height: '35px', width: 'auto', objectFit: 'contain' }} />
+          </div>
           <div className="nav-actions">
             <button className="text-btn" onClick={() => router.push("/login")}>Login</button>
             <button className="primary-btn btn-3d-lift" onClick={() => router.push("/login?register=true")}>Sign Up</button>

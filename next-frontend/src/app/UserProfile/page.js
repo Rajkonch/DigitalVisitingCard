@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import API from '../../utils/api';
 import '../../styles/UserProfile.css';
 
 export default function UserProfile() {
@@ -65,14 +66,8 @@ export default function UserProfile() {
       {/* Sidebar */}
       <aside className={`sidebar ${isSidebarOpen ? "sidebar-open" : ""}`}>
         <div className="sidebar-logo-section">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <div className="logo-icon">
-              <span className="material-symbols-outlined">play_prism</span>
-            </div>
-            <div className="logo-text">
-              <h1>Prism QR</h1>
-              <p>Premium Tier</p>
-            </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.5rem 0' }}>
+            <img src="/logo.png" alt="Logo" style={{ height: '40px', width: 'auto', objectFit: 'contain' }} />
           </div>
           <button className="mobile-close-btn" onClick={() => setIsSidebarOpen(false)}>
             <span className="material-symbols-outlined">close</span>
@@ -131,7 +126,7 @@ export default function UserProfile() {
               </div>
               <div className="detail-row">
                 <span className="detail-label">Mobile Number</span>
-                <span className="detail-value">{user?.mobile || "+91 98XXX XXXXX"}</span>
+                <span className="detail-value">{user?.mobile || "1234567890"}</span>
               </div>
               <div className="detail-row">
                 <span className="detail-label">Account Created</span>

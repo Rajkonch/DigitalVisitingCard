@@ -46,6 +46,29 @@ export default function UserDashboard() {
     setVisibility(prev => ({ ...prev, [key]: !prev[key] }));
   };
 
+  const handleDownloadQR = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const url = cards[0]?.qrCodeUrl || cards[0]?.qrCode;
+    if (url) {
+      try {
+        const response = await fetch(url);
+        const blob = await response.blob();
+        const blobUrl = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = blobUrl;
+        link.download = `QR_${cards[0]?.slug || 'prism'}.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(blobUrl);
+      } catch (err) {
+        console.error("Download failed, opening in new tab", err);
+        window.open(url, '_blank');
+      }
+    }
+  };
+
   return (
     <div className="dashboard-container">
       {/* Mobile Sidebar Overlay */}
@@ -56,12 +79,8 @@ export default function UserDashboard() {
       {/* SideNavBar */}
       <aside className={`sidebar ${isSidebarOpen ? "sidebar-open" : ""}`}>
         <div className="sidebar-logo-section">
-          <div className="logo-icon">
-            <span className="material-symbols-outlined">play_prism</span>
-          </div>
-          <div className="logo-text">
-            <h1>Prism QR</h1>
-            <p>Premium Tier</p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.5rem 0' }}>
+             <img src="/logo.png" alt="Logo" style={{ height: '40px', width: 'auto', objectFit: 'contain' }} />
           </div>
           {/* Mobile Close Button */}
           <button className="mobile-close-btn" onClick={toggleSidebar}>
@@ -140,7 +159,7 @@ export default function UserDashboard() {
                   <span className="stat-badge">+12%</span>
                 </div>
                 <p className="stat-label">Total Views</p>
-                <p className="stat-value">12,482</p>
+                <p className="stat-value">{cards.length > 0 ? (cards[0].viewsCount || 0) : 0}</p>
               </div>
 
               <div className="card stat-card secondary">
@@ -149,7 +168,7 @@ export default function UserDashboard() {
                   <span className="stat-badge">Live</span>
                 </div>
                 <p className="stat-label">New Scans Today</p>
-                <p className="stat-value">143</p>
+                <p className="stat-value">{cards.length > 0 ? (cards[0].todayViewsCount || 0) : 0}</p>
               </div>
 
               <div className="card stat-card tertiary">
@@ -169,14 +188,14 @@ export default function UserDashboard() {
             <div className="card public-view-card">
               <div className="qr-preview-box floating-element">
                 {cards.length > 0 ? (
-                  <img src={cards[0].qrCode} alt="QR Code" />
+                  <img src={cards[0].qrCodeUrl || cards[0].qrCode} alt="QR Code" />
                 ) : (
                   <img 
                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSuwO3KxJKKmBnbAvVhewqBfeN8kWHYZ_wGIpEWpZiDzZ4L1UzF6V9fVOEqKq6lmHeiAT60BD8UyBzFCWz27bWCgMgDWdRciz7_S3aISyTvqx683U8EMClAq_4vxEg5NNTdjJfw6wal4YLEusrdxXiD7mpC3y4ffUIOFEGB_VdnP98zIwUMybNZoRDSO2N8n7LmroMJ60IDhaTJMUt-v4uy8Szc7RJ5V7J88UQnW50mgwEB-WTs5iEuq95GT16wQuCZEKRo6W3plJg" 
                     alt="Sample QR" 
                   />
                 )}
-                <div className="qr-overlay">
+                <div className="qr-overlay" onClick={handleDownloadQR} style={{ cursor: 'pointer' }}>
                   <span className="material-symbols-outlined" style={{ color: 'white', fontSize: '2rem' }}>download</span>
                 </div>
               </div>

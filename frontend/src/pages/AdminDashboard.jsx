@@ -53,12 +53,8 @@ const AdminDashboard = () => {
 
       <aside className={`admin-sidebar ${isSidebarOpen ? 'open' : ''}`}>
         <div className="sidebar-header">
-          <div className="logo-box">
-            <span className="material-symbols-outlined">play_prism</span>
-          </div>
-          <div className="brand-info">
-            <h2>Prism Workspace</h2>
-            <p>Premium Tier</p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.5rem 0' }}>
+            <img src="/logo.png" alt="Logo" style={{ height: '40px', width: 'auto', objectFit: 'contain' }} />
           </div>
         </div>
 

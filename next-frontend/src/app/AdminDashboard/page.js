@@ -76,14 +76,8 @@ export default function AdminDashboard() {
 
       <aside className={`admin-sidebar ${isSidebarOpen ? 'open' : ''}`}>
         <div className="sidebar-header">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <div className="logo-box">
-              <span className="material-symbols-outlined">play_prism</span>
-            </div>
-            <div className="brand-info">
-              <h2>Prism Workspace</h2>
-              <p>Premium Tier</p>
-            </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.5rem 0' }}>
+            <img src="/logo.png" alt="Logo" style={{ height: '40px', width: 'auto', objectFit: 'contain' }} />
           </div>
           <button className="mobile-close-btn" onClick={() => setIsSidebarOpen(false)}>
             <span className="material-symbols-outlined">close</span>
