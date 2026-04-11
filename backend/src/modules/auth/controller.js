@@ -14,12 +14,20 @@ exports.register = async (req, res) => {
     const userExists = await User.findOne({ email });
     if(userExists) return res.status(400).json({ message: 'User already exists' });
 
-    const user = await User.create({ name, email, password, mobile, role });
+    const user = await User.create({ 
+      name, 
+      email, 
+      password, 
+      mobile: mobile || "1234567890", // Explicit fallback just in case
+      role,
+      permission_active: 0 // New users must be approved by admin explicitly
+    });
     res.status(201).json({
       _id: user._id,
       name: user.name,
       email: user.email,
       mobile: user.mobile,
+      permission_active: user.permission_active,
       role: user.role,
       token: generateToken(user._id)
     });
