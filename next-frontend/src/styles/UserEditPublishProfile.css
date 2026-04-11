@@ -549,12 +549,12 @@ input:checked + .slider:before {
 
 .web-mockup {
   width: 100%;
-  max-width: 1100px;
-  height: 85vh; /* Increased height for better visibility */
+  max-width: 800px;
+  height: 600px;
   background: white;
-  border-radius: 1.5rem;
+  border-radius: 1rem;
   border: 1px solid var(--surface-container-high);
-  box-shadow: 0 40px 100px rgba(0,0,0,0.1);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.1);
   margin: 0 auto;
   position: relative;
   overflow: hidden;
@@ -752,6 +752,11 @@ input:checked + .slider:before {
 @media (max-width: 768px) {
   .input-grid { grid-template-columns: 1fr; }
   .input-field.full { grid-column: span 1; }
+  .item-row { flex-direction: column; align-items: stretch; gap: 0.75rem; }
+  .item-row > * { width: 100%; }
+  .icon-upload-mini { align-self: center; width: 64px; height: 64px; }
+  .dynamic-item { flex-direction: column; align-items: stretch; }
+  .item-row.flex-between { flex-direction: column; align-items: flex-start; gap: 1rem; }
 }
 
 .delete-btn { color: var(--error); opacity: 0.4; cursor: pointer; border: none; background: none; transition: opacity 0.2s ease; }
