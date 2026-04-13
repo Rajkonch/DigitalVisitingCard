@@ -136,14 +136,21 @@ exports.getCard = async (req, res) => {
   }
 };
 
-// ✅ Get My Cards (admin panel)
+// ✅ Get My Cards (admin panel / dashboard)
 exports.getMyCards = async (req, res) => {
   try {
-    const cards = await Card.find({ userId: req.user._id });
+    let queryUserId = req.user._id;
+
+    // ADMIN: Allow viewing someone else's cards
+    if (req.user.role === 'admin' && req.query.userId) {
+      queryUserId = req.query.userId;
+    }
+
+    const cards = await Card.find({ userId: queryUserId });
     res.json(cards);
   } catch (err) {
-    console.log(err); // 👈 ADD THIS
-  res.status(500).json({ message: err.message });
+    console.log(err);
+    res.status(500).json({ message: err.message });
   }
 };
 

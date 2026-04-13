@@ -212,7 +212,7 @@ export default function AdminDashboard() {
                             ) : (
                               <button className="btn-sm btn-neutral" style={{ color: '#e11d48' }} onClick={() => updatePermission(u._id, 0)}>Deactivate</button>
                             )}
-                            <button className="btn-sm btn-neutral">View</button>
+                            <button className="btn-sm btn-neutral" onClick={() => router.push(`/UserDashboard?userId=${u._id}`)}>View</button>
                           </div>
                         </td>
                       </tr>

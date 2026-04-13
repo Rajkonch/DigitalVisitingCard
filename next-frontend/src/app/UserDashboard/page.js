@@ -1,13 +1,17 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import API from "../../utils/api";
 import "../../styles/UserDashboard.css";
 
 export default function UserDashboard() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const userIdParam = searchParams.get("userId");
+
   const [cards, setCards] = useState([]);
   const [user, setUser] = useState(null);
+  const [isAdminViewing, setIsAdminViewing] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isComingSoonOpen, setIsComingSoonOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -26,14 +30,17 @@ export default function UserDashboard() {
       router.push("/login");
       return;
     }
-    // Fetch user details from localStorage
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
+    const loggedUser = JSON.parse(localStorage.getItem("user") || "{}");
+    setUser(loggedUser);
+
+    const isImpersonating = userIdParam && loggedUser.role === 'admin';
+    setIsAdminViewing(isImpersonating);
 
     // Fetch cards from API
-    API.get("/cards/my").then((res) => {
+    // If Admin is viewing a specific user, pass userId to API
+    const url = isImpersonating ? `/cards/my?userId=${userIdParam}` : "/cards/my";
+
+    API.get(url).then((res) => {
       setCards(res.data);
       const card = res.data[0];
       if (card) {
@@ -50,7 +57,7 @@ export default function UserDashboard() {
         });
       }
     }).catch((err) => console.error("Cards fetch err:", err));
-  }, [router]);
+  }, [router, userIdParam]);
 
   // Lock scroll when sidebar/modals are open
   useEffect(() => {
@@ -177,6 +184,24 @@ export default function UserDashboard() {
       {/* Main Content Area */}
       <div className="main-wrapper">
         <main className="main-content">
+          {isAdminViewing && (
+            <div style={{ 
+              background: '#fff1f2', 
+              color: '#e11d48', 
+              padding: '12px', 
+              textAlign: 'center', 
+              fontWeight: 900, 
+              fontSize: '0.85rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '10px',
+              borderBottom: '1.5px solid #fda4af'
+            }}>
+              <span className="material-symbols-outlined" style={{ fontSize: '1.2rem' }}>admin_panel_settings</span>
+              ADMIN VIEWING: {cards[0]?.name || 'User'}'s Dashboard
+            </div>
+          )}
           <header className="header">
             <div className="header-left" style={{ flex: 1, minWidth: 0 }}>
               <button className="mobile-menu-btn" onClick={toggleSidebar}>
