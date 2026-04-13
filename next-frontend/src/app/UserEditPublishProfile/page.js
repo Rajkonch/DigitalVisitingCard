@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import "../../styles/UserEditPublishProfile.css";
 import { useRouter } from "next/navigation";
+import API from "../../utils/api";
 
 export default function UserEditPublishProfile() {
   const router = useRouter();
