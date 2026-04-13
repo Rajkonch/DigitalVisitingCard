@@ -33,7 +33,7 @@ export default function UserDashboard() {
     }
 
     // Fetch cards from API
-    API.get("/cards").then((res) => setCards(res.data)).catch(() => {});
+    API.get("/cards/my").then((res) => setCards(res.data)).catch((err) => console.error("Cards fetch err:", err));
   }, [router]);
 
   // Lock scroll when sidebar/modals are open

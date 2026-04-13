@@ -81,9 +81,8 @@ export default function UserEditPublishProfile() {
     const formData = new FormData();
     formData.append("image", file);
     try {
-      const res = await API.post("/upload", formData, {
-        headers: { "Content-Type": "multipart/form-data" }
-      });
+      // Automatic boundary detection by removing manual headers
+      const res = await API.post("/upload", formData);
       return res.data.url;
     } catch (err) {
       console.error("Upload failed", err);

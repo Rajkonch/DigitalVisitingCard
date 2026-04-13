@@ -14,7 +14,7 @@ exports.publishCard = async (req, res) => {
       // Create new card
       const slug = data.name.toLowerCase().replace(/\s+/g, '-') + '-' + Math.random().toString(36).substring(2, 7);
       
-      const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+      const frontendUrl = process.env.FRONTEND_URL || 'https://digital-visiting-card-alpha.vercel.app';
       const qrCode = await generateQRCode(`${frontendUrl}/p/${slug}`);
 
       card = await Card.create({
@@ -47,7 +47,7 @@ exports.createCard = async (req, res) => {
   try {
     const data = req.body;
     const slug = data.name.toLowerCase().replace(/\s+/g,'-') + '-' + Date.now();
-    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+    const frontendUrl = process.env.FRONTEND_URL || 'https://digital-visiting-card-alpha.vercel.app';
 
     const qrCode = await generateQRCode(
       `${frontendUrl}/p/${slug}`
