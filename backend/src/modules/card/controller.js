@@ -1,10 +1,26 @@
 const Card = require('./model');
 const { generateQRCode } = require('../../utils/qrGenerator');
 
+// Helper to remove immutables from payload
+const cleanData = (obj) => {
+  if (Array.isArray(obj)) return obj.map(cleanData);
+  if (obj !== null && typeof obj === 'object') {
+    const newObj = { ...obj };
+    delete newObj._id;
+    delete newObj.__v;
+    delete newObj.userId;
+    Object.keys(newObj).forEach(key => {
+      newObj[key] = cleanData(newObj[key]);
+    });
+    return newObj;
+  }
+  return obj;
+};
+
 // ✅ Publish/Save Card (Upsert: Create if doesn't exist, Update if it does)
 exports.publishCard = async (req, res) => {
   try {
-    const data = req.body;
+    const data = cleanData(req.body);
     const userId = req.user._id;
 
     // Check if card exists for this user
@@ -26,13 +42,10 @@ exports.publishCard = async (req, res) => {
       return res.status(201).json(card);
     } else {
       // Update existing card
-      // If name changed, we might not want to change slug to avoid breaking old QRs
-      // But we should regenerate QR if slug changes (not changing slug here for simplicity)
-      
       const updatedCard = await Card.findOneAndUpdate(
         { userId },
-        { ...data },
-        { new: true }
+        data,
+        { new: true, runValidators: true }
       );
       return res.json(updatedCard);
     }
