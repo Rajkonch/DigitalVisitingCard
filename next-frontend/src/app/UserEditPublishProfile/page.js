@@ -112,7 +112,7 @@ export default function UserEditPublishProfile() {
       setTimeout(() => setSaveStatus(""), 3000);
       router.push("/UserDashboard");
     } catch (err) {
-      console.error("Publish failed", err);
+      console.error("Publish failed details:", err.response?.data || err.message || err);
       setSaveStatus("Failed to publish. Try again.");
     } finally {
       setLoading(false);
@@ -191,9 +191,12 @@ export default function UserEditPublishProfile() {
 
   const handleIconUpload = async (id, file) => {
     if (file) {
+      // Show local preview immediately
+      setDynamicSections(dynamicSections.map(s => s.id === id ? { ...s, icon: URL.createObjectURL(file) } : s));
+      
       const url = await uploadImage(file);
       if (url) {
-        setDynamicSections(dynamicSections.map(s => s.id === id ? { ...s, icon: url } : s));
+        setDynamicSections(prev => prev.map(s => s.id === id ? { ...s, icon: url } : s));
       }
     }
   };
@@ -278,8 +281,12 @@ export default function UserEditPublishProfile() {
               <input id="avatar-input" type="file" accept="image/*" style={{ display: 'none' }}
                 onChange={async (e) => { 
                   if (e.target.files[0]) {
-                    const url = await uploadImage(e.target.files[0]);
-                    if (url) setProfile({ ...profile, avatar: url });
+                    const file = e.target.files[0];
+                    // Local preview
+                    setProfile({ ...profile, avatar: URL.createObjectURL(file) });
+                    
+                    const url = await uploadImage(file);
+                    if (url) setProfile(prev => ({ ...prev, avatar: url }));
                   }
                 }} />
               <div style={{ flex: 1 }}>
@@ -391,8 +398,11 @@ export default function UserEditPublishProfile() {
                             <input type="file" accept="image/*" onChange={async (e) => { 
                               const file = e.target.files[0]; 
                               if (file) { 
+                                // Local preview
+                                setProducts(products.map(p => p.id === prod.id ? { ...p, icon: URL.createObjectURL(file) } : p));
+                                
                                 const url = await uploadImage(file);
-                                if (url) setProducts(products.map(p => p.id === prod.id ? { ...p, icon: url } : p));
+                                if (url) setProducts(prev => prev.map(p => p.id === prod.id ? { ...p, icon: url } : p));
                               } 
                             }} />
                             {prod.icon ? <img src={prod.icon} alt="prod" /> : <span className="material-symbols-outlined">image</span>}
