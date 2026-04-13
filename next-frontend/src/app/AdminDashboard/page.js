@@ -212,28 +212,22 @@ export default function AdminDashboard() {
                             ) : (
                               <button className="btn-sm btn-neutral" style={{ color: '#e11d48' }} onClick={() => updatePermission(u._id, 0)}>Deactivate</button>
                             )}
-                            <a 
-                              href={`/UserDashboard?userId=${u._id}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="btn-sm btn-neutral" 
+                            <button 
+                              className="btn-sm" 
                               style={{ 
                                 cursor: 'pointer', 
-                                textDecoration: 'none', 
-                                display: 'inline-flex', 
-                                alignItems: 'center', 
-                                justifyContent: 'center',
-                                position: 'relative',
-                                zIndex: 10,
-                                pointerEvents: 'auto'
+                                background: '#ffeb3b', // Bright Yellow to confirm latest version
+                                color: '#000',
+                                fontWeight: 'bold'
                               }}
-                              onClick={(e) => {
-                                console.log("New Tab Link Clicked for ID:", u._id);
-                                // The browser will handle the target="_blank"
+                              onClick={() => {
+                                console.log("Attempting to view User Dashboard for ID:", u._id);
+                                const url = window.location.origin + `/UserDashboard?userId=${u._id}`;
+                                window.open(url, '_blank');
                               }}
                             >
-                              View
-                            </a>
+                              View ID
+                            </button>
                           </div>
                         </td>
                       </tr>
