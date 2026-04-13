@@ -112,7 +112,9 @@ export default function UserEditPublishProfile() {
       setTimeout(() => setSaveStatus(""), 3000);
       router.push("/UserDashboard");
     } catch (err) {
+      const errMsg = err.response?.data?.message || err.message || "Unknown Error";
       console.error("Publish failed details:", err.response?.data || err.message || err);
+      alert("Error while publishing: " + errMsg);
       setSaveStatus("Failed to publish. Try again.");
     } finally {
       setLoading(false);
