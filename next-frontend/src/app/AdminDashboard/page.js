@@ -93,8 +93,8 @@ export default function AdminDashboard() {
 
   return (
     <div className="dashboard-container">
-      {/* Backdrop for mobile */}
-      {isSidebarOpen && <div className="sidebar-backdrop" onClick={() => setIsSidebarOpen(false)}></div>}
+      {/* Backdrop for mobile - only shows if sidebar is open */}
+      <div className={`sidebar-backdrop ${isSidebarOpen ? 'active' : ''}`} onClick={() => setIsSidebarOpen(false)}></div>
 
       <button className="mobile-nav-toggle material-symbols-outlined" onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
         {isSidebarOpen ? 'close' : 'menu'}
@@ -216,12 +216,15 @@ export default function AdminDashboard() {
                               className="btn-sm" 
                               style={{ 
                                 cursor: 'pointer', 
-                                background: '#ffeb3b', // Bright Yellow to confirm latest version
-                                color: '#000',
-                                fontWeight: 'bold'
+                                background: '#22c55e', // Bright Green to confirm latest version
+                                color: 'white',
+                                fontWeight: 'bold',
+                                position: 'relative',
+                                zIndex: 1001, // Higher than everything
+                                border: 'none'
                               }}
                               onClick={() => {
-                                console.log("Attempting to view User Dashboard for ID:", u._id);
+                                console.log("LATEST VERSION: Redirecting to:", u._id);
                                 const url = window.location.origin + `/UserDashboard?userId=${u._id}`;
                                 window.open(url, '_blank');
                               }}

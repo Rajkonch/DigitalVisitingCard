@@ -56,12 +56,22 @@ body {
   background: rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(4px);
   z-index: 999;
-  animation: fadeIn 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  display: none;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+.sidebar-backdrop.active {
+  display: block;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@media (max-width: 768px) {
+  .sidebar-backdrop {
+    display: none; /* Controlled by .active */
+  }
 }
 
 /* Sidebar Styling */
