@@ -214,17 +214,22 @@ export default function AdminDashboard() {
                             )}
                             <a 
                               href={`/UserDashboard?userId=${u._id}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
                               className="btn-sm btn-neutral" 
                               style={{ 
                                 cursor: 'pointer', 
                                 textDecoration: 'none', 
                                 display: 'inline-flex', 
                                 alignItems: 'center', 
-                                justifyContent: 'center' 
+                                justifyContent: 'center',
+                                position: 'relative',
+                                zIndex: 10,
+                                pointerEvents: 'auto'
                               }}
                               onClick={(e) => {
-                                console.log("Standard Link Clicked for ID:", u._id);
-                                // Not calling preventDefault to allow native navigation
+                                console.log("New Tab Link Clicked for ID:", u._id);
+                                // The browser will handle the target="_blank"
                               }}
                             >
                               View
