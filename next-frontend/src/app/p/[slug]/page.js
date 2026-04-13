@@ -62,41 +62,48 @@ export default function PublicProfile() {
       background: bgColor || '#f0f4f8', 
       minHeight: '100vh', 
       overflowX: 'hidden', 
-      fontFamily: "'Plus Jakarta Sans', sans-serif" 
+      fontFamily: "'Plus Jakarta Sans', sans-serif",
+      position: 'relative'
     }}>
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" />
       
-      {/* Top Dynamic Ribbon */}
+      {/* Animated Background Accents */}
+      <div style={{ position: 'fixed', top: '-10%', right: '-10%', width: '40vw', height: '40vw', background: `${themeColor}10`, borderRadius: '50%', filter: 'blur(80px)', zIndex: 0 }}></div>
+      <div style={{ position: 'fixed', bottom: '-10%', left: '-10%', width: '30vw', height: '30vw', background: `${themeColor}08`, borderRadius: '50%', filter: 'blur(60px)', zIndex: 0 }}></div>
+
+      {/* Top Floating Glass Ribbon */}
       <div style={{ 
-        width: '100%', 
-        padding: '0.75rem 5%', 
-        background: 'rgba(255,255,255,0.7)', 
-        backdropFilter: 'blur(10px)', 
+        width: 'fit-content',
+        margin: '1.5rem auto',
+        padding: '0.6rem 1.5rem', 
+        background: 'rgba(255,255,255,0.4)', 
+        backdropFilter: 'blur(20px)', 
         display: 'flex', 
-        justifyContent: 'space-between', 
+        gap: '2rem',
         alignItems: 'center',
         position: 'sticky',
-        top: 0,
+        top: '1rem',
         zIndex: 1000,
-        borderBottom: '1px solid rgba(0,0,0,0.05)',
+        borderRadius: '99px',
+        border: '1px solid rgba(255,255,255,0.5)',
+        boxShadow: '0 10px 30px rgba(0,0,0,0.05)',
         boxSizing: 'border-box'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span className="material-symbols-outlined" style={{ fontSize: '1.2rem', color: themeColor }}>wb_sunny</span>
-          <span style={{ fontWeight: 700, fontSize: '0.85rem', color: subTextColor }}>{getGreeting()}, {name.split(' ')[0]}</span>
+          <span className="material-symbols-outlined" style={{ fontSize: '1.2rem', color: themeColor }}>waving_hand</span>
+          <span style={{ fontWeight: 800, fontSize: '0.8rem', color: subTextColor, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Hi! {getGreeting()}</span>
         </div>
-        <div style={{ fontWeight: 800, fontSize: '0.9rem', color: themeColor, fontFamily: 'monospace' }}>
+        <div style={{ fontWeight: 900, fontSize: '0.85rem', color: themeColor, fontFamily: 'monospace', background: `${themeColor}15`, padding: '4px 12px', borderRadius: '99px' }}>
           {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
         </div>
       </div>
 
-      <div className="full-website-wrapper" style={{ maxWidth: '1000px', margin: '0 auto', width: '100%' }}>
+      <div className="full-website-wrapper" style={{ maxWidth: '1000px', margin: '0 auto', width: '100%', position: 'relative', zIndex: 1 }}>
         
-        {/* Hero Section */}
+        {/* Adjusted Hero Section */}
         <section className="reveal-anim" style={{ 
-          padding: '4rem 1.5rem', 
-          textAlign: 'center',
-          background: `radial-gradient(circle at top right, ${themeColor}15, transparent), radial-gradient(circle at bottom left, ${themeColor}05, transparent)`
+          padding: '2rem 1.5rem 4rem', 
+          textAlign: 'center'
         }}>
           <div className="preview-avatar circle-glow" style={{ 
             width: '160px', 
