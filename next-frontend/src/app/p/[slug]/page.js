@@ -38,10 +38,11 @@ export default function PublicProfile() {
 
   return (
     <div className="public-profile-view" style={{ background: bgColor, minHeight: '100vh', overflowX: 'hidden' }}>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" />
       <div className="web-preview-container" style={{ maxWidth: '800px', margin: '0 auto', background: 'white', minHeight: '100vh', boxShadow: '0 0 50px rgba(0,0,0,0.1)', display: 'flex', flexDirection: 'column' }}>
         
         {/* Profile Header */}
-        <div className="web-preview-content" style={{ padding: '3rem 2rem', flex: 1 }}>
+        <div className="web-preview-content reveal-anim" style={{ padding: '3rem 2rem', flex: 1 }}>
           <div className="web-profile-intro" style={{ textAlign: 'center', marginBottom: '3rem' }}>
             <div className="preview-avatar circle" style={{ width: '150px', height: '150px', borderColor: themeColor, margin: '0 auto', border: `4px solid ${themeColor}` }}>
               <img src={avatar || "https://via.placeholder.com/150"} alt={name} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
@@ -50,7 +51,7 @@ export default function PublicProfile() {
             <p className="designation" style={{ color: themeColor, fontSize: '1.1rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em' }}>{designation}</p>
             
             {(showMobile || showEmail || showAddress) && (
-              <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '1.5rem', marginTop: '1.5rem' }}>
+              <div className="reveal-anim" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '1.25rem', marginTop: '1.5rem' }}>
                 {showMobile && mobile && (
                   <a href={`tel:${mobile}`} className="contact-preview-item" style={{ color: subTextColor, textDecoration: 'none' }}>
                     <span className="material-symbols-outlined" style={{ color: themeColor, fontSize: '1.2rem' }}>call</span>

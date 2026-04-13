@@ -33,7 +33,23 @@ export default function UserDashboard() {
     }
 
     // Fetch cards from API
-    API.get("/cards/my").then((res) => setCards(res.data)).catch((err) => console.error("Cards fetch err:", err));
+    API.get("/cards/my").then((res) => {
+      setCards(res.data);
+      const card = res.data[0];
+      if (card) {
+        setVisibility({
+          mobile: card.showMobile ?? true,
+          email: card.showEmail ?? true,
+          address: card.showAddress ?? true,
+          projects: card.showProjects ?? true,
+          products: card.showProducts ?? true,
+          experience: card.showExperience ?? true,
+          daily: card.showDaily ?? true,
+          hobbies: card.showHobby ?? true,
+          languages: card.showLanguage ?? true
+        });
+      }
+    }).catch((err) => console.error("Cards fetch err:", err));
   }, [router]);
 
   // Lock scroll when sidebar/modals are open
@@ -51,6 +67,31 @@ export default function UserDashboard() {
 
   const toggleVisibility = (key) => {
     setVisibility(prev => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  const handleSaveSettings = async () => {
+    if (cards.length > 0) {
+      try {
+        const payload = {
+          showMobile: visibility.mobile,
+          showEmail: visibility.email,
+          showAddress: visibility.address,
+          showProjects: visibility.projects,
+          showProducts: visibility.products,
+          showExperience: visibility.experience ?? true,
+          showDaily: visibility.daily ?? true,
+          showHobby: visibility.hobbies ?? true,
+          showLanguage: visibility.languages ?? true
+        };
+        await API.post("/cards/publish", payload);
+        setIsSettingsOpen(false);
+      } catch (err) {
+        console.error("Save settings failed", err);
+        alert("Failed to save settings");
+      }
+    } else {
+      setIsSettingsOpen(false);
+    }
   };
 
   const handleLogout = () => {
