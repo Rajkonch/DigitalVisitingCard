@@ -1,7 +1,7 @@
 const Card = require('./model');
 const { generateQRCode } = require('../../utils/qrGenerator');
 
-// Helper to remove immutables from payload
+// Helper to remove immutables and blob URLs from payload
 const cleanData = (obj) => {
   if (Array.isArray(obj)) return obj.map(cleanData);
   if (obj !== null && typeof obj === 'object') {
@@ -10,7 +10,12 @@ const cleanData = (obj) => {
     delete newObj.__v;
     delete newObj.userId;
     Object.keys(newObj).forEach(key => {
-      newObj[key] = cleanData(newObj[key]);
+      // Prevent saving temporary blob URLs
+      if (typeof newObj[key] === 'string' && newObj[key].startsWith('blob:')) {
+        newObj[key] = '';
+      } else {
+        newObj[key] = cleanData(newObj[key]);
+      }
     });
     return newObj;
   }
@@ -23,12 +28,16 @@ exports.publishCard = async (req, res) => {
     const data = cleanData(req.body);
     const userId = req.user._id;
 
+    if (!data.name) {
+      return res.status(400).json({ message: "Full Name is required to publish." });
+    }
+
     // Check if card exists for this user
     let card = await Card.findOne({ userId });
 
     if (!card) {
       // Create new card
-      const slug = data.name.toLowerCase().replace(/\s+/g, '-') + '-' + Math.random().toString(36).substring(2, 7);
+      const slug = data.name.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-') + '-' + Math.random().toString(36).substring(2, 7);
       
       const frontendUrl = process.env.FRONTEND_URL || 'https://digital-visiting-card-alpha.vercel.app';
       const qrCode = await generateQRCode(`${frontendUrl}/p/${slug}`);
@@ -47,11 +56,19 @@ exports.publishCard = async (req, res) => {
         data,
         { new: true, runValidators: true }
       );
+      
+      if (!updatedCard) {
+        return res.status(404).json({ message: "Card not found during update." });
+      }
+
       return res.json(updatedCard);
     }
   } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: err.message });
+    console.error("Publish Error:", err);
+    res.status(500).json({ 
+      message: "Server Error: " + err.message,
+      error: err 
+    });
   }
 };
 
