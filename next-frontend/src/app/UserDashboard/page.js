@@ -334,7 +334,7 @@ export default function UserDashboard() {
             <p className="modal-desc">Control which sections are visible on your public profile.</p>
             
             <div className="visibility-list">
-              {Object.keys(visibility).map(key => (
+              {visibility && Object.keys(visibility).map(key => (
                 <div key={key} className="visibility-item">
                   <div className="visibility-info">
                     <span className="material-symbols-outlined">
@@ -345,7 +345,7 @@ export default function UserDashboard() {
                   <label className="toggle-switch">
                     <input 
                       type="checkbox" 
-                      checked={visibility[key]} 
+                      checked={!!visibility[key]} 
                       onChange={() => toggleVisibility(key)} 
                     />
                     <span className="toggle-slider"></span>

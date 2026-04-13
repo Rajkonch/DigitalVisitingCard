@@ -28,14 +28,13 @@ exports.publishCard = async (req, res) => {
     const data = cleanData(req.body);
     const userId = req.user._id;
 
-    if (!data.name) {
-      return res.status(400).json({ message: "Full Name is required to publish." });
-    }
-
     // Check if card exists for this user
     let card = await Card.findOne({ userId });
 
     if (!card) {
+      if (!data.name) {
+        return res.status(400).json({ message: "Full Name is required to publish a new profile." });
+      }
       // Create new card
       const slug = data.name.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-') + '-' + Math.random().toString(36).substring(2, 7);
       

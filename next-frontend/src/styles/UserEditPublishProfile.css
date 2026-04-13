@@ -592,6 +592,13 @@ input:checked + .slider:before {
   background-color: #f8fafc;
   display: flex;
   justify-content: center;
+  transition: all 0.5s ease;
+  transform-style: preserve-3d;
+}
+
+.web-preview-container:hover {
+  transform: rotateY(-3deg) rotateX(1deg);
+  box-shadow: 0 40px 100px rgba(0,100,123,0.2);
 }
 
 .web-preview-content {
