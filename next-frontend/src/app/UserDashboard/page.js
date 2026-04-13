@@ -217,9 +217,9 @@ export default function UserDashboard() {
                 </div>
               </div>
               <div className="live-view-info">
-                <h4>prism.qr/{user?.name?.toLowerCase().replace(/\s+/g, '-') || 'workspace'}</h4>
+                <h4>prism.qr/{cards[0]?.slug || 'workspace'}</h4>
                 <p>Your public profile is optimized for mobile viewing.</p>
-                <button className="view-live-btn">
+                <button className="view-live-btn" onClick={() => window.open(`/p/${cards[0]?.slug}`, '_blank')}>
                   View Live <span className="material-symbols-outlined" style={{ fontSize: '1rem' }}>open_in_new</span>
                 </button>
               </div>

@@ -6,9 +6,56 @@ import { useRouter } from "next/navigation";
 export default function UserEditPublishProfile() {
   const router = useRouter();
 
+  const [loading, setLoading] = useState(false);
+  const [saveStatus, setSaveStatus] = useState("");
+
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (!token) router.push("/login");
+    if (!token) {
+      router.push("/login");
+      return;
+    }
+
+    // Fetch existing card if any
+    const fetchCard = async () => {
+      try {
+        const res = await API.get("/cards/my");
+        if (res.data && res.data.length > 0) {
+          const card = res.data[0];
+          setProfile({
+            name: card.name || "",
+            designation: card.designation || "",
+            bio: card.bio || "",
+            themeColor: card.themeColor || "#00647b",
+            textColor: card.textColor || "#1a1c1e",
+            subTextColor: card.subTextColor || "#40484c",
+            bgColor: card.bgColor || "#f0f4f8",
+            bgPattern: card.bgPattern || "none",
+            cardType: card.cardType || "business",
+            avatar: card.avatar || "https://lh3.googleusercontent.com/aida-public/AB6AXuBv2Nkrf9QRJosgsuVNxMiFyV3Ww8CcIICG3iyjkqoEllYyJtwiAOxEg7Bz41LY5zL2I3W9r4J_xWXzmcPLSPRv6v7TRvzCS7J6Iln2ObBEpg6M6tMxhBYc5Jb18nLxYpwzZYjIBqYwvbm5XAQKbmAk7ID3dDjXBou8iJsuxquOLOeI3XxIGoFuS6WZdI9_1p3sFxoUwMZWCXKj_yVLxrjKlKzLE2nRMmQQjgih2_9t9_aiwew9XxEMnGrvOemJp4m9WqelHUNQqneG",
+            mobile: card.mobile || "",
+            showMobile: card.showMobile ?? true,
+            email: card.email || "",
+            showEmail: card.showEmail ?? true,
+            address: card.address || "",
+            showAddress: card.showAddress ?? true
+          });
+          if (card.sectionOrder && card.sectionOrder.length > 0) setSectionOrder(card.sectionOrder);
+          if (card.links) setDynamicSections(card.links.map(l => ({ ...l, id: l._id || Date.now() })));
+          if (card.products) setProducts(card.products.map(p => ({ ...p, id: p._id || Date.now() })));
+          if (card.projects) setProjects(card.projects.map(p => ({ ...p, id: p._id || Date.now() })));
+          if (card.experience) setExperiences(card.experience.map(e => ({ ...e, id: e._id || Date.now() })));
+          if (card.languages) setLanguages(card.languages.map(l => ({ ...l, id: l._id || Date.now() })));
+          if (card.hobbies) setHobbies(card.hobbies.map(h => ({ ...h, id: h._id || Date.now() })));
+          if (card.dailyActivities) setDailyActivities(card.dailyActivities.map(a => ({ ...a, id: a._id || Date.now() })));
+          if (card.customHeadings) setCustomHeadings(card.customHeadings.map(h => ({ ...h, id: h._id || Date.now(), items: h.items.map(it => ({ ...it, id: it._id || Date.now() })) })));
+        }
+      } catch (err) {
+        console.error("Error fetching card:", err);
+      }
+    };
+
+    fetchCard();
   }, [router]);
 
   const [profile, setProfile] = useState({
@@ -29,6 +76,49 @@ export default function UserEditPublishProfile() {
     address: "Skyline Business Park, Mumbai, India",
     showAddress: true
   });
+
+  const uploadImage = async (file) => {
+    const formData = new FormData();
+    formData.append("image", file);
+    try {
+      const res = await API.post("/cards/upload", formData, {
+        headers: { "Content-Type": "multipart/form-data" }
+      });
+      return res.data.url;
+    } catch (err) {
+      console.error("Upload failed", err);
+      return null;
+    }
+  };
+
+  const handlePublish = async () => {
+    setLoading(true);
+    setSaveStatus("Publishing...");
+    try {
+      const payload = {
+        ...profile,
+        sectionOrder,
+        links: dynamicSections,
+        products,
+        projects,
+        experience: experiences,
+        languages,
+        hobbies,
+        dailyActivities,
+        customHeadings
+      };
+
+      await API.post("/cards/publish", payload);
+      setSaveStatus("Published Successfully!");
+      setTimeout(() => setSaveStatus(""), 3000);
+      router.push("/UserDashboard");
+    } catch (err) {
+      console.error("Publish failed", err);
+      setSaveStatus("Failed to publish. Try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const [sectionOrder, setSectionOrder] = useState([
     "links", "products", "projects", "experience", "custom", "daily", "languages", "hobbies"
@@ -100,10 +190,12 @@ export default function UserEditPublishProfile() {
     }
   };
 
-  const handleIconUpload = (id, file) => {
+  const handleIconUpload = async (id, file) => {
     if (file) {
-      const iconUrl = URL.createObjectURL(file);
-      setDynamicSections(dynamicSections.map(s => s.id === id ? { ...s, icon: iconUrl } : s));
+      const url = await uploadImage(file);
+      if (url) {
+        setDynamicSections(dynamicSections.map(s => s.id === id ? { ...s, icon: url } : s));
+      }
     }
   };
 
@@ -142,7 +234,12 @@ export default function UserEditPublishProfile() {
     <div className="profile-editor-container">
       <header className="editor-nav">
         <span className="nav-brand" onClick={() => router.push("/UserDashboard")} style={{ cursor: "pointer" }}>Prism QR</span>
-        <button className="publish-btn">Publish Profile</button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          {saveStatus && <span style={{ fontSize: '0.8rem', color: 'var(--primary)' }}>{saveStatus}</span>}
+          <button className="publish-btn" onClick={handlePublish} disabled={loading}>
+            {loading ? "Publishing..." : "Publish Profile"}
+          </button>
+        </div>
       </header>
 
       <main className="editor-main">
@@ -180,7 +277,12 @@ export default function UserEditPublishProfile() {
                 <div className="avatar-overlay"><span className="material-symbols-outlined">camera_alt</span></div>
               </div>
               <input id="avatar-input" type="file" accept="image/*" style={{ display: 'none' }}
-                onChange={(e) => { if (e.target.files[0]) setProfile({ ...profile, avatar: URL.createObjectURL(e.target.files[0]) }); }} />
+                onChange={async (e) => { 
+                  if (e.target.files[0]) {
+                    const url = await uploadImage(e.target.files[0]);
+                    if (url) setProfile({ ...profile, avatar: url });
+                  }
+                }} />
               <div style={{ flex: 1 }}>
                 <p className="field-label" style={{ marginBottom: '0.5rem' }}>Profile Photo</p>
                 <p style={{ fontSize: '0.75rem', color: 'var(--on-surface-variant)' }}>Upload a professional photo or avatar for your card.</p>
@@ -287,7 +389,13 @@ export default function UserEditPublishProfile() {
                         <div className="item-row">
                           <div className="move-controls"><button className="material-symbols-outlined" onClick={() => moveItem(products, setProducts, pIdx, "up")}>expand_less</button></div>
                           <div className="icon-upload-mini">
-                            <input type="file" accept="image/*" onChange={(e) => { const file = e.target.files[0]; if (file) { const reader = new FileReader(); reader.onloadend = () => setProducts(products.map(p => p.id === prod.id ? { ...p, icon: reader.result } : p)); reader.readAsDataURL(file); } }} />
+                            <input type="file" accept="image/*" onChange={async (e) => { 
+                              const file = e.target.files[0]; 
+                              if (file) { 
+                                const url = await uploadImage(file);
+                                if (url) setProducts(products.map(p => p.id === prod.id ? { ...p, icon: url } : p));
+                              } 
+                            }} />
                             {prod.icon ? <img src={prod.icon} alt="prod" /> : <span className="material-symbols-outlined">image</span>}
                           </div>
                           <div className="item-inputs">
