@@ -297,7 +297,7 @@ export default function UserDashboard() {
                 <div key={key} className="visibility-item">
                   <div className="visibility-info">
                     <span className="material-symbols-outlined">
-                      {key === 'mobile' ? 'smartphone' : key === 'email' ? 'mail' : key === 'address' ? 'location_on' : key === 'projects' ? 'work' : 'shopping_bag'}
+                      {key === 'mobile' ? 'smartphone' : key === 'email' ? 'mail' : key === 'address' ? 'location_on' : key === 'projects' ? 'work' : key === 'products' ? 'shopping_bag' : key === 'experience' ? 'badge' : key === 'daily' ? 'schedule' : 'language'}
                     </span>
                     <span className="visibility-label">{key.charAt(0).toUpperCase() + key.slice(1)} Section</span>
                   </div>
@@ -313,7 +313,7 @@ export default function UserDashboard() {
               ))}
             </div>
             
-            <button className="btn-save-settings" onClick={() => setIsSettingsOpen(false)}>Done</button>
+            <button className="btn-save-settings" onClick={handleSaveSettings}>Done</button>
           </div>
         </div>
       )}

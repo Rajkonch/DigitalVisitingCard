@@ -18,6 +18,17 @@ const cardSchema = new mongoose.Schema({
   showEmail: { type: Boolean, default: true },
   address: String,
   showAddress: { type: Boolean, default: true },
+  
+  // Visibility Settings
+  showProjects: { type: Boolean, default: true },
+  showProducts: { type: Boolean, default: true },
+  showExperience: { type: Boolean, default: true },
+  showDaily: { type: Boolean, default: true },
+  showHobby: { type: Boolean, default: true },
+  showLanguage: { type: Boolean, default: true },
+  
+  // Permission
+  activePermission: { type: Boolean, default: true },
 
   // Design Theme
   themeColor: { type: String, default: '#00647b' },

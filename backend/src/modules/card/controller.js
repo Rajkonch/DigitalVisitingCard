@@ -51,6 +51,13 @@ exports.publishCard = async (req, res) => {
       return res.status(201).json(card);
     } else {
       // Update existing card
+      // Ensure QR code is stable: don't overwrite if it already exists
+      if (!card.qrCodeUrl) {
+         const frontendUrl = process.env.FRONTEND_URL || 'https://digital-visiting-card-alpha.vercel.app';
+         const qrCode = await generateQRCode(`${frontendUrl}/p/${card.slug}`);
+         data.qrCodeUrl = qrCode;
+      }
+
       const updatedCard = await Card.findOneAndUpdate(
         { userId },
         data,
