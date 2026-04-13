@@ -106,7 +106,7 @@ exports.createCard = async (req, res) => {
 // ✅ Get Card by Slug (QR scan + views count)
 exports.getCard = async (req, res) => {
   try {
-    const card = await Card.findOne({ slug: req.params.slug });
+    const card = await Card.findOne({ slug: req.params.slug }).populate('userId', 'permission_active');
 
     if(!card) return res.status(404).json({ message: 'Card not found' });
 
@@ -123,10 +123,16 @@ exports.getCard = async (req, res) => {
     card.viewsCount += 1;
     await card.save();
 
-    res.json(card);
+    // Map permission for clarity
+    const permissionStatus = card.userId ? card.userId.permission_active : 0;
+
+    res.json({
+      ...card._doc,
+      user_permission: permissionStatus
+    });
   } catch(err) {
-    console.log(err); // 👈 ADD THIS
-  res.status(500).json({ message: err.message });
+    console.log(err);
+    res.status(500).json({ message: err.message });
   }
 };
 

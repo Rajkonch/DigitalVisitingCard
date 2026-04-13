@@ -55,7 +55,7 @@ export default function PublicProfile() {
     activePermission, showProjects, showProducts, showExperience, showDaily, showHobby, showLanguage
   } = card;
 
-  const isLimited = activePermission === false || activePermission === 0;
+  const isLimited = card.user_permission === 0;
 
   return (
     <div className="public-profile-view" style={{ 
