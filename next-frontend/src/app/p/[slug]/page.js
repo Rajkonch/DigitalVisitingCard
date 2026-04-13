@@ -62,202 +62,128 @@ export default function PublicProfile() {
       background: bgColor || '#f0f4f8', 
       minHeight: '100vh', 
       overflowX: 'hidden', 
-      fontFamily: "'Plus Jakarta Sans', sans-serif",
-      position: 'relative'
+      fontFamily: "'Plus Jakarta Sans', sans-serif" 
     }}>
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" />
       
-      {/* Animated Background Accents */}
-      <div style={{ position: 'fixed', top: '-10%', right: '-10%', width: '40vw', height: '40vw', background: `${themeColor}10`, borderRadius: '50%', filter: 'blur(80px)', zIndex: 0 }}></div>
-      <div style={{ position: 'fixed', bottom: '-10%', left: '-10%', width: '30vw', height: '30vw', background: `${themeColor}08`, borderRadius: '50%', filter: 'blur(60px)', zIndex: 0 }}></div>
-
-      {/* Top Floating Glass Ribbon */}
+      {/* Dynamic Ribbon */}
       <div style={{ 
-        width: 'fit-content',
-        margin: '1.5rem auto',
-        padding: '0.6rem 1.5rem', 
-        background: 'rgba(255,255,255,0.4)', 
+        width: '100%', 
+        padding: '1rem 5%', 
+        background: 'rgba(255,255,255,0.8)', 
         backdropFilter: 'blur(20px)', 
         display: 'flex', 
-        gap: '2rem',
+        justifyContent: 'space-between', 
         alignItems: 'center',
         position: 'sticky',
-        top: '1rem',
+        top: 0,
         zIndex: 1000,
-        borderRadius: '99px',
-        border: '1px solid rgba(255,255,255,0.5)',
-        boxShadow: '0 10px 30px rgba(0,0,0,0.05)',
-        boxSizing: 'border-box'
+        borderBottom: '1px solid rgba(0,0,0,0.05)'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <span className="material-symbols-outlined" style={{ fontSize: '1.2rem', color: themeColor }}>waving_hand</span>
-          <span style={{ fontWeight: 800, fontSize: '0.8rem', color: subTextColor, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Hi! {getGreeting()}</span>
+          <span style={{ fontWeight: 800, fontSize: '0.85rem' }}>Hi! {getGreeting()}</span>
         </div>
-        <div style={{ fontWeight: 900, fontSize: '0.85rem', color: themeColor, fontFamily: 'monospace', background: `${themeColor}15`, padding: '4px 12px', borderRadius: '99px' }}>
-          {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+        <div style={{ fontWeight: 900, fontSize: '1rem', color: themeColor }}>
+          {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
         </div>
       </div>
 
-      <div className="full-website-wrapper" style={{ maxWidth: '1000px', margin: '0 auto', width: '100%', position: 'relative', zIndex: 1 }}>
+      <div className="web-preview-container" style={{ maxWidth: '800px', margin: '0 auto', background: 'white', minHeight: '100vh', boxShadow: '0 0 50px rgba(0,0,0,0.1)' }}>
         
-        {/* Adjusted Hero Section */}
-        <section className="reveal-anim" style={{ 
-          padding: '2rem 1.5rem 4rem', 
-          textAlign: 'center'
-        }}>
-          <div className="preview-avatar circle-glow" style={{ 
-            width: '160px', 
-            height: '160px', 
-            margin: '0 auto', 
-            borderRadius: '50%',
-            border: `6px solid white`,
-            boxShadow: `0 20px 50px ${themeColor}30`,
-            position: 'relative'
-          }}>
-            <img src={avatar || "https://via.placeholder.com/150"} alt={name} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
-            <div style={{ position: 'absolute', bottom: '10px', right: '10px', width: '24px', height: '24px', background: '#22c55e', border: '3px solid white', borderRadius: '50%' }}></div>
-          </div>
-          
-          <h1 style={{ fontSize: 'clamp(2.5rem, 8vw, 4rem)', marginTop: '2rem', fontWeight: 900, color: textColor, letterSpacing: '-0.03em', lineHeight: 1 }}>{name}</h1>
-          <p style={{ color: themeColor, fontSize: '1.25rem', fontWeight: 800, marginTop: '1rem', textTransform: 'uppercase', letterSpacing: '0.2em' }}>{designation}</p>
-          <div style={{ width: '60px', height: '4px', background: themeColor, margin: '2rem auto', borderRadius: '2px' }}></div>
-          
-          <p style={{ 
-            fontSize: '1.15rem', 
-            maxWidth: '700px', 
-            margin: '0 auto', 
-            lineHeight: 1.7, 
-            color: subTextColor, 
-            wordBreak: 'break-word',
-            padding: '0 1rem'
-          }}>{bio}</p>
-
-          {(showMobile || showEmail || showAddress) && (
-            <div className="hero-contacts" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '2rem', marginTop: '3rem' }}>
-              {showMobile && mobile && (
-                <a href={`tel:${mobile}`} style={{ color: textColor, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 700 }}>
-                  <div style={{ background: themeColor, color: 'white', padding: '10px', borderRadius: '12px' }}><span className="material-symbols-outlined">call</span></div>
-                  {mobile}
-                </a>
-              )}
-              {showEmail && email && (
-                <a href={`mailto:${email}`} style={{ color: textColor, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 700 }}>
-                  <div style={{ background: themeColor, color: 'white', padding: '10px', borderRadius: '12px' }}><span className="material-symbols-outlined">mail</span></div>
-                  {email}
-                </a>
-              )}
+        {/* Profile Header - Same as Preview */}
+        <div className="web-preview-content reveal-anim" style={{ padding: '4rem 2rem' }}>
+          <div className="web-profile-intro" style={{ textAlign: 'center', marginBottom: '3rem' }}>
+            <div className="preview-avatar circle" style={{ width: '150px', height: '150px', borderColor: themeColor, margin: '0 auto', border: `4px solid ${themeColor}` }}>
+              <img src={avatar || "https://via.placeholder.com/150"} alt={name} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
             </div>
-          )}
-        </section>
+            <h1 style={{ fontSize: '2.5rem', marginTop: '1.5rem', fontWeight: 800, color: textColor }}>{name}</h1>
+            <p className="designation" style={{ color: themeColor, fontSize: '1.1rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em' }}>{designation}</p>
+            
+            {(showMobile || showEmail || showAddress) && (
+              <div className="contact-info-preview-grid" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '1.5rem', marginTop: '1.5rem' }}>
+                {showMobile && mobile && (
+                  <div className="contact-preview-item" style={{ color: subTextColor, fontWeight: 600 }}>
+                    <span className="material-symbols-outlined" style={{ color: themeColor, fontSize: '1.2rem' }}>call</span>
+                    {mobile}
+                  </div>
+                )}
+                {showEmail && email && (
+                  <div className="contact-preview-item" style={{ color: subTextColor, fontWeight: 600 }}>
+                    <span className="material-symbols-outlined" style={{ color: themeColor, fontSize: '1.2rem' }}>mail</span>
+                    {email}
+                  </div>
+                )}
+              </div>
+            )}
+            <p className="bio" style={{ fontSize: '1rem', marginTop: '1.5rem', maxWidth: '600px', margin: '1.5rem auto 0', lineHeight: 1.6, color: subTextColor, wordBreak: 'break-word' }}>{bio}</p>
+          </div>
 
-        {/* Content Body */}
-        <main style={{ padding: '0 1.5rem 5rem' }}>
           {!isLimited && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '4rem' }}>
+            <div className="preview-content-sections" style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
               
-              {/* Links strip */}
+              {/* Links Grid - Same as Preview */}
               {links && links.length > 0 && links.some(l => l.isActive) && (
-                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '1.5rem' }}>
-                   {links.filter(l => l.isActive).map((l, i) => (
-                    <a key={i} href={l.content.startsWith('http') ? l.content : `https://${l.content}`} target="_blank" rel="noopener noreferrer" 
-                       className="reveal-anim"
-                       style={{ 
-                         padding: '1rem 2rem', 
-                         background: 'white', 
-                         borderRadius: '1.5rem', 
-                         display: 'flex', 
-                         alignItems: 'center', 
-                         gap: '12px', 
-                         textDecoration: 'none', 
-                         color: textColor,
-                         fontWeight: 700,
-                         boxShadow: '0 10px 30px rgba(0,0,0,0.05)',
-                         transition: 'transform 0.3s ease'
-                       }}>
-                      {l.icon ? <img src={l.icon} style={{ width: '24px', height: '24px', objectFit: 'contain' }} /> : <span className="material-symbols-outlined">link</span>}
-                      {l.title}
+                <div className="preview-links-grid">
+                  {links.filter(l => l.isActive).map((l, i) => (
+                    <a key={i} href={l.content.startsWith('http') ? l.content : `https://${l.content}`} target="_blank" rel="noopener noreferrer" className="preview-link-circle" style={{ width: '56px', height: '56px', background: `${themeColor}15`, color: themeColor }}>
+                      {l.icon ? <img src={l.icon} style={{ width: '28px', height: '28px', objectFit: 'contain' }} className="custom-icon" /> : <span className="material-symbols-outlined" style={{ fontSize: '1.5rem' }}>link</span>}
                     </a>
-                   ))}
+                  ))}
                 </div>
               )}
 
-              <div style={{ 
-                display: 'grid', 
-                gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 400px), 1fr))', 
-                gap: '2.5rem' 
-              }}>
-                {sectionOrder.map(sectionKey => {
-                  if (cardType === 'shopkeeper' && ["projects", "experience", "hobbies"].includes(sectionKey)) return null;
-                  if (cardType === 'business' && sectionKey === "products") return null;
+              {/* Dynamic Content - Same structure as Preview */}
+              {sectionOrder.map(sectionKey => {
+                if (cardType === 'shopkeeper' && ["projects", "experience", "hobbies"].includes(sectionKey)) return null;
+                if (cardType === 'business' && sectionKey === "products") return null;
 
-                  if (sectionKey === "products" && showProducts && products && products.some(p => p.isActive)) {
-                    return (
-                      <div key="products" className="reveal-anim" style={{ gridColumn: '1 / -1' }}>
-                        <h2 style={{ fontSize: '1.75rem', marginBottom: '2rem', fontWeight: 800 }}>Product Catalog</h2>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '2rem' }}>
-                          {products.filter(p => p.isActive).map((p, i) => (
-                            <div key={i} className="glass-card" style={{ background: 'white', borderRadius: '2rem', padding: '1.5rem', boxShadow: '0 20px 40px rgba(0,0,0,0.04)' }}>
-                              <div style={{ height: '220px', borderRadius: '1.5rem', overflow: 'hidden', marginBottom: '1.25rem' }}>
-                                <img src={p.icon || "https://via.placeholder.com/300"} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                              </div>
-                              <h4 style={{ margin: '0 0 0.5rem', fontSize: '1.25rem', fontWeight: 800 }}>{p.title}</h4>
-                              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                                <span style={{ color: themeColor, fontSize: '1.5rem', fontWeight: 900 }}>₹{p.price}</span>
-                                {p.offer > 0 && <span style={{ background: `${themeColor}15`, color: themeColor, padding: '4px 10px', borderRadius: '8px', fontSize: '0.8rem', fontWeight: 800 }}>{p.offer}% OFF</span>}
-                              </div>
+                if (sectionKey === "products" && showProducts && products && products.some(p => p.isActive)) {
+                  return (
+                    <div key="products" className="preview-list-section reveal-anim">
+                      <h5 style={{ color: themeColor, borderBottom: `2px solid ${themeColor}20`, paddingBottom: '0.5rem' }}>Product Catalog</h5>
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.5rem', marginTop: '1.5rem' }}>
+                        {products.filter(p => p.isActive).map((p, i) => (
+                          <div key={i} className="mini-card-preview" style={{ padding: '1.25rem', background: '#f8fafc', borderRadius: '1.5rem', border: '1px solid #eee' }}>
+                            <div style={{ height: '200px', borderRadius: '1rem', overflow: 'hidden', marginBottom: '1rem' }}>
+                              <img src={p.icon || "https://via.placeholder.com/300"} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                             </div>
-                          ))}
+                            <h4 style={{ margin: '0 0 0.5rem', fontWeight: 800 }}>{p.title}</h4>
+                            <span style={{ color: themeColor, fontWeight: 900, fontSize: '1.2rem' }}>₹{p.price}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                }
+
+                if (sectionKey === "experience" && showExperience && experience && experience.some(e => e.isActive)) {
+                  return (
+                    <div key="experience" className="preview-list-section reveal-anim">
+                      <h5 style={{ color: themeColor }}>Experience</h5>
+                      {experience.filter(e => e.isActive).map((e, i) => (
+                        <div key={i} className="mini-card-preview" style={{ background: '#f8fafc', padding: '1.5rem', borderRadius: '1.25rem' }}>
+                          <p className="p-bold" style={{ fontSize: '1rem' }}>{e.role}</p>
+                          <p className="p-sub" style={{ fontSize: '0.85rem' }}>{e.company} • {e.start} - {e.isCurrent ? 'Present' : e.end}</p>
                         </div>
-                      </div>
-                    );
-                  }
+                      ))}
+                    </div>
+                  );
+                }
 
-                  if (sectionKey === "projects" && showProjects && projects && projects.some(p => p.isActive)) {
-                    return (
-                      <div key="projects" className="reveal-anim">
-                        <h2 style={{ fontSize: '1.75rem', marginBottom: '1.5rem', fontWeight: 800 }}>Projects</h2>
-                        {projects.filter(p => p.isActive).map((p, i) => (
-                          <div key={i} style={{ background: 'white', padding: '2rem', borderRadius: '2rem', marginBottom: '1.5rem', boxShadow: '0 15px 35px rgba(0,0,0,0.03)' }}>
-                            <h4 style={{ margin: '0 0 0.5rem 0', fontWeight: 800 }}>{p.title}</h4>
-                            <p style={{ color: themeColor, fontWeight: 700, fontSize: '0.9rem', marginBottom: '1rem' }}>{p.type}</p>
-                            <p style={{ color: subTextColor, lineHeight: 1.6, wordBreak: 'break-word' }}>{p.description}</p>
-                          </div>
-                        ))}
-                      </div>
-                    );
-                  }
+                return null;
+              })}
 
-                  if (sectionKey === "experience" && showExperience && experience && experience.some(e => e.isActive)) {
-                    return (
-                      <div key="experience" className="reveal-anim">
-                        <h2 style={{ fontSize: '1.75rem', marginBottom: '1.5rem', fontWeight: 800 }}>Experience</h2>
-                        {experience.filter(e => e.isActive).map((e, i) => (
-                          <div key={i} style={{ display: 'flex', gap: '1.5rem', marginBottom: '1.5rem' }}>
-                            <div style={{ width: '4px', background: themeColor, borderRadius: '2px' }}></div>
-                            <div>
-                               <h4 style={{ margin: 0, fontWeight: 800 }}>{e.role}</h4>
-                               <p style={{ color: subTextColor, margin: '4px 0' }}>{e.company}</p>
-                               <span style={{ fontSize: '0.85rem', color: themeColor, fontWeight: 700 }}>{e.start} - {e.isCurrent ? 'Present' : e.end}</span>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    );
-                  }
-
-                  return null;
-                })}
-              </div>
             </div>
           )}
 
-          <footer style={{ marginTop: '8rem', textAlign: 'center', opacity: 0.8 }}>
-             <p style={{ margin: 0, fontWeight: 800, color: themeColor, fontSize: '1.2rem' }}>Powered by Rajkumar</p>
-             <div style={{ marginTop: '1.5rem', display: 'flex', justifyContent: 'center', gap: '1rem' }}>
-                <a href="tel:6387718208" style={{ background: themeColor, color: 'white', padding: '12px 24px', borderRadius: '99px', textDecoration: 'none', fontWeight: 800, boxShadow: `0 10px 20px ${themeColor}40` }}>Contact Help</a>
+          <footer style={{ marginTop: '6rem', pt: '3rem', borderTop: '1px solid #eee', textAlign: 'center' }}>
+             <p style={{ fontWeight: 800, color: themeColor, fontSize: '1.2rem' }}>Powered by Rajkumar</p>
+             <div style={{ marginTop: '1rem' }}>
+                <a href="tel:6387718208" style={{ background: themeColor, color: 'white', padding: '10px 24px', borderRadius: '99px', textDecoration: 'none', fontWeight: 800 }}>Contact Help: 6387718208</a>
              </div>
           </footer>
-        </main>
+        </div>
       </div>
     </div>
   );
