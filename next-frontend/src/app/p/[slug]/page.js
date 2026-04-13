@@ -85,7 +85,7 @@ export default function PublicProfile() {
           align-items: center;
           text-align: center;
           box-sizing: border-box;
-          background: ${bgColor}15;
+          background: ${bgColor}12;
           backdrop-filter: blur(10px);
         }
 
@@ -98,8 +98,8 @@ export default function PublicProfile() {
 
         .product-list-modern {
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-          gap: 2rem;
+          grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+          gap: 1.5rem;
           padding: 2rem 0;
         }
 
@@ -107,10 +107,22 @@ export default function PublicProfile() {
           display: flex;
           flex-direction: column;
           background: white;
-          border-radius: 1.5rem;
+          border-radius: 1.25rem;
           overflow: hidden;
           transition: all 0.3s ease;
           border: 1px solid #f0f0f0;
+          box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+
+        .product-card-premium:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+        }
+
+        .desktop-p-img {
+          width: 100%;
+          height: 200px;
+          object-fit: cover;
         }
 
         @media (max-width: 768px) {
@@ -135,39 +147,21 @@ export default function PublicProfile() {
             border: 1px solid #f5f5f5;
           }
 
-          .product-card-premium img {
+          .desktop-p-img {
             width: 80px !important;
             height: 80px !important;
             border-radius: 1rem;
-            object-fit: cover;
             flex-shrink: 0;
           }
 
           .product-data {
             padding: 0 1rem !important;
             flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-          }
-
-          .p-name {
-            font-size: 1.05rem !important;
-            font-weight: 700 !important;
-            margin-bottom: 4px !important;
-          }
-
-          .price-row-mobile {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
           }
 
           .out-of-stock-dim {
-            opacity: 0.45;
+            opacity: 0.5;
             filter: grayscale(0.5);
-            pointer-events: none;
           }
         }
 
@@ -287,19 +281,19 @@ export default function PublicProfile() {
                 if (sectionKey === "products" && showProducts && products && products.some(p => p.isActive)) {
                   return (
                     <div key="products" className="reveal-anim">
-                      <h2 style={{ fontSize: '1.8rem', fontWeight: 900, marginBottom: '2rem', color: textColor, textAlign: 'center' }}>Featured Catalog</h2>
+                      <h2 style={{ fontSize: '1.8rem', fontWeight: 900, marginBottom: '2rem', color: textColor, textAlign: 'center' }}>Product Catalog</h2>
                       <div className="product-list-modern">
                         {products.filter(p => p.isActive).map((p, i) => (
                           <div key={i} className={`product-card-premium ${p.isOutOfStock ? 'out-of-stock-dim' : ''}`}>
                             <div style={{ position: 'relative', overflow: 'hidden' }}>
-                               <img src={p.icon || "https://via.placeholder.com/400"} style={{ width: '100%', height: '220px', objectFit: 'cover' }} />
-                               {p.isOutOfStock && <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 900, fontSize: '1.1rem' }}>SOLD OUT</div>}
+                               <img src={p.icon || "https://via.placeholder.com/400"} className="desktop-p-img" />
+                               {p.isOutOfStock && <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 900, fontSize: '0.9rem' }}>SOLD OUT</div>}
                             </div>
                             <div className="product-data" style={{ padding: '1.25rem' }}>
-                              <h3 className="p-name" style={{ margin: '0 0 0.5rem', fontSize: '1.2rem', fontWeight: 800 }}>{p.title}</h3>
-                              <div className="price-row-mobile">
-                                <span style={{ fontSize: '1.3rem', fontWeight: 900, color: themeColor }}>₹{p.price}</span>
-                                {p.offer > 0 && <span style={{ background: '#e8f5e9', color: '#2e7d32', padding: '2px 10px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 800 }}>{p.offer}% OFF</span>}
+                              <h3 style={{ margin: '0 0 0.5rem', fontSize: '1.1rem', fontWeight: 800 }}>{p.title}</h3>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                                <span style={{ fontSize: '1.2rem', fontWeight: 900, color: themeColor }}>₹{p.price}</span>
+                                {p.offer > 0 && <span style={{ background: '#e8f5e9', color: '#2e7d32', padding: '2px 8px', borderRadius: '6px', fontSize: '0.7rem', fontWeight: 800 }}>{p.offer}% OFF</span>}
                               </div>
                             </div>
                           </div>
