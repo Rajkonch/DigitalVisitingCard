@@ -26,6 +26,32 @@ export default function PublicProfile() {
   if (loading) return <div className="flex-center" style={{ height: '100vh' }}>Loading...</div>;
   if (!card) return <div className="flex-center" style={{ height: '100vh' }}>Profile Not Found</div>;
 
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const getGreeting = () => {
+    const hours = currentTime.getHours();
+    if (hours < 12) return "Good Morning";
+    if (hours < 17) return "Good Afternoon";
+    return "Good Evening";
+  };
+
+  if (loading) return (
+    <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f5f7f9' }}>
+      <div className="loader"></div>
+    </div>
+  );
+
+  if (!card) return (
+    <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <h2>Profile not found.</h2>
+    </div>
+  );
+
   const {
     name, designation, bio, themeColor, textColor, subTextColor, bgColor, avatar,
     mobile, showMobile, email, showEmail, address, showAddress, cardType,
@@ -33,97 +59,149 @@ export default function PublicProfile() {
     activePermission, showProjects, showProducts, showExperience, showDaily, showHobby, showLanguage
   } = card;
 
-  // If permission is inactive (0), hide all dynamic sections and only show basics
   const isLimited = activePermission === false || activePermission === 0;
 
   return (
-    <div className="public-profile-view" style={{ background: bgColor, minHeight: '100vh', overflowX: 'hidden', perspective: '1000px' }}>
+    <div className="public-profile-view" style={{ 
+      background: bgColor || '#f0f4f8', 
+      minHeight: '100vh', 
+      overflowX: 'hidden', 
+      fontFamily: "'Plus Jakarta Sans', sans-serif" 
+    }}>
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" />
-      <div className="web-preview-container" style={{ 
-        maxWidth: '800px', 
-        margin: '2rem auto', 
-        background: 'white', 
-        minHeight: '90vh', 
-        boxShadow: '0 30px 60px rgba(0,0,0,0.12)', 
+      
+      {/* Top Dynamic Ribbon */}
+      <div style={{ 
+        width: '100%', 
+        padding: '0.75rem 5%', 
+        background: 'rgba(255,255,255,0.7)', 
+        backdropFilter: 'blur(10px)', 
         display: 'flex', 
-        flexDirection: 'column',
-        borderRadius: '3rem',
-        overflow: 'hidden',
-        transition: 'transform 0.5s ease',
-        transformStyle: 'preserve-3d'
+        justifyContent: 'space-between', 
+        alignItems: 'center',
+        position: 'sticky',
+        top: 0,
+        zIndex: 1000,
+        borderBottom: '1px solid rgba(0,0,0,0.05)',
+        boxSizing: 'border-box'
       }}>
-        
-        {/* Profile Header */}
-        <div className="web-preview-content reveal-anim" style={{ padding: '3rem 2rem', flex: 1, overflowX: 'hidden' }}>
-          <div className="web-profile-intro" style={{ textAlign: 'center', marginBottom: '3rem' }}>
-            <div className="preview-avatar circle reveal-anim" style={{ width: '150px', height: '150px', borderColor: themeColor, margin: '0 auto', border: `4px solid ${themeColor}` }}>
-              <img src={avatar || "https://via.placeholder.com/150"} alt={name} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
-            </div>
-            <h1 className="reveal-anim" style={{ fontSize: '2.5rem', marginTop: '1.5rem', fontWeight: 800, color: textColor }}>{name}</h1>
-            <p className="designation reveal-anim" style={{ color: themeColor, fontSize: '1.1rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em' }}>{designation}</p>
-            
-            {(showMobile || showEmail || showAddress) && (
-              <div className="reveal-anim" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '1.25rem', marginTop: '1.5rem', opacity: 0.9 }}>
-                {showMobile && mobile && (
-                  <a href={`tel:${mobile}`} className="contact-preview-item" style={{ color: subTextColor, textDecoration: 'none' }}>
-                    <span className="material-symbols-outlined" style={{ color: themeColor, fontSize: '1.2rem' }}>call</span>
-                    {mobile}
-                  </a>
-                )}
-                {showEmail && email && (
-                  <a href={`mailto:${email}`} className="contact-preview-item" style={{ color: subTextColor, textDecoration: 'none' }}>
-                    <span className="material-symbols-outlined" style={{ color: themeColor, fontSize: '1.2rem' }}>mail</span>
-                    {email}
-                  </a>
-                )}
-                {showAddress && address && (
-                  <div className="contact-preview-item" style={{ color: subTextColor }}>
-                    <span className="material-symbols-outlined" style={{ color: themeColor, fontSize: '1.2rem' }}>location_on</span>
-                    {address}
-                  </div>
-                )}
-              </div>
-            )}
-            <p className="bio" style={{ fontSize: '1rem', marginTop: '1.5rem', maxWidth: '600px', margin: '1.5rem auto 0', lineHeight: 1.6, color: subTextColor }}>{bio}</p>
-          </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span className="material-symbols-outlined" style={{ fontSize: '1.2rem', color: themeColor }}>wb_sunny</span>
+          <span style={{ fontWeight: 700, fontSize: '0.85rem', color: subTextColor }}>{getGreeting()}, {name.split(' ')[0]}</span>
+        </div>
+        <div style={{ fontWeight: 800, fontSize: '0.9rem', color: themeColor, fontFamily: 'monospace' }}>
+          {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+        </div>
+      </div>
 
-          {/* If limited, don't show any more sections */}
+      <div className="full-website-wrapper" style={{ maxWidth: '1000px', margin: '0 auto', width: '100%' }}>
+        
+        {/* Hero Section */}
+        <section className="reveal-anim" style={{ 
+          padding: '4rem 1.5rem', 
+          textAlign: 'center',
+          background: `radial-gradient(circle at top right, ${themeColor}15, transparent), radial-gradient(circle at bottom left, ${themeColor}05, transparent)`
+        }}>
+          <div className="preview-avatar circle-glow" style={{ 
+            width: '160px', 
+            height: '160px', 
+            margin: '0 auto', 
+            borderRadius: '50%',
+            border: `6px solid white`,
+            boxShadow: `0 20px 50px ${themeColor}30`,
+            position: 'relative'
+          }}>
+            <img src={avatar || "https://via.placeholder.com/150"} alt={name} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
+            <div style={{ position: 'absolute', bottom: '10px', right: '10px', width: '24px', height: '24px', background: '#22c55e', border: '3px solid white', borderRadius: '50%' }}></div>
+          </div>
+          
+          <h1 style={{ fontSize: 'clamp(2.5rem, 8vw, 4rem)', marginTop: '2rem', fontWeight: 900, color: textColor, letterSpacing: '-0.03em', lineHeight: 1 }}>{name}</h1>
+          <p style={{ color: themeColor, fontSize: '1.25rem', fontWeight: 800, marginTop: '1rem', textTransform: 'uppercase', letterSpacing: '0.2em' }}>{designation}</p>
+          <div style={{ width: '60px', height: '4px', background: themeColor, margin: '2rem auto', borderRadius: '2px' }}></div>
+          
+          <p style={{ 
+            fontSize: '1.15rem', 
+            maxWidth: '700px', 
+            margin: '0 auto', 
+            lineHeight: 1.7, 
+            color: subTextColor, 
+            wordBreak: 'break-word',
+            padding: '0 1rem'
+          }}>{bio}</p>
+
+          {(showMobile || showEmail || showAddress) && (
+            <div className="hero-contacts" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '2rem', marginTop: '3rem' }}>
+              {showMobile && mobile && (
+                <a href={`tel:${mobile}`} style={{ color: textColor, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 700 }}>
+                  <div style={{ background: themeColor, color: 'white', padding: '10px', borderRadius: '12px' }}><span className="material-symbols-outlined">call</span></div>
+                  {mobile}
+                </a>
+              )}
+              {showEmail && email && (
+                <a href={`mailto:${email}`} style={{ color: textColor, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 700 }}>
+                  <div style={{ background: themeColor, color: 'white', padding: '10px', borderRadius: '12px' }}><span className="material-symbols-outlined">mail</span></div>
+                  {email}
+                </a>
+              )}
+            </div>
+          )}
+        </section>
+
+        {/* Content Body */}
+        <main style={{ padding: '0 1.5rem 5rem' }}>
           {!isLimited && (
-            <>
-              {/* Social Links Grid */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4rem' }}>
+              
+              {/* Links strip */}
               {links && links.length > 0 && links.some(l => l.isActive) && (
-                <div className="preview-links-grid" style={{ justifyContent: 'center', marginBottom: '3rem', flexWrap: 'wrap' }}>
-                  {links.filter(l => l.isActive).map((l, i) => (
-                    <a key={i} href={l.content.startsWith('http') ? l.content : `https://${l.content}`} target="_blank" rel="noopener noreferrer" className="preview-link-circle" style={{ width: '60px', height: '60px', color: themeColor, background: `${themeColor}12`, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', textDecoration: 'none' }}>
-                      {l.icon ? <img src={l.icon} style={{ width: '30px', height: '30px', objectFit: 'contain' }} /> : <span className="material-symbols-outlined" style={{ fontSize: '1.8rem' }}>link</span>}
+                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '1.5rem' }}>
+                   {links.filter(l => l.isActive).map((l, i) => (
+                    <a key={i} href={l.content.startsWith('http') ? l.content : `https://${l.content}`} target="_blank" rel="noopener noreferrer" 
+                       className="reveal-anim"
+                       style={{ 
+                         padding: '1rem 2rem', 
+                         background: 'white', 
+                         borderRadius: '1.5rem', 
+                         display: 'flex', 
+                         alignItems: 'center', 
+                         gap: '12px', 
+                         textDecoration: 'none', 
+                         color: textColor,
+                         fontWeight: 700,
+                         boxShadow: '0 10px 30px rgba(0,0,0,0.05)',
+                         transition: 'transform 0.3s ease'
+                       }}>
+                      {l.icon ? <img src={l.icon} style={{ width: '24px', height: '24px', objectFit: 'contain' }} /> : <span className="material-symbols-outlined">link</span>}
+                      {l.title}
                     </a>
-                  ))}
+                   ))}
                 </div>
               )}
 
-              {/* Dynamic Content Grid */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '2.5rem', marginTop: '2rem' }}>
+              <div style={{ 
+                display: 'grid', 
+                gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 400px), 1fr))', 
+                gap: '2.5rem' 
+              }}>
                 {sectionOrder.map(sectionKey => {
                   if (cardType === 'shopkeeper' && ["projects", "experience", "hobbies"].includes(sectionKey)) return null;
                   if (cardType === 'business' && sectionKey === "products") return null;
 
                   if (sectionKey === "products" && showProducts && products && products.some(p => p.isActive)) {
                     return (
-                      <div key="products" style={{ gridColumn: '1 / -1' }}>
-                        <h5 style={{ color: themeColor, fontSize: '1.2rem', marginBottom: '1.5rem', borderBottom: `2px solid ${themeColor}20`, paddingBottom: '0.5rem' }}>Product Catalog</h5>
-                        <div className="web-product-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '1.5rem' }}>
+                      <div key="products" className="reveal-anim" style={{ gridColumn: '1 / -1' }}>
+                        <h2 style={{ fontSize: '1.75rem', marginBottom: '2rem', fontWeight: 800 }}>Product Catalog</h2>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '2rem' }}>
                           {products.filter(p => p.isActive).map((p, i) => (
-                            <div key={i} className="web-product-card" style={{ border: '1px solid #eee', borderRadius: '12px', padding: '1rem', opacity: p.isOutOfStock ? 0.7 : 1, background: '#fafafa' }}>
-                              <div className="web-product-img" style={{ height: '180px', borderRadius: '8px', overflow: 'hidden', marginBottom: '1rem', background: '#fff' }}>
-                                {p.icon ? <img src={p.icon} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}><span className="material-symbols-outlined" style={{ fontSize: '3rem', color: '#eee' }}>image</span></div>}
+                            <div key={i} className="glass-card" style={{ background: 'white', borderRadius: '2rem', padding: '1.5rem', boxShadow: '0 20px 40px rgba(0,0,0,0.04)' }}>
+                              <div style={{ height: '220px', borderRadius: '1.5rem', overflow: 'hidden', marginBottom: '1.25rem' }}>
+                                <img src={p.icon || "https://via.placeholder.com/300"} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                               </div>
-                              <p className="p-bold" style={{ fontWeight: 700, fontSize: '1.1rem', color: textColor, marginBottom: '0.5rem' }}>{p.title}</p>
-                              <div className="price-row" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                <span className="current-price" style={{ color: themeColor, fontWeight: 800, fontSize: '1.1rem' }}>₹{p.price - (p.price * (p.offer || 0) / 100)}</span>
-                                {p.offer > 0 && <span style={{ textDecoration: 'line-through', color: '#999', fontSize: '0.9rem' }}>₹{p.price}</span>}
-                                {p.offer > 0 && <span style={{ background: '#e8f5e9', color: '#2e7d32', padding: '2px 6px', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 800 }}>{p.offer}% OFF</span>}
+                              <h4 style={{ margin: '0 0 0.5rem', fontSize: '1.25rem', fontWeight: 800 }}>{p.title}</h4>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                <span style={{ color: themeColor, fontSize: '1.5rem', fontWeight: 900 }}>₹{p.price}</span>
+                                {p.offer > 0 && <span style={{ background: `${themeColor}15`, color: themeColor, padding: '4px 10px', borderRadius: '8px', fontSize: '0.8rem', fontWeight: 800 }}>{p.offer}% OFF</span>}
                               </div>
-                              {p.isOutOfStock && <div style={{ color: '#d32f2f', fontSize: '0.8rem', fontWeight: 700, marginTop: '0.5rem' }}>Out of Stock</div>}
                             </div>
                           ))}
                         </div>
@@ -133,14 +211,13 @@ export default function PublicProfile() {
 
                   if (sectionKey === "projects" && showProjects && projects && projects.some(p => p.isActive)) {
                     return (
-                      <div key="projects" className="preview-list-section">
-                        <h5 style={{ color: themeColor, fontSize: '1.2rem', marginBottom: '1rem' }}>Projects Portfolio</h5>
+                      <div key="projects" className="reveal-anim">
+                        <h2 style={{ fontSize: '1.75rem', marginBottom: '1.5rem', fontWeight: 800 }}>Projects</h2>
                         {projects.filter(p => p.isActive).map((p, i) => (
-                          <div key={i} className="mini-card-preview" style={{ background: `${textColor}05`, padding: '1.25rem', borderRadius: '12px', marginBottom: '1rem' }}>
-                            <p className="p-bold" style={{ fontWeight: 700, color: textColor }}>{p.title}</p>
-                            <p className="p-sub" style={{ color: themeColor, fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.5rem' }}>{p.type}</p>
-                            <p style={{ fontSize: '0.9rem', color: subTextColor, lineHeight: 1.5 }}>{p.description}</p>
-                            {p.link && <a href={p.link} target="_blank" rel="noopener noreferrer" style={{ color: themeColor, fontSize: '0.85rem', marginTop: '0.5rem', display: 'inline-block', fontWeight: 700 }}>View Project →</a>}
+                          <div key={i} style={{ background: 'white', padding: '2rem', borderRadius: '2rem', marginBottom: '1.5rem', boxShadow: '0 15px 35px rgba(0,0,0,0.03)' }}>
+                            <h4 style={{ margin: '0 0 0.5rem 0', fontWeight: 800 }}>{p.title}</h4>
+                            <p style={{ color: themeColor, fontWeight: 700, fontSize: '0.9rem', marginBottom: '1rem' }}>{p.type}</p>
+                            <p style={{ color: subTextColor, lineHeight: 1.6, wordBreak: 'break-word' }}>{p.description}</p>
                           </div>
                         ))}
                       </div>
@@ -149,68 +226,18 @@ export default function PublicProfile() {
 
                   if (sectionKey === "experience" && showExperience && experience && experience.some(e => e.isActive)) {
                     return (
-                      <div key="experience" className="preview-list-section">
-                        <h5 style={{ color: themeColor, fontSize: '1.2rem', marginBottom: '1rem' }}>Work Experience</h5>
+                      <div key="experience" className="reveal-anim">
+                        <h2 style={{ fontSize: '1.75rem', marginBottom: '1.5rem', fontWeight: 800 }}>Experience</h2>
                         {experience.filter(e => e.isActive).map((e, i) => (
-                          <div key={i} className="mini-card-preview" style={{ background: `${textColor}05`, padding: '1.25rem', borderRadius: '12px', marginBottom: '1rem' }}>
-                            <p className="p-bold" style={{ fontWeight: 700, color: textColor }}>{e.role}</p>
-                            <p className="p-sub" style={{ color: subTextColor, fontSize: '0.9rem' }}>{e.company} • {e.start} - {e.isCurrent ? 'Present' : e.end}</p>
+                          <div key={i} style={{ display: 'flex', gap: '1.5rem', marginBottom: '1.5rem' }}>
+                            <div style={{ width: '4px', background: themeColor, borderRadius: '2px' }}></div>
+                            <div>
+                               <h4 style={{ margin: 0, fontWeight: 800 }}>{e.role}</h4>
+                               <p style={{ color: subTextColor, margin: '4px 0' }}>{e.company}</p>
+                               <span style={{ fontSize: '0.85rem', color: themeColor, fontWeight: 700 }}>{e.start} - {e.isCurrent ? 'Present' : e.end}</span>
+                            </div>
                           </div>
                         ))}
-                      </div>
-                    );
-                  }
-
-                  if (sectionKey === "custom" && customHeadings && customHeadings.some(h => h.isActive)) {
-                    return (
-                      <React.Fragment key="custom">
-                        {customHeadings.filter(h => h.isActive).map((h, hi) => (
-                          <div key={hi} className="preview-list-section">
-                            <h5 style={{ color: themeColor, fontSize: '1.2rem', marginBottom: '1rem' }}>{h.title}</h5>
-                            {h.items.filter(it => it.isActive).map((it, ii) => (
-                              <div key={ii} className="mini-card-preview" style={{ background: `${textColor}05`, padding: '1rem', borderRadius: '12px', marginBottom: '0.75rem' }}>
-                                <p className="p-bold" style={{ fontWeight: 700, color: textColor }}>{it.title}</p>
-                                <p className="p-sub" style={{ color: subTextColor, fontSize: '0.9rem' }}>{it.subtitle}</p>
-                              </div>
-                            ))}
-                          </div>
-                        ))}
-                      </React.Fragment>
-                    );
-                  }
-
-                  if (sectionKey === "daily" && showDaily && dailyActivities && dailyActivities.length > 0) {
-                     return (
-                      <div key="daily" className="preview-list-section">
-                        <h5 style={{ color: themeColor, fontSize: '1.2rem', marginBottom: '1rem' }}>Daily Routine</h5>
-                        {dailyActivities.filter(a => a.isActive).map((a, i) => (
-                          <div key={i} className="mini-card-preview" style={{ background: `${textColor}05`, padding: '1rem', borderRadius: '12px', display: 'flex', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
-                            <p className="p-bold" style={{ fontWeight: 700, color: textColor }}>{a.title}</p>
-                            <span style={{ fontSize: '0.85rem', color: themeColor, fontWeight: 800 }}>{a.time}</span>
-                          </div>
-                        ))}
-                      </div>
-                    );
-                  }
-
-                  if (sectionKey === "languages" && showLanguage && languages && languages.length > 0) {
-                     return (
-                      <div key="languages" className="preview-list-section">
-                        <h5 style={{ color: themeColor, fontSize: '1.2rem', marginBottom: '1rem' }}>Languages</h5>
-                        <div className="tags-preview" style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                          {languages.filter(l => l.isActive).map((l, i) => <span key={i} style={{ color: textColor, background: `${themeColor}12`, padding: '6px 16px', borderRadius: '20px', fontSize: '0.9rem', fontWeight: 600 }}>{l.name}</span>)}
-                        </div>
-                      </div>
-                    );
-                  }
-
-                  if (sectionKey === "hobbies" && showHobby && hobbies && hobbies.length > 0) {
-                     return (
-                      <div key="hobbies" className="preview-list-section">
-                        <h5 style={{ color: themeColor, fontSize: '1.2rem', marginBottom: '1rem' }}>Hobbies</h5>
-                        <div className="tags-preview" style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                          {hobbies.filter(h => h.isActive).map((h, i) => <span key={i} style={{ color: textColor, background: `${themeColor}12`, padding: '6px 16px', borderRadius: '20px', fontSize: '0.9rem', fontWeight: 600 }}>{h.name}</span>)}
-                        </div>
                       </div>
                     );
                   }
@@ -218,17 +245,16 @@ export default function PublicProfile() {
                   return null;
                 })}
               </div>
-            </>
+            </div>
           )}
 
-          <div style={{ marginTop: '5rem', padding: '2rem 0', borderTop: '1px solid #eee', textAlign: 'center' }}>
-             <p style={{ margin: 0, fontWeight: 700, color: themeColor }}>Powered by Rajkumar</p>
-             <p style={{ fontSize: '0.8rem', color: subTextColor, marginTop: '0.5rem' }}>Prism QR • Create your digital identity</p>
-             <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'center', gap: '1rem' }}>
-                <a href="tel:6387718208" style={{ fontSize: '0.85rem', color: themeColor, textDecoration: 'none', fontWeight: 600 }}>Contact & Help: 6387718208</a>
+          <footer style={{ marginTop: '8rem', textAlign: 'center', opacity: 0.8 }}>
+             <p style={{ margin: 0, fontWeight: 800, color: themeColor, fontSize: '1.2rem' }}>Powered by Rajkumar</p>
+             <div style={{ marginTop: '1.5rem', display: 'flex', justifyContent: 'center', gap: '1rem' }}>
+                <a href="tel:6387718208" style={{ background: themeColor, color: 'white', padding: '12px 24px', borderRadius: '99px', textDecoration: 'none', fontWeight: 800, boxShadow: `0 10px 20px ${themeColor}40` }}>Contact Help</a>
              </div>
-          </div>
-        </div>
+          </footer>
+        </main>
       </div>
     </div>
   );
