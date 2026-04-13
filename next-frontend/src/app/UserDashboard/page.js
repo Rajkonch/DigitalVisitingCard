@@ -4,7 +4,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import API from "../../utils/api";
 import "../../styles/UserDashboard.css";
 
-export default function UserDashboard() {
+import { Suspense } from "react";
+
+function DashboardContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const userIdParam = searchParams.get("userId");
@@ -37,7 +39,6 @@ export default function UserDashboard() {
     setIsAdminViewing(isImpersonating);
 
     // Fetch cards from API
-    // If Admin is viewing a specific user, pass userId to API
     const url = isImpersonating ? `/cards/my?userId=${userIdParam}` : "/cards/my";
 
     API.get(url).then((res) => {
@@ -384,5 +385,13 @@ export default function UserDashboard() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function UserDashboard() {
+  return (
+    <Suspense fallback={<div className="loader-container"><div className="loader"></div></div>}>
+      <DashboardContent />
+    </Suspense>
   );
 }
