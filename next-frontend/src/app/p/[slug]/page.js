@@ -59,245 +59,292 @@ export default function PublicProfile() {
 
   return (
     <div className="public-profile-view" style={{ 
-      background: bgColor || '#f0f4f8', 
+      background: bgColor || '#fdfdfd', 
       minHeight: '100vh', 
+      width: '100%',
       overflowX: 'hidden', 
-      fontFamily: "'Plus Jakarta Sans', sans-serif" 
+      fontFamily: "'Plus Jakarta Sans', sans-serif",
+      color: textColor
     }}>
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" />
       
       <style>{`
-        .public-page-wrapper {
+        .immersive-container {
           width: 100%;
-          max-width: 1000px;
-          margin: 2rem auto;
-          background: white;
-          border-radius: 2.5rem;
-          box-shadow: 0 30px 100px rgba(0,0,0,0.08);
-          overflow: hidden;
-          transition: all 0.3s ease;
+          min-height: 100vh;
+          position: relative;
+          z-index: 1;
         }
 
-        .products-grid-container {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-          gap: 2rem;
-        }
-
-        .responsive-product-card {
+        .hero-section {
+          width: 100%;
+          padding: 6rem 10% 4rem;
           display: flex;
           flex-direction: column;
-          background: #f8fafc;
-          border-radius: 1.5rem;
-          overflow: hidden;
-          border: 1px solid #f1f5f9;
+          align-items: center;
+          text-align: center;
+          box-sizing: border-box;
+          background: ${bgColor}A0;
+          backdrop-filter: blur(10px);
         }
 
-        .responsive-product-img {
+        .content-width {
           width: 100%;
-          height: 240px;
-          object-fit: cover;
+          max-width: 1200px;
+          margin: 0 auto;
+          box-sizing: border-box;
         }
 
-        .responsive-product-info {
-          padding: 1.5rem;
+        .product-list-modern {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+          gap: 2.5rem;
+          padding: 2rem 0;
+        }
+
+        .product-card-premium {
+          display: flex;
+          flex-direction: column;
+          background: white;
+          border-radius: 2rem;
+          overflow: hidden;
+          box-shadow: 0 10px 40px rgba(0,0,0,0.03);
+          transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+          border: 1px solid rgba(0,0,0,0.02);
+        }
+
+        .product-card-premium:hover {
+          transform: translateY(-10px);
+          box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+        }
+
+        .tag-badge {
+          padding: 4px 12px;
+          border-radius: 99px;
+          font-size: 0.75rem;
+          font-weight: 800;
+          text-transform: uppercase;
         }
 
         @media (max-width: 768px) {
-          .public-page-wrapper {
-            margin: 0;
-            border-radius: 0;
-            box-shadow: none;
-          }
-          
-          .web-preview-content {
-            padding: 3rem 1.25rem !important;
+          .hero-section {
+            padding: 4rem 1.5rem 3rem;
           }
 
-          .products-grid-container {
+          .product-list-modern {
             grid-template-columns: 1fr;
-            gap: 1rem;
+            gap: 1.25rem;
           }
 
-          .responsive-product-card {
+          .product-card-premium {
             flex-direction: row;
-            height: 100px;
-            border-radius: 1rem;
+            height: 120px;
+            border-radius: 1.5rem;
             align-items: center;
             padding: 0.75rem;
-            background: rgba(255,255,255,0.7);
           }
 
-          .responsive-product-img {
-            width: 80px;
-            height: 80px;
-            border-radius: 0.75rem;
+          .product-card-premium img {
+            width: 100px !important;
+            height: 100px !important;
+            border-radius: 1rem;
+            object-fit: cover;
           }
 
-          .responsive-product-info {
-            padding: 0 1rem;
+          .product-data {
+            padding: 0 1rem !important;
+            flex: 1;
+            overflow: hidden;
           }
 
-          .responsive-product-info h4 {
-            font-size: 1rem !important;
-            margin-bottom: 0.25rem !important;
+          .p-name {
+            font-size: 1.05rem !important;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
 
-          .current-price {
-            font-size: 1.1rem !important;
+          .p-bio {
+             font-size: 0.95rem !important;
+             word-break: break-word;
+             padding: 0 5%;
           }
+        }
+
+        .reveal-anim {
+          animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+          opacity: 0;
+        }
+
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(30px); }
+          to { opacity: 1; transform: translateY(0); }
         }
       `}</style>
       
       {/* Dynamic Ribbon */}
       <div style={{ 
         width: '100%', 
-        padding: '0.75rem 5%', 
-        background: 'rgba(255,255,255,0.9)', 
-        backdropFilter: 'blur(15px)', 
+        padding: '1rem 5%', 
+        background: 'rgba(255,255,255,0.95)', 
+        backdropFilter: 'blur(20px)', 
         display: 'flex', 
         justifyContent: 'space-between', 
         alignItems: 'center',
         position: 'sticky',
         top: 0,
         zIndex: 1000,
-        borderBottom: '1px solid rgba(0,0,0,0.05)',
+        boxShadow: '0 4px 30px rgba(0,0,0,0.04)',
         boxSizing: 'border-box'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span className="material-symbols-outlined" style={{ fontSize: '1.2rem', color: themeColor }}>waving_hand</span>
-          <span style={{ fontWeight: 800, fontSize: '0.85rem', color: subTextColor }}>Hi! {getGreeting()}</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <span className="material-symbols-outlined" style={{ fontSize: '1.4rem', color: themeColor }}>waving_hand</span>
+          <span style={{ fontWeight: 800, fontSize: '0.9rem', color: subTextColor, letterSpacing: '-0.01em' }}>Hi! {getGreeting()}</span>
         </div>
-        <div style={{ fontWeight: 900, fontSize: '0.9rem', color: themeColor }}>
+        <div style={{ fontWeight: 900, fontSize: '1rem', color: themeColor, fontFamily: 'monospace' }}>
           {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
         </div>
       </div>
 
-      <div className="public-page-wrapper">
+      <div className="immersive-container">
         
-        {/* Profile Content */}
-        <div className="web-preview-content reveal-anim" style={{ padding: '4rem 2rem' }}>
-          
-          <div className="web-profile-intro" style={{ textAlign: 'center', marginBottom: '4rem' }}>
-            <div className="preview-avatar circle reveal-anim" style={{ width: '150px', height: '150px', borderColor: themeColor, margin: '0 auto', border: `4px solid ${themeColor}` }}>
-              <img src={avatar || "https://via.placeholder.com/150"} alt={name} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
-            </div>
-            <h1 className="reveal-anim" style={{ fontSize: 'clamp(2.5rem, 8vw, 3.5rem)', marginTop: '2rem', fontWeight: 900, color: textColor, letterSpacing: '-0.02em', lineHeight: 1 }}>{name}</h1>
-            <p className="designation reveal-anim" style={{ color: themeColor, fontSize: '1.1rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.2em', marginTop: '0.5rem' }}>{designation}</p>
-            
-            {(showMobile || showEmail || showAddress) && (
-              <div className="reveal-anim" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '1rem', marginTop: '2rem' }}>
-                {showMobile && mobile && (
-                  <div className="contact-preview-item" style={{ color: subTextColor, gap: '0.5rem', fontWeight: 600 }}>
-                    <span className="material-symbols-outlined" style={{ color: themeColor, fontSize: '1.1rem' }}>call</span>
-                    {mobile}
-                  </div>
-                )}
-                {showEmail && email && (
-                  <div className="contact-preview-item" style={{ color: subTextColor, gap: '0.5rem', fontWeight: 600 }}>
-                    <span className="material-symbols-outlined" style={{ color: themeColor, fontSize: '1.1rem' }}>mail</span>
-                    {email}
-                  </div>
-                )}
-                {showAddress && address && (
-                   <div style={{ width: '100%', color: subTextColor, display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '0.5rem', fontSize: '0.9rem' }}>
-                     <span className="material-symbols-outlined" style={{ color: themeColor, fontSize: '1.1rem' }}>location_on</span>
-                     {address}
-                   </div>
-                )}
-              </div>
-            )}
-            <p className="bio reveal-anim" style={{ fontSize: '1.05rem', marginTop: '2rem', maxWidth: '700px', margin: '2rem auto 0', lineHeight: 1.7, color: subTextColor, wordBreak: 'break-word' }}>{bio}</p>
+        {/* HERO SECTION - Immersive Website Look */}
+        <section className="hero-section">
+          <div className="reveal-anim" style={{ 
+            width: '180px', 
+            height: '180px', 
+            borderRadius: '50%', 
+            padding: '8px', 
+            background: 'white', 
+            boxShadow: '0 20px 50px rgba(0,0,0,0.1)',
+            marginBottom: '2rem'
+          }}>
+            <img src={avatar || "https://via.placeholder.com/150"} alt={name} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%', border: `4px solid ${themeColor}10` }} />
           </div>
+          
+          <h1 className="reveal-anim" style={{ fontSize: 'clamp(3rem, 10vw, 5rem)', fontWeight: 900, margin: '0 0 1rem', color: textColor, letterSpacing: '-0.04em', lineHeight: 0.9 }}>{name}</h1>
+          <p className="reveal-anim" style={{ color: themeColor, fontSize: '1.25rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.3em', marginBottom: '2.5rem' }}>{designation}</p>
+          
+          {(showMobile || showEmail || showAddress) && (
+            <div className="reveal-anim" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '2rem', marginBottom: '3rem' }}>
+              {showMobile && mobile && (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: subTextColor, fontWeight: 600 }}>
+                  <span className="material-symbols-outlined" style={{ color: themeColor, fontSize: '1.3rem' }}>call</span> {mobile}
+                </div>
+              )}
+              {showEmail && email && (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: subTextColor, fontWeight: 600 }}>
+                  <span className="material-symbols-outlined" style={{ color: themeColor, fontSize: '1.3rem' }}>mail</span> {email}
+                </div>
+              )}
+              {showAddress && address && (
+                <div style={{ width: '100%', textAlign: 'center', display: 'flex', justifyContent: 'center', gap: '10px', color: subTextColor, fontWeight: 600, fontSize: '1rem' }}>
+                  <span className="material-symbols-outlined" style={{ color: themeColor, fontSize: '1.3rem' }}>location_on</span> {address}
+                </div>
+              )}
+            </div>
+          )}
+          
+          <p className="p-bio reveal-anim" style={{ fontSize: '1.2rem', lineHeight: 1.8, color: subTextColor, maxWidth: '800px', margin: '0 auto' }}>{bio}</p>
+        </section>
 
+        {/* CONTENT SECTIONS */}
+        <main className="content-width" style={{ padding: '4rem 2rem' }}>
+          
           {!isLimited && (
-            <div className="preview-content-sections" style={{ display: 'flex', flexDirection: 'column', gap: '4rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6rem' }}>
               
-              {/* Social Links */}
+              {/* Links - Modern Pill design */}
               {links && links.length > 0 && links.some(l => l.isActive) && (
-                <div className="preview-links-grid" style={{ justifyContent: 'center' }}>
+                <div className="reveal-anim" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '1.5rem' }}>
                   {links.filter(l => l.isActive).map((l, i) => (
-                    <a key={i} href={l.content.startsWith('http') ? l.content : `https://${l.content}`} target="_blank" rel="noopener noreferrer" className="preview-link-circle" style={{ width: '60px', height: '60px', background: `${themeColor}12`, color: themeColor }}>
-                      {l.icon ? <img src={l.icon} style={{ width: '28px', height: '28px', objectFit: 'contain' }} /> : <span className="material-symbols-outlined" style={{ fontSize: '1.6rem' }}>link</span>}
+                    <a key={i} href={l.content.startsWith('http') ? l.content : `https://${l.content}`} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                      <div style={{ 
+                        width: '70px', 
+                        height: '70px', 
+                        borderRadius: '24px', 
+                        background: 'white', 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        justifyContent: 'center', 
+                        boxShadow: '0 10px 30px rgba(0,0,0,0.05)',
+                        border: '1px solid #f0f0f0',
+                        color: themeColor,
+                        transition: 'all 0.3s ease'
+                      }}>
+                        {l.icon ? <img src={l.icon} style={{ width: '32px', height: '32px', objectFit: 'contain' }} /> : <span className="material-symbols-outlined" style={{ fontSize: '1.8rem' }}>link</span>}
+                      </div>
                     </a>
                   ))}
                 </div>
               )}
 
-              {/* Other sections with proper responsive class names */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '4rem' }}>
-                {sectionOrder.map(sectionKey => {
-                  if (cardType === 'shopkeeper' && ["projects", "experience", "hobbies"].includes(sectionKey)) return null;
-                  if (cardType === 'business' && sectionKey === "products") return null;
+              {/* Dynamic Sections */}
+              {sectionOrder.map(sectionKey => {
+                if (cardType === 'shopkeeper' && ["projects", "experience", "hobbies"].includes(sectionKey)) return null;
+                if (cardType === 'business' && sectionKey === "products") return null;
 
-                  if (sectionKey === "products" && showProducts && products && products.some(p => p.isActive)) {
-                    return (
-                      <div key="products" className="reveal-anim">
-                        <h5 style={{ color: themeColor, fontSize: '1.3rem', borderBottom: `2px solid ${themeColor}15`, paddingBottom: '0.5rem', marginBottom: '1.5rem' }}>Product Catalog</h5>
-                        <div className="products-grid-container">
-                          {products.filter(p => p.isActive).map((p, i) => (
-                            <div key={i} className="responsive-product-card" style={{ opacity: p.isOutOfStock ? 0.7 : 1 }}>
-                              <img src={p.icon || "https://via.placeholder.com/300"} className="responsive-product-img" />
-                              <div className="responsive-product-info">
-                                <h4 style={{ margin: 0, fontWeight: 800, fontSize: '1.15rem', color: textColor }}>{p.title}</h4>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                  <span className="current-price" style={{ color: themeColor, fontSize: '1.25rem', fontWeight: 900 }}>₹{p.price}</span>
-                                  {p.offer > 0 && <span style={{ background: '#e8f5e9', color: '#2e7d32', padding: '2px 8px', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 800 }}>{p.offer}% OFF</span>}
-                                </div>
+                if (sectionKey === "products" && showProducts && products && products.some(p => p.isActive)) {
+                  return (
+                    <div key="products" className="reveal-anim">
+                      <h2 style={{ fontSize: '2.5rem', fontWeight: 900, marginBottom: '2.5rem', color: textColor, textAlign: 'center', letterSpacing: '-0.03em' }}>Curated Store</h2>
+                      <div className="product-list-modern">
+                        {products.filter(p => p.isActive).map((p, i) => (
+                          <div key={i} className="product-card-premium" style={{ opacity: p.isOutOfStock ? 0.6 : 1 }}>
+                            <div style={{ position: 'relative' }}>
+                               <img src={p.icon || "https://via.placeholder.com/400"} style={{ width: '100%', height: '280px', objectFit: 'cover' }} />
+                               {p.offer > 0 && <span style={{ position: 'absolute', top: '15px', left: '15px', background: themeColor, color: 'white' }} className="tag-badge">{p.offer}% OFF</span>}
+                               {p.isOutOfStock && <span style={{ position: 'absolute', top: '15px', right: '15px', background: '#ff4b2b', color: 'white' }} className="tag-badge">Sold Out</span>}
+                            </div>
+                            <div className="product-data" style={{ padding: '2rem' }}>
+                              <h3 className="p-name" style={{ margin: '0 0 1rem', fontSize: '1.4rem', fontWeight: 800 }}>{p.title}</h3>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                                <span style={{ fontSize: '1.8rem', fontWeight: 900, color: themeColor }}>₹{p.price}</span>
+                                {!p.isOutOfStock && <button style={{ marginLeft: 'auto', background: themeColor, color: 'white', border: 'none', padding: '10px 20px', borderRadius: '12px', fontWeight: 700, cursor: 'pointer' }}>Buy Now</button>}
                               </div>
                             </div>
-                          ))}
-                        </div>
+                          </div>
+                        ))}
                       </div>
-                    );
-                  }
+                    </div>
+                  );
+                }
 
-                  if (sectionKey === "experience" && showExperience && experience && experience.some(e => e.isActive)) {
-                    return (
-                      <div key="experience" className="reveal-anim">
-                        <h5 style={{ color: themeColor, fontSize: '1.3rem', marginBottom: '1.5rem' }}>Experience</h5>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                          {experience.filter(e => e.isActive).map((e, i) => (
-                            <div key={i} style={{ background: '#f8fafc', padding: '1.25rem', borderRadius: '1.25rem', border: '1px solid #f1f5f9' }}>
-                              <p style={{ fontWeight: 800, color: textColor, margin: 0 }}>{e.role}</p>
-                              <p style={{ color: subTextColor, fontSize: '0.9rem', margin: '4px 0' }}>{e.company} • {e.start} - {e.isCurrent ? "Present" : e.end}</p>
+                if (sectionKey === "experience" && showExperience && experience && experience.some(e => e.isActive)) {
+                  return (
+                    <div key="experience" className="reveal-anim">
+                      <h2 style={{ fontSize: '2.2rem', fontWeight: 900, marginBottom: '2.5rem', color: textColor }}>Professional Journey</h2>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                        {experience.filter(e => e.isActive).map((e, i) => (
+                          <div key={i} style={{ background: 'white', padding: '2.5rem', borderRadius: '2.5rem', boxShadow: '0 10px 40px rgba(0,0,0,0.03)', border: '1px solid #f5f5f5' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '10px' }}>
+                                <div>
+                                    <h4 style={{ fontSize: '1.4rem', fontWeight: 800, margin: 0 }}>{e.role}</h4>
+                                    <p style={{ color: themeColor, fontWeight: 700, fontSize: '1.1rem', margin: '4px 0' }}>{e.company}</p>
+                                </div>
+                                <span style={{ background: '#f0f0f0', padding: '6px 16px', borderRadius: '99px', fontSize: '0.85rem', fontWeight: 700 }}>{e.start} - {e.isCurrent ? "Present" : e.end}</span>
                             </div>
-                          ))}
-                        </div>
+                          </div>
+                        ))}
                       </div>
-                    );
-                  }
+                    </div>
+                  );
+                }
 
-                  if (sectionKey === "projects" && showProjects && projects && projects.some(p => p.isActive)) {
-                    return (
-                      <div key="projects" className="reveal-anim">
-                        <h5 style={{ color: themeColor, fontSize: '1.3rem', marginBottom: '1.5rem' }}>Projects</h5>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                          {projects.filter(p => p.isActive).map((p, i) => (
-                            <div key={i} style={{ background: '#f8fafc', padding: '1.25rem', borderRadius: '1.25rem', border: '1px solid #f1f5f9' }}>
-                              <p style={{ fontWeight: 800, color: textColor, margin: 0 }}>{p.title}</p>
-                              <p style={{ color: themeColor, fontWeight: 700, fontSize: '0.85rem', marginBottom: '0.5rem' }}>{p.type}</p>
-                              <p style={{ color: subTextColor, fontSize: '0.9rem', lineHeight: 1.6 }}>{p.description}</p>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    );
-                  }
+                return null;
+              })}
 
-                  return null;
-                })}
-              </div>
             </div>
           )}
 
-          <footer style={{ marginTop: '6rem', pt: '3rem', borderTop: '1px solid #f0f0f0', textAlign: 'center' }}>
-             <p style={{ fontWeight: 900, color: themeColor, fontSize: '1.3rem' }}>Powered by Rajkumar</p>
-             <div style={{ marginTop: '1.5rem' }}>
-                <a href="tel:6387718208" style={{ background: themeColor, color: 'white', padding: '12px 30px', borderRadius: '99px', textDecoration: 'none', fontWeight: 800 }}>Contact Help</a>
+          <footer style={{ marginTop: '10rem', padding: '5rem 0', textAlign: 'center', background: '#f9f9f9', borderRadius: '4rem' }}>
+             <h2 style={{ fontWeight: 900, color: themeColor, fontSize: '2.5rem', letterSpacing: '-0.04em' }}>Powered by Rajkumar</h2>
+             <p style={{ color: subTextColor, fontSize: '1.1rem', marginTop: '1rem' }}>Building innovative digital experiences.</p>
+             <div style={{ marginTop: '3rem' }}>
+                <a href="tel:6387718208" style={{ background: `${themeColor}`, color: 'white', padding: '15px 45px', borderRadius: '99px', textDecoration: 'none', fontWeight: 800, fontSize: '1.1rem', boxShadow: `0 20px 40px ${themeColor}40` }}>Talk to Us</a>
              </div>
           </footer>
-        </div>
+        </main>
       </div>
     </div>
   );
