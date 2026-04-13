@@ -8,6 +8,7 @@ export default function PublicProfile() {
   const { slug } = useParams();
   const [card, setCard] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
     if (slug) {
@@ -22,11 +23,6 @@ export default function PublicProfile() {
         });
     }
   }, [slug]);
-
-  if (loading) return <div className="flex-center" style={{ height: '100vh' }}>Loading...</div>;
-  if (!card) return <div className="flex-center" style={{ height: '100vh' }}>Profile Not Found</div>;
-
-  const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
