@@ -74,3 +74,29 @@ exports.getProfile = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+// ADMIN: Get All Users
+exports.getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find({}).select('-password').sort({ createdAt: -1 });
+    res.json(users);
+  } catch(err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// ADMIN: Update Permission
+exports.updatePermission = async (req, res) => {
+  try {
+    const { userId, permission } = req.body;
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    user.permission_active = permission;
+    await user.save();
+    
+    res.json({ message: `User permission updated to ${permission}`, user });
+  } catch(err) {
+    res.status(500).json({ message: err.message });
+  }
+};
