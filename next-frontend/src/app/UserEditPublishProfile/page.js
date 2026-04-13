@@ -81,7 +81,7 @@ export default function UserEditPublishProfile() {
     const formData = new FormData();
     formData.append("image", file);
     try {
-      const res = await API.post("/cards/upload", formData, {
+      const res = await API.post("/upload", formData, {
         headers: { "Content-Type": "multipart/form-data" }
       });
       return res.data.url;
