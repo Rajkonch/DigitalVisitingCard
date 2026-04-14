@@ -102,7 +102,7 @@ export default function AdminDashboard() {
 
       <aside className={`admin-sidebar ${isSidebarOpen ? 'open' : ''}`}>
         <div className="sidebar-header">
-           <h2 style={{ color: 'var(--primary)', fontWeight: 900 }}>ADMIN PANEL</h2>
+           <img src="/logo.png" alt="Logo" style={{ height: '35px', width: 'auto', objectFit: 'contain' }} />
           <button className="mobile-close-btn" onClick={() => setIsSidebarOpen(false)}>
             <span className="material-symbols-outlined">close</span>
           </button>

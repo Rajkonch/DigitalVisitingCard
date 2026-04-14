@@ -106,19 +106,20 @@
 }
 .header-nav {
   position: fixed;
-  top: 32px;
+  top: 16px;
   left: 0;
   width: 100%;
   display: flex;
   justify-content: center;
-  padding: 0 16px;
+  padding: 0 12px;
   pointer-events: none;
+  z-index: 100;
 }
 .navbar-glass {
   pointer-events: auto;
   max-width: 1200px;
   width: 100%;
-  height: 64px;
+  height: 56px;
   background: var(--glass-bg);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -127,8 +128,15 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 32px;
+  padding: 0 20px;
   box-shadow: 0 12px 40px rgba(0, 100, 123, 0.08);
+}
+
+@media (max-width: 480px) {
+  .navbar-glass {
+    padding: 0 16px;
+    height: 52px;
+  }
 }
 .compact-nav {
    /* Tightly packed nav elements */
@@ -171,7 +179,7 @@
 .section-header p { color: var(--on-surface-variant); font-size: 16px; margin: 0; line-height: 1.5; font-weight: 500; }
 
 /* Hero */
-.hero-section { padding: 40px 32px 60px; perspective: 1200px; }
+.hero-section { padding: 40px 24px 60px; perspective: 1200px; overflow: hidden; }
 .hero-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 48px; align-items: center; }
 @media(min-width: 1024px) { .hero-grid { grid-template-columns: 1fr 1fr; gap: 60px; } }
 .badge-modern {
@@ -201,18 +209,35 @@
 }
 .floating-card {
   position: absolute; background: var(--glass-bg); backdrop-filter: blur(12px);
-  padding: 12px 16px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-  display: flex; align-items: center; gap: 12px; z-index: 5; border: 1px solid var(--glass-border); transform: translateZ(50px);
+  padding: 8px 12px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  display: flex; align-items: center; gap: 8px; z-index: 5; border: 1px solid var(--glass-border); transform: translateZ(50px);
+  pointer-events: none;
 }
-.floating-card.top-right { top: 10%; right: -10%; }
-.floating-card.bottom-left { bottom: 10%; left: -10%; }
+.floating-card.top-right { top: 10%; right: 0%; }
+.floating-card.bottom-left { bottom: 10%; left: 0%; }
+
+@media (max-width: 1200px) {
+  .floating-card.top-right { right: 2%; }
+  .floating-card.bottom-left { left: 2%; }
+}
+
+@media (max-width: 768px) {
+  .floating-card { transform: scale(0.8) translateZ(20px); }
+  .floating-card.top-right { right: -2%; }
+  .floating-card.bottom-left { left: -2%; }
+}
+
+@media (max-width: 480px) {
+  .floating-card { display: none; }
+}
+
 .icon-box {
-  width: 40px; height: 40px; background-color: var(--tertiary-container); border-radius: 50%;
-  display: flex; align-items: center; justify-content: center; font-size: 20px;
+  width: 32px; height: 32px; background-color: var(--tertiary-container); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; font-size: 16px;
 }
 .icon-box.safe { background-color: #ffc4b9; }
-.mini-text { font-size: 10px; font-weight: 800; text-transform: uppercase; color: var(--on-surface-variant); margin:0;}
-.bold-text { font-size: 14px; font-weight: 800; margin:0;}
+.mini-text { font-size: 9px; font-weight: 800; text-transform: uppercase; color: var(--on-surface-variant); margin:0;}
+.bold-text { font-size: 12px; font-weight: 800; margin:0;}
 
 /* Stats Section */
 .stats-section { padding: 40px 32px; max-width: 1200px; margin: 0 auto; }
@@ -296,8 +321,8 @@
 .diff-list li.positive { background: #dcfce7; color: #166534; }
 
 /* Users Capsule Design - 3 part staggered */
-.users-section { padding: 120px 24px; overflow: hidden; background-color: #F8F5F2;}
-.users-slider-container { width: 100%; display: flex; justify-content: center; margin-top: 40px;}
+.users-section { padding: 80px 24px; overflow: hidden; background-color: #F8F5F2;}
+.users-slider-container { width: 100%; display: flex; justify-content: center; margin-top: 40px; overflow: hidden;}
 .capsules-container {
   display: flex;
   justify-content: center;
@@ -309,7 +334,7 @@
 
 .user-capsule {
   width: 250px; 
-  height: 600px;
+  height: 500px;
   border-radius: 125px;
   overflow: hidden;
   display: flex;
@@ -319,8 +344,21 @@
   background: white;
 }
 
-.offset-up { transform: translateY(-40px); }
-.offset-down { transform: translateY(40px); }
+.offset-up { transform: translateY(-20px); }
+.offset-down { transform: translateY(20px); }
+
+@media (max-width: 600px) {
+  .user-capsule {
+    width: 160px;
+    height: 380px;
+    border-radius: 80px;
+  }
+  .capsules-container { gap: 12px; }
+  .part-qr img { width: 70px; height: 70px; }
+  .part-details .capsule-name { font-size: 18px; }
+  .arrow-btn { width: 28px; height: 28px; margin-top: 8px; }
+  .arrow-btn span { font-size: 12px; }
+}
 
 .user-capsule:hover {
   transform: translateY(-50px) scale(1.02);
@@ -401,7 +439,14 @@
 }
 .pricing-card.pro {
   border: 2px solid var(--primary-container); transform: scale(1.05); box-shadow: 0 20px 40px rgba(0, 100, 123, 0.1);
+  z-index: 2;
 }
+
+@media (max-width: 768px) {
+  .pricing-card.pro { transform: scale(1); margin: 10px 0; }
+  .pricing-grid { padding: 0 20px; }
+}
+
 .absolute-badge { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); }
 .pricing-card h3 { font-size: 20px; font-weight: 800; margin: 0; }
 .pricing-value { font-size: 32px; font-weight: 800; margin: 16px 0; color: var(--on-surface); }
@@ -409,11 +454,16 @@
 .pricing-card p { font-size: 14px; font-weight: 500; color: var(--on-surface-variant); margin: 0 0 24px 0; min-height: 42px; }
 
 /* CTA */
-.cta-section { padding: 60px 16px; }
+.cta-section { padding: 60px 16px; overflow: hidden; }
 .cta-container {
   max-width: 1000px; margin: 0 auto; border-radius: 32px;
   background: linear-gradient(to bottom right, var(--primary), var(--primary-container), var(--tertiary-container));
-  padding: 48px; position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 24px;
+  padding: 40px 32px; position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 24px;
+}
+
+@media (max-width: 480px) {
+  .cta-container { padding: 32px 20px; border-radius: 20px; }
+  .cta-content h2 { font-size: 24px; }
 }
 @media(min-width: 768px) {
   .cta-container { flex-direction: row; text-align: left; justify-content: space-between; }

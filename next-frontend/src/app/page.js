@@ -184,6 +184,41 @@ export default function Home() {
           </div>
         </section>
 
+        {/* FEATURED PROFILES - 3D CAPSULES SLIDER */}
+        <section className="users-section">
+          <div className="section-header reveal">
+            <span className="badge-modern">Showcase</span>
+            <h2>Smart Profiles in Action</h2>
+            <p>Experience how different professionals utilize their digital identity.</p>
+          </div>
+          <div className="users-slider-container reveal">
+            <div className="capsules-container">
+              {userList.slice(slideIndex, slideIndex + 2).map((user, idx) => (
+                <div key={idx} className={`user-capsule tilt-card ${idx % 2 === 0 ? 'offset-up' : 'offset-down shadow-intense'}`}>
+                  <div className="capsule-part part-qr">
+                    <img 
+                      src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://prismqr.com/p/${user.name.split(' ')[0].toLowerCase()}&color=00647b&bgcolor=ffffff`} 
+                      alt="Profile QR" 
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className="capsule-part part-image">
+                    <img src={user.img} alt={user.name} />
+                  </div>
+                  <div className="capsule-part part-details" style={{ background: user.bg }}>
+                    <span className="tiny-brand">prism.qr</span>
+                    <h4 className="capsule-name">{user.name}</h4>
+                    <p style={{ fontSize: '12px', opacity: 0.9, fontWeight: 700 }}>{user.role}</p>
+                    <div className="arrow-btn" style={{ color: user.arrow }}>
+                       <span className="material-symbols-outlined">north_east</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* HOW IT WORKS */}
         <section className="how-it-works-section light-bg">
           <div className="section-header reveal">
