@@ -22,20 +22,18 @@ const cleanData = (obj) => {
   return obj;
 };
 
-// ✅ Publish/Save Card (Upsert: Create if doesn't exist, Update if it does)
+// Publish/Save Card (Upsert: Create if doesn't exist, Update if it does)
 exports.publishCard = async (req, res) => {
   try {
     const data = cleanData(req.body);
     const userId = req.user._id;
 
-    // Check if card exists for this user
     let card = await Card.findOne({ userId });
 
     if (!card) {
       if (!data.name) {
         return res.status(400).json({ message: "Full Name is required to publish a new profile." });
       }
-      // Create new card
       const slug = data.name.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-') + '-' + Math.random().toString(36).substring(2, 7);
       
       const frontendUrl = process.env.FRONTEND_URL || 'https://digital-visiting-card-alpha.vercel.app';
@@ -49,8 +47,6 @@ exports.publishCard = async (req, res) => {
       });
       return res.status(201).json(card);
     } else {
-      // Update existing card
-      // Ensure QR code is stable: don't overwrite if it already exists
       if (!card.qrCodeUrl) {
          const frontendUrl = process.env.FRONTEND_URL || 'https://digital-visiting-card-alpha.vercel.app';
          const qrCode = await generateQRCode(`${frontendUrl}/p/${card.slug}`);
@@ -78,7 +74,7 @@ exports.publishCard = async (req, res) => {
   }
 };
 
-// ✅ Create Card (Legacy, keeping but mostly using publishCard now)
+// Create Card (Legacy)
 exports.createCard = async (req, res) => {
   try {
     const data = req.body;
@@ -99,18 +95,17 @@ exports.createCard = async (req, res) => {
     res.status(201).json(card);
   } catch(err) {
     console.log(err);
-  res.status(500).json({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 
-// ✅ Get Card by Slug (QR scan + views count)
+// Get Card by Slug (QR scan + views count)
 exports.getCard = async (req, res) => {
   try {
     const card = await Card.findOne({ slug: req.params.slug }).populate('userId', 'permission_active');
 
     if(!card) return res.status(404).json({ message: 'Card not found' });
 
-    // 👇 COUNT INCREASE
     const today = new Date().setHours(0, 0, 0, 0);
     const lastView = card.lastViewDate ? new Date(card.lastViewDate).setHours(0, 0, 0, 0) : 0;
     
@@ -123,7 +118,6 @@ exports.getCard = async (req, res) => {
     card.viewsCount += 1;
     await card.save();
 
-    // Map permission for clarity
     const permissionStatus = card.userId ? card.userId.permission_active : 0;
 
     res.json({
@@ -136,12 +130,11 @@ exports.getCard = async (req, res) => {
   }
 };
 
-// ✅ Get My Cards (admin panel / dashboard)
+// Get My Cards
 exports.getMyCards = async (req, res) => {
   try {
     let queryUserId = req.user._id;
 
-    // ADMIN: Allow viewing someone else's cards
     if (req.user.role === 'admin' && req.query.userId) {
       queryUserId = req.query.userId;
     }
@@ -154,14 +147,13 @@ exports.getMyCards = async (req, res) => {
   }
 };
 
-// ✅ Update Card (only owner)
+// Update Card
 exports.updateCard = async (req, res) => {
   try {
     const card = await Card.findById(req.params.id);
 
     if (!card) return res.status(404).json({ message: 'Card not found' });
 
-    // 👇 OWNER CHECK
     if (card.userId.toString() !== req.user._id.toString()) {
       return res.status(401).json({ message: 'Not authorized' });
     }
@@ -174,7 +166,28 @@ exports.updateCard = async (req, res) => {
 
     res.json(updated);
   } catch (err) {
-    console.log(err); // 👈 ADD THIS
-  res.status(500).json({ message: err.message });
+    console.log(err);
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Get Public Cards List (for Home Page Showcase)
+exports.getPublicCards = async (req, res) => {
+  try {
+    // Find cards and populate user info to check activity
+    const cards = await Card.find()
+      .populate({
+        path: 'userId',
+        select: 'permission_active'
+      })
+      .limit(10);
+
+    // Filter cards by active user permission
+    const activeCards = cards.filter(card => card.userId && card.userId.permission_active === 1);
+    
+    res.json(activeCards);
+  } catch (err) {
+    console.error("Fetch Public Cards Error:", err);
+    res.status(500).json({ message: err.message });
   }
 };
