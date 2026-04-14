@@ -5,14 +5,11 @@ import API from "../utils/api";
 import "../styles/home.css";
 
 const STATIC_FALLBACK_USERS = [
-  { name: "Sanya Kapoor", role: "Creative Architect", bg: "linear-gradient(135deg, #FF9A8B 0%, #FF6A88 55%, #FF99AC 100%)", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200" },
   { name: "David Lawson", role: "Strategy Consultant", bg: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200" },
   { name: "Aisha Zaveri", role: "Marketing Director", bg: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)", img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=200" },
   { name: "Vikram Mehta", role: "Product Manager", bg: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=200" },
   { name: "Priya Rao", role: "Lead Designer", bg: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)", img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=200" },
-  { name: "Chris Jordan", role: "Technical Lead", bg: "linear-gradient(135deg, #30cfd0 0%, #330867 100%)", img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200" },
-  { name: "Neha Williams", role: "HR Specialist", bg: "linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)", img: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=200" },
-  { name: "Sam D'Souza", role: "Serial Entrepreneur", bg: "linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)", img: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=200" }
+  { name: "Chris Jordan", role: "Technical Lead", bg: "linear-gradient(135deg, #30cfd0 0%, #330867 100%)", img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200" }
 ];
 
 export default function Home() {
@@ -24,10 +21,10 @@ export default function Home() {
       .then(res => {
         if (res.data && res.data.length > 0) {
           const mapped = res.data.map(card => ({
-             name: card.name || "User",
-             role: card.jobTitle || "Professional",
-             bg: "linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)",
-             img: card.profileImage || "/logo.png"
+            name: card.name || "User",
+            role: card.jobTitle || "Professional",
+            bg: "linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)",
+            img: card.profileImage || "/logo.png"
           }));
           setActiveProfiles([...mapped, ...STATIC_FALLBACK_USERS].slice(0, 8));
         }
@@ -73,10 +70,10 @@ export default function Home() {
               </div>
             </div>
             <div className="hero-content-right reveal delay-100">
-               <div className="hero-artifact animate-floating">
-                  <div className="artifact-glow"></div>
-                  <img className="hero-qr-image" src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://prismqr.com/demo&color=00647b&bgcolor=ffffff" alt="QR" />
-               </div>
+              <div className="hero-artifact animate-floating">
+                <div className="artifact-glow"></div>
+                <img className="hero-qr-image" src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://prismqr.com/demo&color=00647b&bgcolor=ffffff" alt="QR" />
+              </div>
             </div>
           </div>
         </section>
@@ -88,24 +85,24 @@ export default function Home() {
             <h2>Trusted by Professionals</h2>
             <p className="section-subtitle">Join thousands of leaders who have switched to Prism QR cards.</p>
           </div>
-          
+
           <div className="professionals-grid reveal">
             {activeProfiles.map((user, idx) => (
               <div key={idx} className="professional-card tilt-card" onClick={() => router.push("/login")}>
                 <div className="p-card-top" style={{ background: user.bg }}>
-                   <div className="p-avatar-ring">
-                      <img src={user.img} alt={user.name} />
-                   </div>
+                  <div className="p-avatar-ring">
+                    <img src={user.img} alt={user.name} />
+                  </div>
                 </div>
                 <div className="p-card-body">
-                   <h4 className="p-name">{user.name}</h4>
-                   <span className="p-role">{user.role}</span>
-                   <div className="p-socials">
-                      <div className="dot"></div>
-                      <div className="dot"></div>
-                      <div className="dot"></div>
-                   </div>
-                   <button className="p-view-btn">View Profile</button>
+                  <h4 className="p-name">{user.name}</h4>
+                  <span className="p-role">{user.role}</span>
+                  <div className="p-socials">
+                    <div className="dot"></div>
+                    <div className="dot"></div>
+                    <div className="dot"></div>
+                  </div>
+                  <button className="p-view-btn">View Profile</button>
                 </div>
               </div>
             ))}
