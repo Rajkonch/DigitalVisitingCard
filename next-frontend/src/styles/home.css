@@ -379,17 +379,18 @@
 }
 
 .modern-pencil-card {
-  width: 162px;
-  height: 530px;
+  width: 320px;
+  height: 560px;
   background: white;
-  border-radius: 81px; /* Capsule Radius: Half of 162px */
+  border-radius: 160px; /* Gorgeous Wide Capsule: Half of 320px */
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 15px 45px rgba(0,0,10,0.08);
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   position: relative;
   box-sizing: border-box;
+  border: 1px solid rgba(255,255,255,0.8);
 }
 
 .modern-pencil-card.layout-reverse {
@@ -411,32 +412,38 @@
   display: block;
 }
 
-/* 30% Info Section */
+/* 30% Info Section - Glassy & Gorges */
 .card-info-section {
   flex: 0 0 30%;
-  padding: 12px 6px;
+  padding: 20px;
   color: #333;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255,255,255,0.3);
+  border-bottom: 1px solid rgba(255,255,255,0.3);
 }
 
 .user-name {
-  font-size: 0.75rem;
+  font-size: 1.4rem;
   font-weight: 800;
-  margin-bottom: 2px;
+  margin-bottom: 6px;
   line-height: 1.1;
-  color: #004050;
-  word-break: break-word; /* Ensure name fits */
+  color: #003040;
+  letter-spacing: -0.02em;
 }
 .user-role {
-  font-size: 0.55rem;
+  font-size: 0.9rem;
   opacity: 0.7;
   font-weight: 700;
   display: block;
   text-transform: uppercase;
+  color: #00647b;
+  letter-spacing: 0.1em;
 }
 
 /* 30% QR Section */
@@ -446,7 +453,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 14px; /* Centering with padding */
+  padding: 25px; /* Spacious & centered */
 }
 .card-qr-section img {
   width: 100%;
@@ -457,14 +464,15 @@
 
 @media (max-width: 768px) {
   .modern-pencil-card { 
-     width: 310px; 
-     height: 530px; 
-     border-radius: 155px;
-     box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+     width: 85vw; 
+     max-width: 320px;
+     height: 560px; 
+     border-radius: 160px;
+     box-shadow: 0 25px 60px rgba(0,0,0,0.12);
   }
-  .user-name { font-size: 1.4rem; }
-  .user-role { font-size: 1rem; }
-  .slider-item { padding: 0 15px; }
+  .user-name { font-size: 1.5rem; }
+  .user-role { font-size: 1.1rem; }
+  .slider-item { padding: 0 10vw; }
 }
 
 .modern-pencil-card:hover {
