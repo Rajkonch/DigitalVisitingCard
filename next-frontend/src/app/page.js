@@ -5,15 +5,14 @@ import API from "../utils/api";
 import "../styles/home.css";
 
 const STATIC_FALLBACK_USERS = [
-  { name: "Sanya K.", role: "Architect", bg: "#e1f5f9", img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=200", desc: "Portfolio" },
-  { name: "David L.", role: "Tech Lead", bg: "#f3f8ee", img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200", desc: "Tech Stack" },
-  { name: "Aisha Z.", role: "Director", bg: "#f8f9fa", img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=200", desc: "Connect" },
-  { name: "Vikram M.", role: "Sales Dir", bg: "#fff6f0", img: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=200", desc: "Digital Card" },
-  { name: "Priya R.", role: "UI Design", bg: "#f0f2ff", img: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=200", desc: "Dribbble" },
-  { name: "Chris J.", role: "Consultant", bg: "#e9fced", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200", desc: "Meeting" },
-  { name: "Neha W.", role: "HR Lead", bg: "#fff2f8", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200", desc: "Careers" },
-  { name: "Raj K.", role: "Founder", bg: "#e1f5f9", img: "/logo.png", desc: "Prism QR" },
-  { name: "Sam D.", role: "Analyst", bg: "#f3f8ee", img: "https://api.dicebear.com/9.x/micah/svg?seed=Sam", desc: "Stats" }
+  { name: "Sanya K.", role: "Architect", bg: "#e1f5f9", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=300", desc: "Portfolio" },
+  { name: "David L.", role: "Consultant", bg: "#f3f8ee", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=300", desc: "Tech Stack" },
+  { name: "Aisha Z.", role: "Director", bg: "#f8f9fa", img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=300", desc: "Connect" },
+  { name: "Vikram M.", role: "Sales Dir", bg: "#fff6f0", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=300", desc: "Digital Card" },
+  { name: "Priya R.", role: "Designer", bg: "#f0f2ff", img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=300", desc: "Dribbble" },
+  { name: "Chris J.", role: "Tech Lead", bg: "#e9fced", img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=300", desc: "Meeting" },
+  { name: "Neha W.", role: "HR Lead", bg: "#fff2f8", img: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=300", desc: "Careers" },
+  { name: "Sam D.", role: "Founder", bg: "#e1f5f9", img: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=300", desc: "Prism QR" }
 ];
 
 export default function Home() {
@@ -98,7 +97,7 @@ export default function Home() {
 
     // Responsive items count - Pencil thin 84px width
     const handleResize = () => {
-      setItemsToShow(window.innerWidth < 768 ? 2 : 7);
+      setItemsToShow(window.innerWidth < 768 ? 2 : 6);
     };
     handleResize();
     window.addEventListener("resize", handleResize);

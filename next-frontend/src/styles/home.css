@@ -364,11 +364,11 @@
 }
 
 .modern-pencil-card {
-  width: 126px;
-  flex: 0 0 126px;
+  width: 132px;
+  flex: 0 0 132px;
   height: 520px;
   background: white;
-  border-radius: 63px; /* Capsule Radius: Half of 126px */
+  border-radius: 66px; /* Capsule Radius: Half of 132px */
   display: flex;
   flex-direction: column;
   overflow: hidden;
