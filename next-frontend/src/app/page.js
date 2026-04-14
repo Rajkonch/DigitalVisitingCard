@@ -6,39 +6,53 @@ import "../styles/home.css";
 
 const STATIC_FALLBACK_USERS = [
   { 
-    name: "Sanya Kapoor", 
+    name: "Sanya K.", 
     role: "Architect", 
-    bg: "#e1f5f9", // Light Teal
+    bg: "#e1f5f9", 
     img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=200",
-    desc: "Scan to see my architectural portfolio instantly."
+    desc: "Scan for my portfolio."
   },
   { 
-    name: "David Lawson", 
+    name: "David L.", 
     role: "Tech Lead", 
-    bg: "#f3f8ee", // Light Sage
+    bg: "#f3f8ee", 
     img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200",
-    desc: "Access my GitHub and tech stack in one scan."
+    desc: "Get my tech stack."
   },
   { 
-    name: "Aisha Zaveri", 
+    name: "Aisha Z.", 
     role: "Director", 
-    bg: "#f8f9fa", // Soft Gray
+    bg: "#f8f9fa", 
     img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=200",
-    desc: "The fastest way to connect and save my contact."
+    desc: "Connect instantly."
   },
   { 
-    name: "Vikram Mehta", 
-    role: "Sales Director", 
-    bg: "#fff6f0", // Soft Peach
+    name: "Vikram M.", 
+    role: "Sales Dir", 
+    bg: "#fff6f0", 
     img: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=200",
-    desc: "Share my digital card and close deals faster."
+    desc: "Share digital card."
   },
   { 
-    name: "Priya Rao", 
-    role: "UI Designer", 
-    bg: "#f0f2ff", // Soft Blueish-Purple
+    name: "Priya R.", 
+    role: "UI Design", 
+    bg: "#f0f2ff", 
     img: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=200",
-    desc: "Check my latest Dribbble shots via this QR."
+    desc: "View my Dribbble."
+  },
+  { 
+    name: "Chris J.", 
+    role: "Consultant", 
+    bg: "#e9fced", 
+    img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200",
+    desc: "Book a meeting."
+  },
+  { 
+    name: "Neha W.", 
+    role: "HR Lead", 
+    bg: "#fff2f8", 
+    img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200",
+    desc: "Careers & Hiring."
   }
 ];
 
@@ -47,7 +61,7 @@ export default function Home() {
   const heroArtifactRef = useRef(null);
   const [activeProfiles, setActiveProfiles] = useState(STATIC_FALLBACK_USERS);
   const [slideIndex, setSlideIndex] = useState(0);
-  const [itemsToShow, setItemsToShow] = useState(4);
+  const [itemsToShow, setItemsToShow] = useState(7);
 
   useEffect(() => {
     // Fetch Real Active Users
@@ -55,12 +69,12 @@ export default function Home() {
       .then(res => {
         if (res.data && res.data.length > 0) {
           const mapped = res.data.map(card => ({
-             name: card.name || "User",
-             role: card.jobTitle || "Professional",
-             bg: card.themeColor || "#00647b",
+             name: card.name?.split(' ')[0] + " " + (card.name?.split(' ')[1]?.charAt(0) || "") + ".",
+             role: card.jobTitle || "Pro",
+             bg: "#f0f2ff",
              img: card.profileImage || "/logo.png",
              qr: card.qrCodeUrl || card.qrCode,
-             desc: "A smart way to share your professional world."
+             desc: "Prism Digital QR Card"
           }));
           setActiveProfiles([...mapped, ...STATIC_FALLBACK_USERS]);
         }
@@ -133,9 +147,9 @@ export default function Home() {
     };
     window.addEventListener('scroll', handleScroll);
 
-    // Responsive items count
+    // Responsive items count - Super thin cards so show more
     const handleResize = () => {
-      setItemsToShow(window.innerWidth < 768 ? 1 : 4);
+      setItemsToShow(window.innerWidth < 768 ? 2 : 7);
     };
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -262,14 +276,14 @@ export default function Home() {
                 }}
               >
                 {activeProfiles.map((user, idx) => {
-                   const isReverse = idx % 2 !== 0; // Alternate top/bottom for QR
+                   const isReverse = idx % 2 !== 0; 
                    return (
                     <div 
                       key={idx} 
                       className={`modern-user-card tilt-card ${isReverse ? 'layout-reverse' : ''}`}
                       style={{ flex: `0 0 ${100 / itemsToShow}%` }}
                     >
-                      {/* 75% Info Section */}
+                      {/* 70% Info Section */}
                       <div className="card-info-section" style={{ background: user.bg, color: '#333' }}>
                         <div className="card-pfp-wrapper">
                            <img src={user.img} alt={user.name} onError={(e) => e.target.src = '/logo.png'} />
@@ -279,12 +293,9 @@ export default function Home() {
                            <span className="user-role">{user.role}</span>
                            <p className="user-desc">{user.desc}</p>
                         </div>
-                        <div className="card-arrow">
-                           <span className="material-symbols-outlined">north_east</span>
-                        </div>
                       </div>
 
-                      {/* 25% QR Section */}
+                      {/* 30% QR Section */}
                       <div className="card-qr-section">
                         <img 
                           src={user.qr || `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://prismqr.com/p/${user.name?.split(' ')[0].toLowerCase() || 'user'}&color=00647b&bgcolor=ffffff`} 
