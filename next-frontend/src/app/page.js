@@ -71,7 +71,7 @@ export default function Home() {
       },
       { threshold: 0.15 }
     );
-    reveals.forEach((el) => observer.observe(el));
+    reveals.forEach((el) => observer.unobserve(el));
 
     // Tilt Cards 3D Interaction
     const cards = document.querySelectorAll(".tilt-card");
