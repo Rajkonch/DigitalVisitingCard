@@ -18,11 +18,10 @@ const STATIC_FALLBACK_USERS = [
 export default function Home() {
   const router = useRouter();
   const heroArtifactRef = useRef(null);
+  const [activeProfiles, setActiveProfiles] = useState(STATIC_FALLBACK_USERS);
 
-    // Auto scroller mapping - simplified for infinite CSS scroller fallback if needed, 
-    // but we'll use activeProfiles state for the content.
-    setActiveProfiles(STATIC_FALLBACK_USERS);
-
+  useEffect(() => {
+    // Fetch Real Active Users
     API.get('/card/public/list')
       .then(res => {
         if (res.data && res.data.length > 0) {
@@ -38,21 +37,6 @@ export default function Home() {
         }
       })
       .catch(err => console.error("Showcase fetch err:", err));
-
-    const handleResize = () => {
-      setItemsPerSlide(window.innerWidth < 768 ? 1 : 2);
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-
-    // Auto scroller mapping - staggered items
-    const timer = setInterval(() => {
-      setActiveProfiles(prev => {
-        if (prev.length === 0) return prev;
-        setSlideIndex((curr) => (curr + itemsPerSlide >= prev.length ? 0 : curr + itemsPerSlide));
-        return prev;
-      });
-    }, 4000);
 
     // Mouse Parallax
     const scene = document.getElementById("hero-scene");
@@ -121,8 +105,6 @@ export default function Home() {
     window.addEventListener('scroll', handleScroll);
 
     return () => {
-      clearInterval(timer);
-      window.removeEventListener("resize", handleResize);
       if (scene) {
         scene.removeEventListener("mousemove", handleMouseMove);
         scene.removeEventListener("mouseleave", handleMouseLeave);
@@ -130,7 +112,7 @@ export default function Home() {
       window.removeEventListener('scroll', handleScroll);
       reveals.forEach((el) => observer.unobserve(el));
     };
-  }, [itemsPerSlide]);
+  }, []);
 
   return (
     <div className="home-page smooth-scroll">
