@@ -159,7 +159,7 @@ function LoginContent() {
           <div className="form-container sign-up-container">
             <form className="auth-form" onSubmit={handleRegister}>
               <div className="content-wrapper">
-                <img src="/logo.png" alt="Logo" style={{ height: '70px', marginBottom: '1rem', objectFit: 'contain' }} />
+                <img src="/logo.png" alt="Logo" style={{ height: '140px', marginBottom: '1rem', objectFit: 'contain' }} />
                 <span className="subtitle-badge">Join Us</span>
                 <h2>Create your identity</h2>
                 <p className="auth-subtitle">Design dynamic QR codes in high-fidelity.</p>
@@ -201,7 +201,7 @@ function LoginContent() {
           <div className="form-container sign-in-container">
             <form className="auth-form" onSubmit={handleLogin}>
               <div className="content-wrapper">
-                <img src="/logo.png" alt="Logo" style={{ height: '70px', marginBottom: '1rem', objectFit: 'contain' }} />
+                <img src="/logo.png" alt="Logo" style={{ height: '140px', marginBottom: '1rem', objectFit: 'contain' }} />
                 <span className="subtitle-badge">Welcome Back</span>
                 <h2>Sign in to Prism</h2>
                 <div className="input-field">

@@ -153,15 +153,15 @@
   gap: 32px;
 }
 .logo-text {
-  height: 44px;
+  height: 80px;
   display: flex;
   align-items: center;
   overflow: visible;
 }
 .logo-text img {
-  height: 38px;
+  height: 75px;
   width: auto;
-  max-width: 200px;
+  max-width: 300px;
   object-fit: contain;
 }
 .nav-actions { display: flex; gap: 16px; align-items: center; }
@@ -345,29 +345,52 @@
 
 /* Users Capsule Design - 3 part staggered */
 .users-section { padding: 80px 24px; overflow: hidden; background-color: #F8F5F2;}
-.users-slider-container { width: 100%; display: flex; justify-content: center; margin-top: 40px; overflow: hidden;}
-.capsules-container {
+.users-slider-container { 
+  width: 100%; 
+  margin-top: 40px; 
+  overflow: hidden; 
+  position: relative;
+  padding: 40px 0;
+}
+.marquee-wrapper {
+  overflow: hidden;
+  width: 100%;
+}
+.capsules-track {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 24px;
-  transition: transform 0.5s ease;
+  gap: 30px;
+  width: max-content;
+  animation: marquee 30s linear infinite;
   padding: 20px;
 }
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Pause on hover for interaction */
+.marquee-wrapper:hover .capsules-track {
+  animation-play-state: paused;
+}
+
 .user-capsule {
-  width: 160px;
-  height: 380px;
+  width: 180px;
+  flex-shrink: 0;
+  height: 400px;
   background: white;
-  border-radius: 80px;
+  border-radius: 90px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  box-shadow: 0 15px 45px rgba(0,0,0,0.06);
   transition: all 0.4s ease;
   position: relative;
 }
+
 @media (max-width: 640px) {
-  .user-capsule { width: 140px; height: 340px; border-radius: 60px; }
+  .user-capsule { width: 150px; height: 350px; border-radius: 70px; }
+  .capsules-track { animation-duration: 20s; }
 }
 
 .offset-up { transform: translateY(-20px); }

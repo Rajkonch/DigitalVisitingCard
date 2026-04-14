@@ -4,19 +4,25 @@ import { useRouter } from "next/navigation";
 import API from "../utils/api";
 import "../styles/home.css";
 
-const STATIC_FALLBACK_USERS = [];
+const STATIC_FALLBACK_USERS = [
+  { name: "Rahul S.", role: "Founder", bg: "#00647b", arrow: "#00cffc", img: "/logo.png" },
+  { name: "Sanya K.", role: "Architect", bg: "#A03929", arrow: "#FFC4B9", img: "https://api.dicebear.com/9.x/micah/svg?seed=Sanya&backgroundColor=transparent" },
+  { name: "David L.", role: "Tech Lead", bg: "#00675F", arrow: "#5FFDEC", img: "https://api.dicebear.com/9.x/micah/svg?seed=David&backgroundColor=transparent" },
+  { name: "Aisha Z.", role: "Director", bg: "#747779", arrow: "#abadaf", img: "https://api.dicebear.com/9.x/micah/svg?seed=Aisha&backgroundColor=transparent" },
+  { name: "Vikram M.", role: "Sales Dir", bg: "#9EA5B4", arrow: "#8C94A6", img: "https://api.dicebear.com/9.x/micah/svg?seed=Vikram&backgroundColor=transparent" },
+  { name: "Priya R.", role: "Designer", bg: "#A03929", arrow: "#FFC4B9", img: "https://api.dicebear.com/9.x/micah/svg?seed=Priya&backgroundColor=transparent" },
+  { name: "Chris J.", role: "Consultant", bg: "#00675F", arrow: "#5FFDEC", img: "https://api.dicebear.com/9.x/micah/svg?seed=Chris&backgroundColor=transparent" },
+  { name: "Neha W.", role: "HR Manager", bg: "#747779", arrow: "#abadaf", img: "https://api.dicebear.com/9.x/micah/svg?seed=Neha&backgroundColor=transparent" }
+];
 
 export default function Home() {
   const router = useRouter();
   const heroArtifactRef = useRef(null);
 
-  // Slider State (2 by 2)
-  const [itemsPerSlide, setItemsPerSlide] = useState(2);
-  const [slideIndex, setSlideIndex] = useState(0);
-  const [activeProfiles, setActiveProfiles] = useState([]);
+    // Auto scroller mapping - simplified for infinite CSS scroller fallback if needed, 
+    // but we'll use activeProfiles state for the content.
+    setActiveProfiles(STATIC_FALLBACK_USERS);
 
-  useEffect(() => {
-    // Fetch Real Active Users
     API.get('/card/public/list')
       .then(res => {
         if (res.data && res.data.length > 0) {
@@ -28,7 +34,7 @@ export default function Home() {
              img: card.profileImage || "/logo.png",
              qr: card.qrCodeUrl || card.qrCode
           }));
-          setActiveProfiles(mapped);
+          setActiveProfiles([...mapped, ...STATIC_FALLBACK_USERS]);
         }
       })
       .catch(err => console.error("Showcase fetch err:", err));
@@ -132,7 +138,7 @@ export default function Home() {
       <header className="header-nav z-index-top">
         <nav className="navbar-glass compact-nav">
           <div className="logo-text">
-            <img src="/logo.png" alt="Logo" style={{ height: '38px', width: 'auto', display: 'block' }} />
+            <img src="/logo.png" alt="Logo" style={{ height: '75px', width: 'auto', display: 'block' }} />
           </div>
           <div className="nav-actions">
             <button className="text-btn" onClick={() => router.push("/login")}>Login</button>
@@ -219,30 +225,32 @@ export default function Home() {
             <p>Experience how different professionals utilize their digital identity.</p>
           </div>
           <div className="users-slider-container reveal">
-            <div className="capsules-container">
-              {activeProfiles.slice(slideIndex, slideIndex + itemsPerSlide).map((user, idx) => (
-                <div key={idx} className={`user-capsule tilt-card ${idx % 2 === 0 ? 'offset-up' : 'offset-down shadow-intense'}`}>
-                  <div className="capsule-part part-qr">
-                    <img 
-                      src={user.qr || `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://prismqr.com/p/${user.name?.split(' ')[0].toLowerCase() || 'user'}&color=00647b&bgcolor=ffffff`} 
-                      alt="Profile QR" 
-                      loading="lazy"
-                    />
-                  </div>
-                  <div className="capsule-part part-image">
-                    <img src={user.img} alt={user.name} onError={(e) => e.target.src = '/logo.png'} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                  </div>
-                  <div className="capsule-part part-details" style={{ background: user.bg }}>
-                    <span className="tiny-brand">prism.qr</span>
-                    <h4 className="capsule-name">{user.name}</h4>
-                    <p style={{ fontSize: '10px', opacity: 0.9, fontWeight: 700 }}>{user.role}</p>
-                    <div className="arrow-btn" style={{ color: user.arrow }}>
-                       <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>north_east</span>
+            <div className="marquee-wrapper">
+              <div className="capsules-track">
+                {/* Double the list to create infinite loop effect */}
+                {[...activeProfiles, ...activeProfiles].map((user, idx) => (
+                  <div key={idx} className={`user-capsule tilt-card ${idx % 2 === 0 ? 'offset-up' : 'offset-down shadow-intense'}`}>
+                    <div className="capsule-part part-qr">
+                      <img 
+                        src={user.qr || `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://prismqr.com/p/${user.name?.split(' ')[0].toLowerCase() || 'user'}&color=00647b&bgcolor=ffffff`} 
+                        alt="Profile QR" 
+                        loading="lazy"
+                      />
+                    </div>
+                    <div className="capsule-part part-image">
+                      <img src={user.img} alt={user.name} onError={(e) => e.target.src = '/logo.png'} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    </div>
+                    <div className="capsule-part part-details" style={{ background: user.bg }}>
+                      <span className="tiny-brand">prism.qr</span>
+                      <h4 className="capsule-name">{user.name}</h4>
+                      <p style={{ fontSize: '10px', opacity: 0.9, fontWeight: 700 }}>{user.role}</p>
+                      <div className="arrow-btn" style={{ color: user.arrow }}>
+                         <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>north_east</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-              {activeProfiles.length === 0 && <p style={{ opacity: 0.5 }}>Syncing active profiles...</p>}
+                ))}
+              </div>
             </div>
           </div>
         </section>
