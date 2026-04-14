@@ -238,7 +238,7 @@ export default function UserEditPublishProfile() {
   return (
     <div className="profile-editor-container">
       <header className="editor-nav">
-        <img src="/logo.png" alt="Logo" onClick={() => router.push("/UserDashboard")} style={{ height: '40px', cursor: "pointer", objectFit: 'contain' }} />
+        <img src="/logo.png" alt="Logo" onClick={() => router.push("/UserDashboard")} style={{ height: '75px', cursor: "pointer", objectFit: 'contain' }} />
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           {saveStatus && <span style={{ fontSize: '0.8rem', color: 'var(--primary)' }}>{saveStatus}</span>}
           <button className="publish-btn" onClick={handlePublish} disabled={loading}>

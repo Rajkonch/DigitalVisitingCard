@@ -142,7 +142,7 @@ function DashboardContent() {
       <aside className={`sidebar ${isSidebarOpen ? "sidebar-open" : ""}`}>
         <div className="sidebar-logo-section">
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.5rem 0' }}>
-            <img src="/logo.png" alt="Logo" style={{ height: '110px', width: 'auto', objectFit: 'contain' }} />
+            <img src="/logo.png" alt="Logo" style={{ height: '75px', width: 'auto', objectFit: 'contain' }} />
           </div>
           {/* Mobile Close Button */}
           <button className="mobile-close-btn" onClick={toggleSidebar}>

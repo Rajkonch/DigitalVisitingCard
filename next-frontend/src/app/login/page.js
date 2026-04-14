@@ -88,14 +88,7 @@ function LoginContent() {
       setShowPendingDialog(true);
     } catch (err) {
       const msg = err.response?.data?.message || "Registration failed";
-      if (msg.toLowerCase().includes("exists")) {
-        showToast("You already have an account! Switching to Login...", "success");
-        setTimeout(() => {
-          setIsRegister(false);
-        }, 1500);
-      } else {
-        showToast(msg, "error");
-      }
+      showToast(msg, "error");
     } finally {
       setLoading(false);
     }
@@ -148,18 +141,12 @@ function LoginContent() {
 
       <div className="login-animation-wrapper">
         <div className={`auth-container entrance-bounce-active ${isRegister ? "right-panel-active" : ""}`}>
-          
-          {/* Mobile Top Tabs (Visible only on mobile) */}
-          <div className="mobile-auth-tabs">
-             <div className={`auth-tab ${!isRegister ? 'active' : ''}`} onClick={() => setIsRegister(false)}>Login</div>
-             <div className={`auth-tab ${isRegister ? 'active' : ''}`} onClick={() => setIsRegister(true)}>Register</div>
-          </div>
 
           {/* Register Form */}
           <div className="form-container sign-up-container">
             <form className="auth-form" onSubmit={handleRegister}>
               <div className="content-wrapper">
-                <img src="/logo.png" alt="Logo" style={{ height: '140px', marginBottom: '1rem', objectFit: 'contain' }} />
+                <img src="/logo.png" alt="Logo" style={{ height: '75px', marginBottom: '1rem', objectFit: 'contain' }} />
                 <span className="subtitle-badge">Join Us</span>
                 <h2>Create your identity</h2>
                 <p className="auth-subtitle">Design dynamic QR codes in high-fidelity.</p>
@@ -201,7 +188,7 @@ function LoginContent() {
           <div className="form-container sign-in-container">
             <form className="auth-form" onSubmit={handleLogin}>
               <div className="content-wrapper">
-                <img src="/logo.png" alt="Logo" style={{ height: '140px', marginBottom: '1rem', objectFit: 'contain' }} />
+                <img src="/logo.png" alt="Logo" style={{ height: '75px', marginBottom: '1rem', objectFit: 'contain' }} />
                 <span className="subtitle-badge">Welcome Back</span>
                 <h2>Sign in to Prism</h2>
                 <div className="input-field">
