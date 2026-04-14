@@ -444,13 +444,13 @@
 
 @media (max-width: 768px) {
   .modern-pencil-card { 
-     width: 140px; 
-     flex: 0 0 140px; 
+     width: 240px; 
+     flex: 0 0 240px; 
      height: 480px; 
-     border-radius: 70px;
+     border-radius: 120px;
   }
-  .user-name { font-size: 0.85rem; }
-  .user-role { font-size: 0.65rem; }
+  .user-name { font-size: 1.1rem; }
+  .user-role { font-size: 0.8rem; }
 }
 
 .modern-pencil-card:hover {
