@@ -46,7 +46,7 @@ export default function Home() {
 
     // Responsive items count
     const handleResize = () => {
-      setItemsToShow(window.innerWidth < 768 ? 2 : 6);
+      setItemsToShow(window.innerWidth < 768 ? 3 : 8);
     };
     handleResize();
     window.addEventListener("resize", handleResize);
