@@ -353,19 +353,19 @@
   padding: 40px 0;
 }
 .slider-viewport {
-  overflow: hidden;
+  overflow: visible; /* Changed to visible but mother container clips it correctly */
   width: 100%;
   mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
 }
 .capsules-sliding-track {
   display: flex;
-  width: 100%;
+  width: max-content; /* Critical fix: prevent items from shrinking */
   will-change: transform;
 }
 
 .user-capsule {
-  width: auto;
-  flex: 0 0 20%; /* Default to 5 items (100/5) */
+  width: 200px; /* Base width */
+  flex: 0 0 200px; 
   height: 400px;
   background: white;
   border-radius: 90px;
@@ -376,14 +376,16 @@
   transition: all 0.4s ease;
   position: relative;
   box-sizing: border-box;
-  margin: 0 10px;
+  margin: 0 15px;
 }
 
 @media (max-width: 768px) {
   .user-capsule { 
-     flex: 0 0 50%; /* 2 items on mobile */
+     width: 160px;
+     flex: 0 0 160px; 
      height: 350px; 
      border-radius: 70px; 
+     margin: 0 10px;
   }
 }
 
