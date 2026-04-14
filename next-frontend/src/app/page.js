@@ -45,7 +45,13 @@ export default function Home() {
 
     // Responsive items count
     const handleResize = () => {
-      setItemsToShow(window.innerWidth < 768 ? 3 : 4);
+      if (window.innerWidth < 768) {
+        setItemsToShow(1); // Mobile: 1 card
+      } else if (window.innerWidth < 1024) {
+        setItemsToShow(2); // Tablet: 2 cards
+      } else {
+        setItemsToShow(4); // Web/Desktop: 4 cards
+      }
     };
     handleResize();
     window.addEventListener("resize", handleResize);
