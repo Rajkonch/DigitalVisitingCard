@@ -363,21 +363,111 @@
   will-change: transform;
 }
 
-.user-capsule {
-  width: 250px; /* Slightly narrower */
-  flex: 0 0 250px; 
-  height: 480px; /* Slightly taller */
+.modern-user-card {
+  width: 250px;
+  flex: 0 0 250px;
+  height: 520px;
   background: white;
-  border-radius: 90px;
+  border-radius: 40px; 
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  box-shadow: 0 15px 45px rgba(0,0,0,0.06);
+  box-shadow: 0 15px 45px rgba(0,0,0,0.08);
   transition: all 0.4s ease;
   position: relative;
   box-sizing: border-box;
   margin: 0 15px;
 }
+
+.modern-user-card.layout-reverse {
+  flex-direction: column-reverse;
+}
+
+.card-info-section {
+  flex: 0 0 75%;
+  padding: 24px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+}
+
+.card-pfp-wrapper {
+  width: 100px;
+  height: 100px;
+  border-radius: 25px;
+  overflow: hidden;
+  border: 4px solid rgba(255,255,255,0.15);
+  margin-bottom: 20px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+.card-pfp-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.user-name {
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+.user-role {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 15px;
+}
+.user-desc {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  opacity: 0.9;
+  font-weight: 500;
+  max-width: 90%;
+}
+
+.card-arrow {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  opacity: 0.4;
+}
+
+.card-qr-section {
+  flex: 0 0 25%;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+}
+.card-qr-section img {
+  height: 90%;
+  width: auto;
+  object-fit: contain;
+}
+
+@media (max-width: 768px) {
+  .modern-user-card { 
+     width: 280px;
+     flex: 0 0 280px; 
+     height: 500px; 
+     margin: 0 10px;
+  }
+}
+
+.modern-user-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+}
+
+.smooth-scroll { scroll-behavior: smooth; }
+.delay-100 { transition-delay: 0.1s; }
+.delay-200 { transition-delay: 0.2s; }
+.delay-300 { transition-delay: 0.3s; }
 
 @media (max-width: 768px) {
   .user-capsule { 

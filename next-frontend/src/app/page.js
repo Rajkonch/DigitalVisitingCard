@@ -5,14 +5,41 @@ import API from "../utils/api";
 import "../styles/home.css";
 
 const STATIC_FALLBACK_USERS = [
-  { name: "Sanya K.", role: "Architect", bg: "#A03929", arrow: "#FFC4B9", img: "https://api.dicebear.com/9.x/micah/svg?seed=Sanya&backgroundColor=transparent" },
-  { name: "David L.", role: "Tech Lead", bg: "#00675F", arrow: "#5FFDEC", img: "https://api.dicebear.com/9.x/micah/svg?seed=David&backgroundColor=transparent" },
-  { name: "Aisha Z.", role: "Director", bg: "#747779", arrow: "#abadaf", img: "https://api.dicebear.com/9.x/micah/svg?seed=Aisha&backgroundColor=transparent" },
-  { name: "Vikram M.", role: "Sales Dir", bg: "#9EA5B4", arrow: "#8C94A6", img: "https://api.dicebear.com/9.x/micah/svg?seed=Vikram&backgroundColor=transparent" },
-  { name: "Priya R.", role: "Designer", bg: "#A03929", arrow: "#FFC4B9", img: "https://api.dicebear.com/9.x/micah/svg?seed=Priya&backgroundColor=transparent" },
-  { name: "Chris J.", role: "Consultant", bg: "#00675F", arrow: "#5FFDEC", img: "https://api.dicebear.com/9.x/micah/svg?seed=Chris&backgroundColor=transparent" },
-  { name: "Neha W.", role: "HR Manager", bg: "#747779", arrow: "#abadaf", img: "https://api.dicebear.com/9.x/micah/svg?seed=Neha&backgroundColor=transparent" },
-  { name: "Rahul S.", role: "Founder", bg: "#00647b", arrow: "#00cffc", img: "/logo.png" }
+  { 
+    name: "Sanya Kapoor", 
+    role: "Architect", 
+    bg: "#A03929", 
+    img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=200",
+    desc: "Scan to see my architectural portfolio instantly."
+  },
+  { 
+    name: "David Lawson", 
+    role: "Tech Lead", 
+    bg: "#00675F", 
+    img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200",
+    desc: "Access my GitHub and tech stack in one scan."
+  },
+  { 
+    name: "Aisha Zaveri", 
+    role: "Director", 
+    bg: "#747779", 
+    img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=200",
+    desc: "The fastest way to connect and save my contact."
+  },
+  { 
+    name: "Vikram Mehta", 
+    role: "Sales Director", 
+    bg: "#1a1a1a", 
+    img: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=200",
+    desc: "Share my digital card and close deals faster."
+  },
+  { 
+    name: "Priya Rao", 
+    role: "UI Designer", 
+    bg: "#00647b", 
+    img: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=200",
+    desc: "Check my latest Dribbble shots via this QR."
+  }
 ];
 
 export default function Home() {
@@ -20,7 +47,7 @@ export default function Home() {
   const heroArtifactRef = useRef(null);
   const [activeProfiles, setActiveProfiles] = useState(STATIC_FALLBACK_USERS);
   const [slideIndex, setSlideIndex] = useState(0);
-  const [itemsToShow, setItemsToShow] = useState(5);
+  const [itemsToShow, setItemsToShow] = useState(4);
 
   useEffect(() => {
     // Fetch Real Active Users
@@ -31,9 +58,9 @@ export default function Home() {
              name: card.name || "User",
              role: card.jobTitle || "Professional",
              bg: card.themeColor || "#00647b",
-             arrow: "#ffffff",
              img: card.profileImage || "/logo.png",
-             qr: card.qrCodeUrl || card.qrCode
+             qr: card.qrCodeUrl || card.qrCode,
+             desc: "A smart way to share your professional world."
           }));
           setActiveProfiles([...mapped, ...STATIC_FALLBACK_USERS]);
         }
@@ -234,32 +261,39 @@ export default function Home() {
                   transition: 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)'
                 }}
               >
-                {activeProfiles.map((user, idx) => (
-                  <div 
-                    key={idx} 
-                    className={`user-capsule tilt-card ${idx % 2 === 0 ? 'offset-up' : 'offset-down shadow-intense'}`}
-                    style={{ flex: `0 0 ${100 / itemsToShow}%` }}
-                  >
-                    <div className="capsule-part part-qr">
-                      <img 
-                        src={user.qr || `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://prismqr.com/p/${user.name?.split(' ')[0].toLowerCase() || 'user'}&color=00647b&bgcolor=ffffff`} 
-                        alt="Profile QR" 
-                        loading="lazy"
-                      />
-                    </div>
-                    <div className="capsule-part part-image">
-                      <img src={user.img} alt={user.name} onError={(e) => e.target.src = '/logo.png'} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                    </div>
-                    <div className="capsule-part part-details" style={{ background: user.bg }}>
-                      <span className="tiny-brand">prism.qr</span>
-                      <h4 className="capsule-name">{user.name}</h4>
-                      <p style={{ fontSize: '10px', opacity: 0.9, fontWeight: 700 }}>{user.role}</p>
-                      <div className="arrow-btn" style={{ color: user.arrow }}>
-                         <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>north_east</span>
+                {activeProfiles.map((user, idx) => {
+                   const isReverse = idx % 2 !== 0; // Alternate top/bottom for QR
+                   return (
+                    <div 
+                      key={idx} 
+                      className={`modern-user-card tilt-card ${isReverse ? 'layout-reverse' : ''}`}
+                      style={{ flex: `0 0 ${100 / itemsToShow}%` }}
+                    >
+                      {/* 75% Info Section */}
+                      <div className="card-info-section" style={{ background: user.bg }}>
+                        <div className="card-pfp-wrapper">
+                           <img src={user.img} alt={user.name} onError={(e) => e.target.src = '/logo.png'} />
+                        </div>
+                        <div className="card-text-content">
+                           <h4 className="user-name">{user.name}</h4>
+                           <span className="user-role">{user.role}</span>
+                           <p className="user-desc">{user.desc}</p>
+                        </div>
+                        <div className="card-arrow">
+                           <span className="material-symbols-outlined">north_east</span>
+                        </div>
+                      </div>
+
+                      {/* 25% QR Section */}
+                      <div className="card-qr-section">
+                        <img 
+                          src={user.qr || `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://prismqr.com/p/${user.name?.split(' ')[0].toLowerCase() || 'user'}&color=00647b&bgcolor=ffffff`} 
+                          alt="QR" 
+                        />
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>
