@@ -363,7 +363,7 @@
 .slider-viewport {
   overflow: visible;
   width: 100%;
-  mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
 }
 
 @media (max-width: 768px) {
@@ -387,10 +387,10 @@
 }
 
 .modern-pencil-card {
-  width: 280px; /* Fixed width on desktop to prevent zoom distortion */
+  width: 300px; /* Refined width for 3-4 items visibility */
   height: 540px;
   background: white;
-  border-radius: 140px; /* Semi-circle ends: half of 280 */
+  border-radius: 150px; /* Half of 300 */
   display: flex;
   flex-direction: column;
   overflow: hidden;

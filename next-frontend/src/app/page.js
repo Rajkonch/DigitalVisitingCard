@@ -45,12 +45,13 @@ export default function Home() {
 
     // Responsive items count
     const handleResize = () => {
-      if (window.innerWidth < 768) {
+      const width = window.innerWidth;
+      if (width < 768) {
         setItemsToShow(1); // Mobile: 1 card
-      } else if (window.innerWidth < 1024) {
-        setItemsToShow(2); // Tablet: 2 cards
+      } else if (width < 1200) {
+        setItemsToShow(3); // Medium Web / Tablet: 3 cards
       } else {
-        setItemsToShow(4); // Web/Desktop: 4 cards
+        setItemsToShow(4); // Large Web: 4 cards
       }
     };
     handleResize();
