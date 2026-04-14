@@ -345,142 +345,130 @@
 
 /* Users Capsule Design - 3 part staggered */
 .users-section { 
-  padding: 80px 24px; 
-  overflow: hidden; 
-  background-color: #F8F5F2;
+  padding: 100px 24px; 
+  background-color: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 .users-slider-container { 
   width: 100%; 
-  max-width: 1400px; /* Cap width to prevent cards flying apart at zoom-out */
-  margin: 40px auto 0; 
+  max-width: 1440px;
+  margin: 60px auto 0; 
   overflow: hidden; 
   position: relative;
-  padding: 40px 0;
 }
 .slider-viewport {
   overflow: visible;
   width: 100%;
-  mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
 }
 
-@media (max-width: 768px) {
-  .slider-viewport {
-     mask-image: none; /* No fading on mobile to show full card */
-     overflow: hidden;
-  }
-}
-
-.capsules-sliding-track {
+.staggered-track {
   display: flex;
   width: max-content;
   will-change: transform;
 }
 
-.slider-item {
+.service-card-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0 4px; /* Space between slides */
+  padding: 20px;
+  transition: transform 0.8s ease;
 }
 
-.modern-pencil-card {
-  width: 300px; /* Refined width for 3-4 items visibility */
-  height: 540px;
+.service-card-wrapper.offset-down {
+  transform: translateY(20px);
+}
+
+.service-card-new {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  min-height: 520px;
   background: white;
-  border-radius: 150px; /* Half of 300 */
+  border-radius: 30px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  box-shadow: 0 15px 45px rgba(0,0,10,0.08);
-  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.04);
+  transition: all 0.4s ease;
   position: relative;
-  box-sizing: border-box;
-  border: 1px solid rgba(255,255,255,0.8);
+  border: 1px solid #f0f0f0;
 }
 
-.modern-pencil-card.layout-reverse {
-  flex-direction: column-reverse;
+.service-card-new:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.08);
 }
 
-/* 40% Image Section - Full Width fitting the curve */
-.card-pfp-section {
-  flex: 0 0 40%;
+.card-top-image {
+  flex: 0 0 320px;
   width: 100%;
-  overflow: hidden;
   position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  overflow: hidden;
 }
-.card-pfp-section img {
+
+.card-top-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 10%; /* Focus on face for tall narrow frame */
-  display: block;
+  transition: transform 0.6s ease;
 }
 
-/* 30% Info Section - Glassy & Gorges */
-.card-info-section {
-  flex: 0 0 30%;
-  padding: 20px;
-  color: #333;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  background: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(10px);
-  border-top: 1px solid rgba(255,255,255,0.3);
-  border-bottom: 1px solid rgba(255,255,255,0.3);
-}
-
-.user-name {
-  font-size: 1.4rem;
-  font-weight: 800;
-  margin-bottom: 6px;
-  line-height: 1.1;
-  color: #003040;
-  letter-spacing: -0.02em;
-}
-.user-role {
-  font-size: 0.9rem;
-  opacity: 0.7;
+.floating-badge {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background: white;
+  padding: 4px 16px;
+  border-radius: 20px;
+  font-size: 0.8rem;
   font-weight: 700;
-  display: block;
-  text-transform: uppercase;
-  color: #00647b;
-  letter-spacing: 0.1em;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-/* 30% QR Section */
-.card-qr-section {
-  flex: 0 0 30%;
-  background: white;
+.accent-bar {
+  background: #E2E8D4; /* Soft Sage Green from provided design */
+  padding: 12px 24px;
+  width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 25px; /* Spacious & centered */
 }
-.card-qr-section img {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-  background: white;
+
+.id-number {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #2D3E2F;
+}
+
+.card-bottom-info {
+  padding: 30px 24px;
+  flex-grow: 1;
+  text-align: left;
+}
+
+.service-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #1a1a1a;
+  margin-bottom: 12px;
+}
+
+.service-desc {
+  font-size: 0.95rem;
+  color: #666;
+  line-height: 1.6;
 }
 
 @media (max-width: 768px) {
-  .modern-pencil-card { 
-     width: 85vw; 
-     max-width: 320px;
-     height: 560px; 
-     border-radius: 160px;
-     box-shadow: 0 25px 60px rgba(0,0,0,0.12);
-  }
-  .user-name { font-size: 1.5rem; }
-  .user-role { font-size: 1.1rem; }
-  .slider-item { padding: 0 10vw; }
+  .service-card-new { max-width: 90vw; }
+  .service-card-wrapper.offset-down { transform: translateY(0); } /* No stagger on mobile stacking */
+  .users-section { padding: 60px 20px; }
+  .service-title { font-size: 1.3rem; }
 }
 
 .modern-pencil-card:hover {
