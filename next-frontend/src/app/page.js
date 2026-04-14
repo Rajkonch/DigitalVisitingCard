@@ -20,7 +20,11 @@ export default function Home() {
   const heroArtifactRef = useRef(null);
   const [activeProfiles, setActiveProfiles] = useState(STATIC_FALLBACK_USERS);
   const [slideIndex, setSlideIndex] = useState(0);
-  const [itemsToShow, setItemsToShow] = useState(9);
+  const [itemsToShow, setItemsToShow] = useState(6);
+  const [isTransitioning, setIsTransitioning] = useState(true);
+
+  // For Infinite Loop: Clone the list
+  const displayProfiles = [...activeProfiles, ...activeProfiles];
 
   useEffect(() => {
     // Fetch Real Active Users
@@ -28,37 +32,26 @@ export default function Home() {
       .then(res => {
         if (res.data && res.data.length > 0) {
           const mapped = res.data.map(card => ({
-            name: card.name?.split(' ')[0] || "User",
-            role: card.jobTitle?.split(' ')[0] || "Pro",
-            bg: "#f8f9fa",
-            img: card.profileImage || "/logo.png",
-            qr: card.qrCodeUrl || card.qrCode,
-            desc: "Prism QR"
+             name: card.name?.split(' ')[0] || "User",
+             role: card.jobTitle?.split(' ')[0] || "Pro",
+             bg: "#f8f9fa",
+             img: card.profileImage || "/logo.png",
+             qr: card.qrCodeUrl || card.qrCode,
+             desc: "Prism QR"
           }));
           setActiveProfiles([...mapped, ...STATIC_FALLBACK_USERS]);
         }
       })
       .catch(err => console.error("Showcase fetch err:", err));
 
-    // Mouse Parallax logic
-    const scene = document.getElementById("hero-scene");
-    const artifact = document.getElementById("hero-artifact");
-    const handleMouseMove = (e) => {
-      if (!artifact || window.innerWidth < 1024) return;
-      const xAxis = (window.innerWidth / 2 - e.pageX) / 40;
-      const yAxis = (window.innerHeight / 2 - e.pageY) / 40;
-      artifact.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+    // Responsive items count
+    const handleResize = () => {
+      setItemsToShow(window.innerWidth < 768 ? 2 : 6);
     };
-    const handleMouseLeave = () => {
-      if (!artifact) return;
-      artifact.style.transform = `rotateY(0deg) rotateX(0deg)`;
-    };
-    if (scene) {
-      scene.addEventListener("mousemove", handleMouseMove);
-      scene.addEventListener("mouseleave", handleMouseLeave);
-    }
+    handleResize();
+    window.addEventListener("resize", handleResize);
 
-    // Scroll reveal
+    // Snappy Zoom Reveal elements
     const reveals = document.querySelectorAll(".reveal");
     const observer = new IntersectionObserver(
       (entries) => {
@@ -70,54 +63,35 @@ export default function Home() {
     );
     reveals.forEach((el) => observer.observe(el));
 
-    // Tilt Cards
-    const cards = document.querySelectorAll(".tilt-card");
-    cards.forEach((card) => {
-      card.addEventListener("mousemove", (e) => {
-        if (window.innerWidth < 768) return;
-        const rect = card.getBoundingClientRect();
-        const rotateX = (e.clientY - rect.top - rect.height / 2) / 20;
-        const rotateY = (rect.width / 2 - (e.clientX - rect.left)) / 20;
-        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-      });
-      card.addEventListener("mouseleave", () => {
-        card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
-      });
-    });
-
-    // Parallax elements
-    const handleScroll = () => {
-      const scrolled = window.scrollY;
-      document.querySelectorAll('.parallax-floater').forEach((floater) => {
-        const speed = floater.dataset.speed || 0.1;
-        floater.style.transform = `translateY(${scrolled * speed}px)`;
-      });
-    };
-    window.addEventListener('scroll', handleScroll);
-
-    // Responsive items count - Pencil thin 84px width
-    const handleResize = () => {
-      setItemsToShow(window.innerWidth < 768 ? 2 : 6);
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-
-    // Rhythmic Auto Scroller
-    const scrollerTimer = setInterval(() => {
-      setSlideIndex((curr) => (curr + 1 >= activeProfiles.length ? 0 : curr + 1));
-    }, 2000);
-
     return () => {
-      clearInterval(scrollerTimer);
       window.removeEventListener("resize", handleResize);
-      if (scene) {
-        scene.removeEventListener("mousemove", handleMouseMove);
-        scene.removeEventListener("mouseleave", handleMouseLeave);
-      }
-      window.removeEventListener('scroll', handleScroll);
       reveals.forEach((el) => observer.unobserve(el));
     };
+  }, []);
+
+  // Infinite Rhythmic Auto Scroller Logic
+  useEffect(() => {
+    const totalOriginals = activeProfiles.length;
+    const interval = setInterval(() => {
+      setSlideIndex((prev) => prev + 1);
+    }, 2000);
+
+    return () => clearInterval(interval);
   }, [activeProfiles.length]);
+
+  // Seamless Reset Handler
+  useEffect(() => {
+    const totalOriginals = activeProfiles.length;
+    if (slideIndex === totalOriginals) {
+      // Wait for the transition to finish (800ms defined in CSS)
+      setTimeout(() => {
+        setIsTransitioning(false);
+        setSlideIndex(0);
+        // Turn transition back on in next cycle
+        setTimeout(() => setIsTransitioning(true), 50);
+      }, 800);
+    }
+  }, [slideIndex, activeProfiles.length]);
 
   return (
     <div className="home-page smooth-scroll">
@@ -144,10 +118,10 @@ export default function Home() {
               </div>
             </div>
             <div className="hero-content-right reveal delay-100">
-              <div className="hero-artifact animate-floating" id="hero-artifact" ref={heroArtifactRef}>
-                <div className="artifact-glow"></div>
-                <img className="hero-qr-image" src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://prismqr.com/demo&color=00647b&bgcolor=ffffff" alt="3D QR" />
-              </div>
+               <div className="hero-artifact animate-floating">
+                  <div className="artifact-glow"></div>
+                  <img className="hero-qr-image" src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://prismqr.com/demo&color=00647b&bgcolor=ffffff" alt="QR" />
+               </div>
             </div>
           </div>
         </section>
@@ -159,23 +133,24 @@ export default function Home() {
           </div>
           <div className="users-slider-container reveal">
             <div className="slider-viewport">
-              <div className="capsules-sliding-track" style={{ transform: `translateX(-${slideIndex * (100 / itemsToShow)}%)`, transition: 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)' }}>
-                {activeProfiles.map((user, idx) => {
-                  const isReverse = idx % 2 !== 0;
-                  return (
+              <div 
+                className="capsules-sliding-track" 
+                style={{ 
+                  transform: `translateX(-${slideIndex * (100 / itemsToShow)}%)`, 
+                  transition: isTransitioning ? 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)' : 'none' 
+                }}
+              >
+                {displayProfiles.map((user, idx) => {
+                   const isReverse = idx % 2 !== 0; 
+                   return (
                     <div key={idx} className={`modern-pencil-card tilt-card ${isReverse ? 'layout-reverse' : ''}`} style={{ flex: `0 0 ${100 / itemsToShow}%` }}>
-                      {/* 40% Image Section - Fits full width of capsule curve */}
                       <div className="card-pfp-section">
-                        <img src={user.img} alt={user.name} onError={(e) => e.target.src = '/logo.png'} />
+                         <img src={user.img} alt={user.name} onError={(e) => e.target.src = '/logo.png'} />
                       </div>
-
-                      {/* 30% Info Section */}
                       <div className="card-info-section" style={{ background: user.bg }}>
                         <h4 className="user-name">{user.name}</h4>
                         <span className="user-role">{user.role}</span>
                       </div>
-
-                      {/* 30% QR Section */}
                       <div className="card-qr-section">
                         <img src={user.qr || `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://prismqr.com&color=00647b&bgcolor=ffffff`} alt="QR" />
                       </div>
