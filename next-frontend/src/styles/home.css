@@ -379,10 +379,11 @@
 }
 
 .modern-pencil-card {
-  width: 320px;
+  width: 22vw;
+  max-width: 420px;
   height: 560px;
   background: white;
-  border-radius: 160px; /* Gorgeous Wide Capsule: Half of 320px */
+  border-radius: 11vw; /* Responsive Radius for Gorgeous look */
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -391,6 +392,11 @@
   position: relative;
   box-sizing: border-box;
   border: 1px solid rgba(255,255,255,0.8);
+}
+
+/* Hard cap for radius on large screens to match 420px max-width */
+@media (min-width: 2000px) {
+  .modern-pencil-card { border-radius: 210px; }
 }
 
 .modern-pencil-card.layout-reverse {
