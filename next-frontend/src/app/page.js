@@ -8,35 +8,35 @@ const STATIC_FALLBACK_USERS = [
   { 
     name: "Sanya Kapoor", 
     role: "Architect", 
-    bg: "#A03929", 
+    bg: "#e1f5f9", // Light Teal
     img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=200",
     desc: "Scan to see my architectural portfolio instantly."
   },
   { 
     name: "David Lawson", 
     role: "Tech Lead", 
-    bg: "#00675F", 
+    bg: "#f3f8ee", // Light Sage
     img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200",
     desc: "Access my GitHub and tech stack in one scan."
   },
   { 
     name: "Aisha Zaveri", 
     role: "Director", 
-    bg: "#747779", 
+    bg: "#f8f9fa", // Soft Gray
     img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=200",
     desc: "The fastest way to connect and save my contact."
   },
   { 
     name: "Vikram Mehta", 
     role: "Sales Director", 
-    bg: "#1a1a1a", 
+    bg: "#fff6f0", // Soft Peach
     img: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=200",
     desc: "Share my digital card and close deals faster."
   },
   { 
     name: "Priya Rao", 
     role: "UI Designer", 
-    bg: "#00647b", 
+    bg: "#f0f2ff", // Soft Blueish-Purple
     img: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=200",
     desc: "Check my latest Dribbble shots via this QR."
   }
@@ -270,7 +270,7 @@ export default function Home() {
                       style={{ flex: `0 0 ${100 / itemsToShow}%` }}
                     >
                       {/* 75% Info Section */}
-                      <div className="card-info-section" style={{ background: user.bg }}>
+                      <div className="card-info-section" style={{ background: user.bg, color: '#333' }}>
                         <div className="card-pfp-wrapper">
                            <img src={user.img} alt={user.name} onError={(e) => e.target.src = '/logo.png'} />
                         </div>
