@@ -45,8 +45,7 @@ export default function Home() {
 
     // Responsive items count
     const handleResize = () => {
-      // Increased counts on desktop due to extreme thinness
-      setItemsToShow(window.innerWidth < 768 ? 1 : 8);
+      setItemsToShow(window.innerWidth < 768 ? 1 : 5);
     };
     handleResize();
     window.addEventListener("resize", handleResize);

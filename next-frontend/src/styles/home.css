@@ -379,14 +379,14 @@
 }
 
 .modern-pencil-card {
-  width: 81px;
+  width: 162px;
   height: 530px;
   background: white;
-  border-radius: 40.5px;
+  border-radius: 81px; /* Capsule Radius: Half of 162px */
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   position: relative;
   box-sizing: border-box;
@@ -457,14 +457,14 @@
 
 @media (max-width: 768px) {
   .modern-pencil-card { 
-     width: 220px; 
-     height: 480px; 
-     border-radius: 110px;
+     width: 310px; 
+     height: 530px; 
+     border-radius: 155px;
      box-shadow: 0 20px 50px rgba(0,0,0,0.1);
   }
-  .user-name { font-size: 1.2rem; }
-  .user-role { font-size: 0.85rem; }
-  .slider-item { padding: 0 20px; } /* More air on mobile */
+  .user-name { font-size: 1.4rem; }
+  .user-role { font-size: 1rem; }
+  .slider-item { padding: 0 15px; }
 }
 
 .modern-pencil-card:hover {
