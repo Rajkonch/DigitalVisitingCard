@@ -404,6 +404,38 @@
   .mobile-toggle span { color: #00647b; font-weight: 700; cursor: pointer; }
   
   .auth-form { padding: 32px 24px; }
+
+  /* Mobile Tabs */
+  .mobile-auth-tabs {
+    display: flex;
+    width: calc(100% - 48px);
+    background: #f5f7f9;
+    padding: 6px;
+    border-radius: 999px;
+    margin: 10px 24px 0 24px;
+    position: relative;
+    z-index: 1000;
+  }
+  .auth-tab {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #595c5e;
+    cursor: pointer;
+    border-radius: 999px;
+    transition: all 0.3s ease;
+  }
+  .auth-tab.active {
+    background: #ffffff;
+    color: #00647b;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-auth-tabs { display: none; }
 }
 
 /* ========================================================= */

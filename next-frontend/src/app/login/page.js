@@ -88,7 +88,14 @@ function LoginContent() {
       setShowPendingDialog(true);
     } catch (err) {
       const msg = err.response?.data?.message || "Registration failed";
-      showToast(msg, "error");
+      if (msg.toLowerCase().includes("exists")) {
+        showToast("You already have an account! Switching to Login...", "success");
+        setTimeout(() => {
+          setIsRegister(false);
+        }, 1500);
+      } else {
+        showToast(msg, "error");
+      }
     } finally {
       setLoading(false);
     }
@@ -141,6 +148,12 @@ function LoginContent() {
 
       <div className="login-animation-wrapper">
         <div className={`auth-container entrance-bounce-active ${isRegister ? "right-panel-active" : ""}`}>
+          
+          {/* Mobile Top Tabs (Visible only on mobile) */}
+          <div className="mobile-auth-tabs">
+             <div className={`auth-tab ${!isRegister ? 'active' : ''}`} onClick={() => setIsRegister(false)}>Login</div>
+             <div className={`auth-tab ${isRegister ? 'active' : ''}`} onClick={() => setIsRegister(true)}>Register</div>
+          </div>
 
           {/* Register Form */}
           <div className="form-container sign-up-container">
