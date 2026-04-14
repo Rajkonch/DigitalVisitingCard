@@ -29,12 +29,12 @@ export default function Home() {
       .then(res => {
         if (res.data && res.data.length > 0) {
           const mapped = res.data.map(card => ({
-             name: card.name?.split(' ')[0] || "User",
-             role: card.jobTitle?.split(' ')[0] || "Pro",
-             bg: "#f8f9fa",
-             img: card.profileImage || "/logo.png",
-             qr: card.qrCodeUrl || card.qrCode,
-             desc: "Prism QR"
+            name: card.name?.split(' ')[0] || "User",
+            role: card.jobTitle?.split(' ')[0] || "Pro",
+            bg: "#f8f9fa",
+            img: card.profileImage || "/logo.png",
+            qr: card.qrCodeUrl || card.qrCode,
+            desc: "Prism QR"
           }));
           setActiveProfiles([...mapped, ...STATIC_FALLBACK_USERS]);
         }
@@ -98,7 +98,7 @@ export default function Home() {
 
     // Responsive items count - Pencil thin 84px width
     const handleResize = () => {
-      setItemsToShow(window.innerWidth < 768 ? 3 : 9);
+      setItemsToShow(window.innerWidth < 768 ? 2 : 7);
     };
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -162,14 +162,14 @@ export default function Home() {
             <div className="slider-viewport">
               <div className="capsules-sliding-track" style={{ transform: `translateX(-${slideIndex * (100 / itemsToShow)}%)`, transition: 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)' }}>
                 {activeProfiles.map((user, idx) => {
-                   const isReverse = idx % 2 !== 0; 
-                   return (
+                  const isReverse = idx % 2 !== 0;
+                  return (
                     <div key={idx} className={`modern-pencil-card tilt-card ${isReverse ? 'layout-reverse' : ''}`} style={{ flex: `0 0 ${100 / itemsToShow}%` }}>
                       {/* 40% Image Section - Fits full width of capsule curve */}
                       <div className="card-pfp-section">
-                         <img src={user.img} alt={user.name} onError={(e) => e.target.src = '/logo.png'} />
+                        <img src={user.img} alt={user.name} onError={(e) => e.target.src = '/logo.png'} />
                       </div>
-                      
+
                       {/* 30% Info Section */}
                       <div className="card-info-section" style={{ background: user.bg }}>
                         <h4 className="user-name">{user.name}</h4>

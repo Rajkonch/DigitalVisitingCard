@@ -364,19 +364,20 @@
 }
 
 .modern-pencil-card {
-  width: 84px;
-  flex: 0 0 84px;
-  height: 500px;
+  width: 120px;
+  flex: 0 0 1200px; /* Error in thought, should be 120px. Fixing: */
+  flex: 0 0 120px;
+  height: 520px;
   background: white;
-  border-radius: 42px; /* Perfect Capsule Radius: Half of Width */
+  border-radius: 60px; /* Capsule Radius: Half of 120px */
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   position: relative;
   box-sizing: border-box;
-  margin: 0 8px;
+  margin: 0 10px;
 }
 
 .modern-pencil-card.layout-reverse {
@@ -443,10 +444,10 @@
 
 @media (max-width: 768px) {
   .modern-pencil-card { 
-     width: 110px; 
-     flex: 0 0 110px; 
+     width: 120px; 
+     flex: 0 0 120px; 
      height: 480px; 
-     border-radius: 55px;
+     border-radius: 60px;
   }
   .user-name { font-size: 0.85rem; }
   .user-role { font-size: 0.65rem; }
