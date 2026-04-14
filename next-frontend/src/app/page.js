@@ -108,7 +108,7 @@ export default function Home() {
 
     // Responsive items count
     const handleResize = () => {
-      setItemsToShow(window.innerWidth < 768 ? 2 : 5);
+      setItemsToShow(window.innerWidth < 768 ? 1 : 4);
     };
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -139,7 +139,7 @@ export default function Home() {
       <header className="header-nav z-index-top">
         <nav className="navbar-glass compact-nav">
           <div className="logo-text">
-            <img src="/logo.png" alt="Logo" style={{ height: '75px', width: 'auto', display: 'block' }} />
+            <img src="/logo.png" alt="Logo" style={{ height: '50px', width: 'auto', display: 'block' }} />
           </div>
           <div className="nav-actions">
             <button className="text-btn" onClick={() => router.push("/login")}>Login</button>

@@ -364,9 +364,9 @@
 }
 
 .user-capsule {
-  width: 200px; /* Base width */
-  flex: 0 0 200px; 
-  height: 400px;
+  width: 250px; /* Slightly narrower */
+  flex: 0 0 250px; 
+  height: 480px; /* Slightly taller */
   background: white;
   border-radius: 90px;
   display: flex;
@@ -381,9 +381,9 @@
 
 @media (max-width: 768px) {
   .user-capsule { 
-     width: 160px;
-     flex: 0 0 160px; 
-     height: 350px; 
+     width: 280px;
+     flex: 0 0 280px; 
+     height: 450px; 
      border-radius: 70px; 
      margin: 0 10px;
   }
