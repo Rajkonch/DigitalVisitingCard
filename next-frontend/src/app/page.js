@@ -31,12 +31,12 @@ export default function Home() {
       .then(res => {
         if (res.data && res.data.length > 0) {
           const mapped = res.data.map(card => ({
-             name: card.name?.split(' ')[0] || "User",
-             role: card.jobTitle?.split(' ')[0] || "Pro",
-             bg: "#f8f9fa",
-             img: card.profileImage || "/logo.png",
-             qr: card.qrCodeUrl || card.qrCode,
-             desc: "Prism QR"
+            name: card.name?.split(' ')[0] || "User",
+            role: card.jobTitle?.split(' ')[0] || "Pro",
+            bg: "#f8f9fa",
+            img: card.profileImage || "/logo.png",
+            qr: card.qrCodeUrl || card.qrCode,
+            desc: "Prism QR"
           }));
           setActiveProfiles([...mapped, ...STATIC_FALLBACK_USERS]);
         }
@@ -45,7 +45,7 @@ export default function Home() {
 
     // Responsive items count
     const handleResize = () => {
-      setItemsToShow(window.innerWidth < 768 ? 1 : 4);
+      setItemsToShow(window.innerWidth < 768 ? 3 : 4);
     };
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -119,10 +119,10 @@ export default function Home() {
               </div>
             </div>
             <div className="hero-content-right reveal delay-100">
-               <div className="hero-artifact animate-floating">
-                  <div className="artifact-glow"></div>
-                  <img className="hero-qr-image" src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://prismqr.com/demo&color=00647b&bgcolor=ffffff" alt="QR" />
-               </div>
+              <div className="hero-artifact animate-floating">
+                <div className="artifact-glow"></div>
+                <img className="hero-qr-image" src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://prismqr.com/demo&color=00647b&bgcolor=ffffff" alt="QR" />
+              </div>
             </div>
           </div>
         </section>
@@ -135,24 +135,24 @@ export default function Home() {
           </div>
           <div className="users-slider-container reveal">
             <div className="slider-viewport">
-              <div 
-                className="capsules-sliding-track" 
-                style={{ 
-                  transform: `translateX(-${slideIndex * (100 / itemsToShow)}%)`, 
-                  transition: isTransitioning ? 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)' : 'none' 
+              <div
+                className="capsules-sliding-track"
+                style={{
+                  transform: `translateX(-${slideIndex * (100 / itemsToShow)}%)`,
+                  transition: isTransitioning ? 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)' : 'none'
                 }}
               >
                 {displayProfiles.map((user, idx) => {
-                   const isReverse = idx % 2 !== 0; 
-                   return (
-                    <div 
-                      key={idx} 
-                      className="slider-item" 
+                  const isReverse = idx % 2 !== 0;
+                  return (
+                    <div
+                      key={idx}
+                      className="slider-item"
                       style={{ flex: `0 0 ${100 / itemsToShow}%` }}
                     >
                       <div className={`modern-pencil-card tilt-card ${isReverse ? 'layout-reverse' : ''}`}>
                         <div className="card-pfp-section">
-                           <img src={user.img} alt={user.name} onError={(e) => e.target.src = '/logo.png'} />
+                          <img src={user.img} alt={user.name} onError={(e) => e.target.src = '/logo.png'} />
                         </div>
                         <div className="card-info-section" style={{ background: user.bg }}>
                           <h4 className="user-name">{user.name}</h4>
