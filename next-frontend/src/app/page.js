@@ -4,28 +4,36 @@ import { useRouter } from "next/navigation";
 import "../styles/home.css";
 
 const userList = [
-  { name: "Rahul S.", role: "Marketing", bg: "#FEA670", arrow: "#EB795F", img: "https://api.dicebear.com/9.x/micah/svg?seed=Rahul&backgroundColor=transparent" },
-  { name: "Priya P.", role: "Design", bg: "linear-gradient(170deg, #F0802B 0%, #B02787 50%, #171C5A 100%)", arrow: "#9C228E", img: "https://api.dicebear.com/9.x/micah/svg?seed=Priya&backgroundColor=transparent" },
-  { name: "Aman K.", role: "Founder", bg: "#7CD6FE", arrow: "#6DA6DF", img: "https://api.dicebear.com/9.x/micah/svg?seed=Aman&backgroundColor=transparent" },
-  { name: "Neha S.", role: "Trainer", bg: "#65BEC3", arrow: "#55A2A7", img: "https://api.dicebear.com/9.x/micah/svg?seed=Neha&backgroundColor=transparent" },
-  { name: "Vikram M.", role: "Sales Dir", bg: "#9EA5B4", arrow: "#8C94A6", img: "https://api.dicebear.com/9.x/micah/svg?seed=Vikram&backgroundColor=transparent" }
+  { name: "Rahul S.", role: "Founder", bg: "#00647b", arrow: "#00cffc", img: "/logo.png" },
+  { name: "Sanya K.", role: "Architect", bg: "#A03929", arrow: "#FFC4B9", img: "https://api.dicebear.com/9.x/micah/svg?seed=Sanya&backgroundColor=transparent" },
+  { name: "David L.", role: "Tech Lead", bg: "#00675F", arrow: "#5FFDEC", img: "https://api.dicebear.com/9.x/micah/svg?seed=David&backgroundColor=transparent" },
+  { name: "Aisha Z.", role: "Director", bg: "#747779", arrow: "#abadaf", img: "https://api.dicebear.com/9.x/micah/svg?seed=Aisha&backgroundColor=transparent" },
+  { name: "Vikram M.", role: "Sales Dir", bg: "#9EA5B4", arrow: "#8C94A6", img: "https://api.dicebear.com/9.x/micah/svg?seed=Vikram&backgroundColor=transparent" },
+  { name: "Anish P.", role: "Engineer", bg: "#00647b", arrow: "#00cffc", img: "https://api.dicebear.com/9.x/micah/svg?seed=Anish&backgroundColor=transparent" },
+  { name: "Priya R.", role: "Designer", bg: "#A03929", arrow: "#FFC4B9", img: "https://api.dicebear.com/9.x/micah/svg?seed=Priya&backgroundColor=transparent" },
+  { name: "Chris J.", role: "Consultant", bg: "#00675F", arrow: "#5FFDEC", img: "https://api.dicebear.com/9.x/micah/svg?seed=Chris&backgroundColor=transparent" },
+  { name: "Neha W.", role: "HR Manager", bg: "#747779", arrow: "#abadaf", img: "https://api.dicebear.com/9.x/micah/svg?seed=Neha&backgroundColor=transparent" }
 ];
 
-// Slider State (2 by 2 on desktop, 1 by 1 on mobile)
-const [itemsPerSlide, setItemsPerSlide] = useState(2);
+// Slider State (5 on desktop, 1 on mobile)
+const [itemsPerSlide, setItemsPerSlide] = useState(5);
 const [slideIndex, setSlideIndex] = useState(0);
+const heroArtifactRef = useRef(null);
+const router = useRouter();
 
 useEffect(() => {
   const handleResize = () => {
-    setItemsPerSlide(window.innerWidth < 640 ? 1 : 2);
+    if (window.innerWidth < 640) setItemsPerSlide(1);
+    else if (window.innerWidth < 1024) setItemsPerSlide(2);
+    else setItemsPerSlide(5);
   };
   handleResize();
   window.addEventListener("resize", handleResize);
 
-  // Auto scroller mapping
+  // Auto scroller mapping - one by one
   const timer = setInterval(() => {
-    setSlideIndex((prev) => (prev + itemsPerSlide >= userList.length ? 0 : prev + itemsPerSlide));
-  }, 3000);
+    setSlideIndex((prev) => (prev + 1 >= userList.length ? 0 : prev + 1));
+  }, 2500);
 
   // Mouse Parallax
   const scene = document.getElementById("hero-scene");
@@ -111,7 +119,7 @@ return (
     <header className="header-nav z-index-top">
       <nav className="navbar-glass compact-nav">
         <div className="logo-text">
-          <img src="/logo.png" alt="Logo" style={{ height: '35px', width: 'auto', display: 'block', filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))' }} />
+          <img src="/logo.png" alt="Logo" style={{ height: '45px', width: 'auto', display: 'block' }} />
         </div>
         <div className="nav-actions">
           <button className="text-btn" onClick={() => router.push("/login")}>Login</button>
@@ -198,30 +206,30 @@ return (
           <p>Experience how different professionals utilize their digital identity.</p>
         </div>
         <div className="users-slider-container reveal">
-          <div className="capsules-container">
-            {userList.slice(slideIndex, slideIndex + itemsPerSlide).map((user, idx) => (
-              <div key={idx} className={`user-capsule tilt-card ${idx % 2 === 0 ? 'offset-up' : 'offset-down shadow-intense'}`}>
-                <div className="capsule-part part-qr">
-                  <img
-                    src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://prismqr.com/p/${user.name.split(' ')[0].toLowerCase()}&color=00647b&bgcolor=ffffff`}
-                    alt="Profile QR"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="capsule-part part-image">
-                  <img src={user.img} alt={user.name} />
-                </div>
-                <div className="capsule-part part-details" style={{ background: user.bg }}>
-                  <span className="tiny-brand">prism.qr</span>
-                  <h4 className="capsule-name">{user.name}</h4>
-                  <p style={{ fontSize: '12px', opacity: 0.9, fontWeight: 700 }}>{user.role}</p>
-                  <div className="arrow-btn" style={{ color: user.arrow }}>
-                    <span className="material-symbols-outlined">north_east</span>
+            <div className="capsules-container" style={{ transform: `translateX(-${(slideIndex * (100/itemsPerSlide))}%)` }}>
+              {userList.map((user, idx) => (
+                <div key={idx} className={`user-capsule tilt-card ${idx % 2 === 0 ? 'offset-up' : 'offset-down shadow-intense'}`} style={{ minWidth: `${100/itemsPerSlide}%` }}>
+                  <div className="capsule-part part-qr">
+                    <img 
+                      src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://prismqr.com/p/${user.name.split(' ')[0].toLowerCase()}&color=00647b&bgcolor=ffffff`} 
+                      alt="Profile QR" 
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className="capsule-part part-image">
+                    <img src={user.img} alt={user.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  </div>
+                  <div className="capsule-part part-details" style={{ background: user.bg }}>
+                    <span className="tiny-brand">prism.qr</span>
+                    <h4 className="capsule-name">{user.name}</h4>
+                    <p style={{ fontSize: '10px', opacity: 0.9, fontWeight: 700 }}>{user.role}</p>
+                    <div className="arrow-btn" style={{ color: user.arrow }}>
+                       <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>north_east</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
         </div>
       </section>
 
@@ -260,25 +268,25 @@ return (
           <h2>Pricing Plans</h2>
         </div>
         <div className="pricing-grid">
-          <div className="pricing-card tilt-card reveal">
-            <h3>Free Demo</h3>
-            <div className="pricing-value">3 Days Free</div>
-            <p>Perfect for getting started with digital identity.</p>
-            <button className="secondary-btn" onClick={() => router.push("/login")}>Start 3-Day Trial</button>
-          </div>
-          <div className="pricing-card pro tilt-card reveal delay-100">
-            <div className="badge-modern absolute-badge">Most Popular</div>
-            <h3>Monthly</h3>
-            <div className="pricing-value">₹250 <small>/mo</small></div>
-            <p>Everything you need to grow and track your network.</p>
-            <button className="primary-btn large" onClick={() => router.push("/login")}>Upgrade Monthly</button>
-          </div>
-          <div className="pricing-card tilt-card reveal delay-200">
-            <h3>Yearly</h3>
-            <div className="pricing-value">₹2500 <small>/yr</small></div>
-            <p>Everything you need to grow and track your network.</p>
-            <button className="secondary-btn" onClick={() => router.push("/login")}>Upgrade Yearly</button>
-          </div>
+            <div className="pricing-card tilt-card reveal">
+              <h3>Demo Card</h3>
+              <div className="pricing-value">15 Days Free</div>
+              <p>Try out the full Prism experience for two weeks.</p>
+              <button className="secondary-btn" onClick={() => router.push("/login")}>Get 15-Day Access</button>
+            </div>
+            <div className="pricing-card pro tilt-card reveal delay-100">
+              <div className="badge-modern absolute-badge">Best Value</div>
+              <h3>Monthly</h3>
+              <div className="pricing-value">₹49 <small>/mo</small></div>
+              <p>Professional identity at an affordable price.</p>
+              <button className="primary-btn large" onClick={() => router.push("/login")}>Choose Monthly</button>
+            </div>
+            <div className="pricing-card tilt-card reveal delay-200">
+              <h3>Yearly</h3>
+              <div className="pricing-value">₹499 <small>/yr</small></div>
+              <p>Everything you need for an entire year.</p>
+              <button className="secondary-btn" onClick={() => router.push("/login")}>Choose Yearly</button>
+            </div>
         </div>
       </section>
 
