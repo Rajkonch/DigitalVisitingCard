@@ -17,7 +17,6 @@ const STATIC_FALLBACK_USERS = [
 
 export default function Home() {
   const router = useRouter();
-  const heroArtifactRef = useRef(null);
   const [activeProfiles, setActiveProfiles] = useState(STATIC_FALLBACK_USERS);
   const [slideIndex, setSlideIndex] = useState(0);
   const [itemsToShow, setItemsToShow] = useState(6);
@@ -46,7 +45,8 @@ export default function Home() {
 
     // Responsive items count
     const handleResize = () => {
-      setItemsToShow(window.innerWidth < 768 ? 1 : 9);
+      // Increased counts on desktop due to extreme thinness
+      setItemsToShow(window.innerWidth < 768 ? 1 : 8);
     };
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -71,11 +71,9 @@ export default function Home() {
 
   // Infinite Rhythmic Auto Scroller Logic
   useEffect(() => {
-    const totalOriginals = activeProfiles.length;
     const interval = setInterval(() => {
       setSlideIndex((prev) => prev + 1);
     }, 2000);
-
     return () => clearInterval(interval);
   }, [activeProfiles.length]);
 
@@ -83,11 +81,9 @@ export default function Home() {
   useEffect(() => {
     const totalOriginals = activeProfiles.length;
     if (slideIndex === totalOriginals) {
-      // Wait for the transition to finish (800ms defined in CSS)
       setTimeout(() => {
         setIsTransitioning(false);
         setSlideIndex(0);
-        // Turn transition back on in next cycle
         setTimeout(() => setIsTransitioning(true), 50);
       }, 800);
     }
@@ -108,11 +104,17 @@ export default function Home() {
       </header>
 
       <main className="main-content">
+        {/* HERO SECTION 🚀 */}
         <section className="hero-section" id="hero-scene">
           <div className="hero-grid">
             <div className="hero-content-left reveal">
-              <h1 className="hero-title">One Scan.<br /><span className="text-gradient">Your Complete Digital Identity.</span></h1>
-              <p className="hero-subtitle">Turn your visiting card into a smart digital profile. Always updated, trackable, and designed to impress.</p>
+              <h1 className="hero-title">
+                One Scan.<br />
+                <span className="text-gradient">Your Complete Digital Identity.</span>
+              </h1>
+              <p className="hero-subtitle">
+                Turn your visiting card into a smart digital profile. Designed to impress.
+              </p>
               <div className="hero-buttons">
                 <button className="primary-btn large btn-3d-lift" onClick={() => router.push("/login")}>Get Started Free</button>
               </div>
@@ -126,6 +128,7 @@ export default function Home() {
           </div>
         </section>
 
+        {/* FEATURED PROFILES - 3D CAPSULES SLIDER */}
         <section className="users-section">
           <div className="section-header reveal">
             <span className="badge-modern">Showcase</span>
@@ -143,16 +146,22 @@ export default function Home() {
                 {displayProfiles.map((user, idx) => {
                    const isReverse = idx % 2 !== 0; 
                    return (
-                    <div key={idx} className={`modern-pencil-card tilt-card ${isReverse ? 'layout-reverse' : ''}`} style={{ flex: `0 0 ${100 / itemsToShow}%` }}>
-                      <div className="card-pfp-section">
-                         <img src={user.img} alt={user.name} onError={(e) => e.target.src = '/logo.png'} />
-                      </div>
-                      <div className="card-info-section" style={{ background: user.bg }}>
-                        <h4 className="user-name">{user.name}</h4>
-                        <span className="user-role">{user.role}</span>
-                      </div>
-                      <div className="card-qr-section">
-                        <img src={user.qr || `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://prismqr.com&color=00647b&bgcolor=ffffff`} alt="QR" />
+                    <div 
+                      key={idx} 
+                      className="slider-item" 
+                      style={{ flex: `0 0 ${100 / itemsToShow}%` }}
+                    >
+                      <div className={`modern-pencil-card tilt-card ${isReverse ? 'layout-reverse' : ''}`}>
+                        <div className="card-pfp-section">
+                           <img src={user.img} alt={user.name} onError={(e) => e.target.src = '/logo.png'} />
+                        </div>
+                        <div className="card-info-section" style={{ background: user.bg }}>
+                          <h4 className="user-name">{user.name}</h4>
+                          <span className="user-role">{user.role}</span>
+                        </div>
+                        <div className="card-qr-section">
+                          <img src={user.qr || `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://prismqr.com&color=00647b&bgcolor=ffffff`} alt="QR" />
+                        </div>
                       </div>
                     </div>
                   );
@@ -162,6 +171,7 @@ export default function Home() {
           </div>
         </section>
 
+        {/* PRICING SECTION */}
         <section className="pricing-section">
           <div className="section-header reveal"><h2>Pricing Plans</h2></div>
           <div className="pricing-grid">
@@ -184,6 +194,7 @@ export default function Home() {
           </div>
         </section>
 
+        {/* CTA SECTION */}
         <section className="cta-section reveal">
           <div className="cta-container tilt-card">
             <div className="cta-content">
