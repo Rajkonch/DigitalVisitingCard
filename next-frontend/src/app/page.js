@@ -4,20 +4,16 @@ import { useRouter } from "next/navigation";
 import API from "../utils/api";
 import "../styles/home.css";
 
-const STATIC_FALLBACK_USERS = [
-  { name: "Rahul S.", role: "Founder", bg: "#00647b", arrow: "#00cffc", img: "/logo.png" },
-  { name: "Sanya K.", role: "Architect", bg: "#A03929", arrow: "#FFC4B9", img: "https://api.dicebear.com/9.x/micah/svg?seed=Sanya&backgroundColor=transparent" },
-  { name: "David L.", role: "Tech Lead", bg: "#00675F", arrow: "#5FFDEC", img: "https://api.dicebear.com/9.x/micah/svg?seed=David&backgroundColor=transparent" }
-];
+const STATIC_FALLBACK_USERS = [];
 
 export default function Home() {
   const router = useRouter();
   const heroArtifactRef = useRef(null);
 
-  // Slider State (5 on desktop, 1 on mobile)
-  const [itemsPerSlide, setItemsPerSlide] = useState(5);
+  // Slider State (2 by 2)
+  const [itemsPerSlide, setItemsPerSlide] = useState(2);
   const [slideIndex, setSlideIndex] = useState(0);
-  const [activeProfiles, setActiveProfiles] = useState(STATIC_FALLBACK_USERS);
+  const [activeProfiles, setActiveProfiles] = useState([]);
 
   useEffect(() => {
     // Fetch Real Active Users
@@ -38,20 +34,19 @@ export default function Home() {
       .catch(err => console.error("Showcase fetch err:", err));
 
     const handleResize = () => {
-      if (window.innerWidth < 640) setItemsPerSlide(1);
-      else if (window.innerWidth < 1024) setItemsPerSlide(2);
-      else setItemsPerSlide(5);
+      setItemsPerSlide(window.innerWidth < 768 ? 1 : 2);
     };
     handleResize();
     window.addEventListener("resize", handleResize);
 
-    // Auto scroller mapping - one by one
+    // Auto scroller mapping - staggered items
     const timer = setInterval(() => {
       setActiveProfiles(prev => {
-        setSlideIndex((curr) => (curr + 1 >= prev.length ? 0 : curr + 1));
+        if (prev.length === 0) return prev;
+        setSlideIndex((curr) => (curr + itemsPerSlide >= prev.length ? 0 : curr + itemsPerSlide));
         return prev;
       });
-    }, 2500);
+    }, 4000);
 
     // Mouse Parallax
     const scene = document.getElementById("hero-scene");
@@ -137,7 +132,7 @@ export default function Home() {
       <header className="header-nav z-index-top">
         <nav className="navbar-glass compact-nav">
           <div className="logo-text">
-            <img src="/logo.png" alt="Logo" style={{ height: '45px', width: 'auto', display: 'block' }} />
+            <img src="/logo.png" alt="Logo" style={{ height: '38px', width: 'auto', display: 'block' }} />
           </div>
           <div className="nav-actions">
             <button className="text-btn" onClick={() => router.push("/login")}>Login</button>
@@ -224,12 +219,12 @@ export default function Home() {
             <p>Experience how different professionals utilize their digital identity.</p>
           </div>
           <div className="users-slider-container reveal">
-            <div className="capsules-container" style={{ transform: `translateX(-${(slideIndex * (100/itemsPerSlide))}%)` }}>
-              {activeProfiles.map((user, idx) => (
-                <div key={idx} className={`user-capsule tilt-card ${idx % 2 === 0 ? 'offset-up' : 'offset-down shadow-intense'}`} style={{ minWidth: `${100/itemsPerSlide}%` }}>
+            <div className="capsules-container">
+              {activeProfiles.slice(slideIndex, slideIndex + itemsPerSlide).map((user, idx) => (
+                <div key={idx} className={`user-capsule tilt-card ${idx % 2 === 0 ? 'offset-up' : 'offset-down shadow-intense'}`}>
                   <div className="capsule-part part-qr">
                     <img 
-                      src={user.qr || `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://prismqr.com/p/${user.name.split(' ')[0].toLowerCase()}&color=00647b&bgcolor=ffffff`} 
+                      src={user.qr || `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://prismqr.com/p/${user.name?.split(' ')[0].toLowerCase() || 'user'}&color=00647b&bgcolor=ffffff`} 
                       alt="Profile QR" 
                       loading="lazy"
                     />
@@ -247,6 +242,7 @@ export default function Home() {
                   </div>
                 </div>
               ))}
+              {activeProfiles.length === 0 && <p style={{ opacity: 0.5 }}>Syncing active profiles...</p>}
             </div>
           </div>
         </section>
