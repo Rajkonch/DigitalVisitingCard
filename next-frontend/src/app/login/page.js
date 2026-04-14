@@ -13,9 +13,11 @@ function LoginContent() {
     email: "",
     mobile: "",
     password: "",
+    confirmPassword: "", // Added
   });
   const [loading, setLoading] = useState(false);
   const [showPendingDialog, setShowPendingDialog] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // Added for toggle
 
   // Modern Stylish Toast State
   const [toast, setToast] = useState({ show: false, message: "", type: "success" });
@@ -35,6 +37,10 @@ function LoginContent() {
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   const handleLogin = async (e) => {
@@ -71,6 +77,13 @@ function LoginContent() {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    
+    // Validate Password match
+    if (formData.password !== formData.confirmPassword) {
+      showToast("Passwords do not match! ❌", "error");
+      return;
+    }
+
     setLoading(true);
     try {
       const payload = {
@@ -170,9 +183,36 @@ function LoginContent() {
                   </div>
                 </div>
                 <div className="input-field">
-                  <div className="icon-input">
+                  <div className="icon-input relative">
                     <span className="material-symbols-outlined">lock</span>
-                    <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleInputChange} required />
+                    <input 
+                      type={showPassword ? "text" : "password"} 
+                      name="password" 
+                      placeholder="Password" 
+                      value={formData.password} 
+                      onChange={handleInputChange} 
+                      required 
+                    />
+                    <span 
+                      className="material-symbols-outlined eye-icon" 
+                      onClick={togglePasswordVisibility}
+                    >
+                      {showPassword ? "visibility_off" : "visibility"}
+                    </span>
+                  </div>
+                </div>
+                {/* Confirm Password Field */}
+                <div className="input-field">
+                  <div className="icon-input relative">
+                    <span className="material-symbols-outlined">lock_reset</span>
+                    <input 
+                      type={showPassword ? "text" : "password"} 
+                      name="confirmPassword" 
+                      placeholder="Confirm Password" 
+                      value={formData.confirmPassword} 
+                      onChange={handleInputChange} 
+                      required 
+                    />
                   </div>
                 </div>
 
@@ -198,9 +238,22 @@ function LoginContent() {
                   </div>
                 </div>
                 <div className="input-field">
-                  <div className="icon-input">
+                  <div className="icon-input relative">
                     <span className="material-symbols-outlined">lock</span>
-                    <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleInputChange} required />
+                    <input 
+                      type={showPassword ? "text" : "password"} 
+                      name="password" 
+                      placeholder="Password" 
+                      value={formData.password} 
+                      onChange={handleInputChange} 
+                      required 
+                    />
+                    <span 
+                      className="material-symbols-outlined eye-icon" 
+                      onClick={togglePasswordVisibility}
+                    >
+                      {showPassword ? "visibility_off" : "visibility"}
+                    </span>
                   </div>
                 </div>
                 <button className="auth-btn solid-btn primary-gradient-btn" type="submit" disabled={loading}>

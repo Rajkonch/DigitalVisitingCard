@@ -167,6 +167,18 @@
   color: #00647b;
 }
 
+.icon-input .eye-icon {
+  left: auto;
+  right: 16px;
+  cursor: pointer;
+  color: #595c5e;
+  transition: color 0.3s;
+}
+
+.icon-input .eye-icon:hover {
+  color: #00647b;
+}
+
 .icon-input input {
   width: 100%;
   padding: 15px 20px 15px 48px;
