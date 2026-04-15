@@ -52,7 +52,7 @@ export default function PublicProfile() {
     name, designation, bio, themeColor, textColor, subTextColor, bgColor, avatar,
     mobile, showMobile, email, showEmail, address, showAddress, cardType,
     sectionOrder, links, products, projects, experience, languages, hobbies, dailyActivities, customHeadings,
-    activePermission, showProjects, showProducts, showExperience, showDaily, showHobby, showLanguage
+    showProjects, showProducts, showExperience, showDaily, showHobby, showLanguage
   } = card;
 
   const isLimited = card.user_permission === 0;
@@ -123,6 +123,23 @@ export default function PublicProfile() {
           width: 100%;
           height: 200px;
           object-fit: cover;
+        }
+
+        .tag-pill {
+          padding: 8px 20px;
+          border-radius: 99px;
+          font-weight: 700;
+          font-size: 0.9rem;
+          display: inline-block;
+          margin: 5px;
+        }
+
+        .custom-item-row {
+          padding: 1rem;
+          background: white;
+          border-radius: 1rem;
+          margin-bottom: 0.75rem;
+          border: 1px solid #f2f2f2;
         }
 
         @media (max-width: 768px) {
@@ -273,12 +290,14 @@ export default function PublicProfile() {
                 </div>
               )}
 
-              {/* Dynamic Sections */}
-              {sectionOrder.map(sectionKey => {
-                if (cardType === 'shopkeeper' && ["projects", "experience", "hobbies"].includes(sectionKey)) return null;
-                if (cardType === 'business' && sectionKey === "products") return null;
+              {/* Dynamic Sections Based on Order */}
+              {sectionOrder && sectionOrder.map(sectionKey => {
+                const cardTypeFiltered = cardType || 'business';
+                if (cardTypeFiltered === 'shopkeeper' && ["projects", "experience", "hobbies"].includes(sectionKey)) return null;
+                if (cardTypeFiltered === 'business' && sectionKey === "products") return null;
 
-                if (sectionKey === "products" && showProducts && products && products.some(p => p.isActive)) {
+                // 1. PRODUCTS
+                if (sectionKey === "products" && (showProducts ?? true) && products && products.some(p => p.isActive)) {
                   return (
                     <div key="products" className="reveal-anim">
                       <h2 style={{ fontSize: '1.8rem', fontWeight: 900, marginBottom: '2rem', color: textColor, textAlign: 'center' }}>Product Catalog</h2>
@@ -303,7 +322,8 @@ export default function PublicProfile() {
                   );
                 }
 
-                if (sectionKey === "experience" && showExperience && experience && experience.some(e => e.isActive)) {
+                // 2. EXPERIENCE
+                if (sectionKey === "experience" && (showExperience ?? true) && experience && experience.some(e => e.isActive)) {
                   return (
                     <div key="experience" className="reveal-anim">
                       <h2 style={{ fontSize: '1.6rem', fontWeight: 900, marginBottom: '1.5rem', color: textColor }}>Professional History</h2>
@@ -316,6 +336,91 @@ export default function PublicProfile() {
                           </div>
                         ))}
                       </div>
+                    </div>
+                  );
+                }
+
+                // 3. PROJECTS
+                if (sectionKey === "projects" && (showProjects ?? true) && projects && projects.some(p => p.isActive)) {
+                  return (
+                    <div key="projects" className="reveal-anim">
+                      <h2 style={{ fontSize: '1.6rem', fontWeight: 900, marginBottom: '1.5rem', color: textColor }}>Featured Projects</h2>
+                      <div className="web-product-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
+                        {projects.filter(p => p.isActive).map((p, i) => (
+                          <div key={i} style={{ background: 'white', padding: '1.5rem', borderRadius: '1.5rem', border: '1px solid #f2f2f2' }}>
+                            <span style={{ color: themeColor, fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase' }}>{p.type}</span>
+                            <h4 style={{ fontSize: '1.2rem', fontWeight: 800, margin: '5px 0' }}>{p.title}</h4>
+                            <p style={{ color: subTextColor, fontSize: '0.9rem', marginBottom: '1rem', lineHeight: 1.5 }}>{p.description}</p>
+                            {p.link && <a href={p.link.startsWith('http') ? p.link : `https://${p.link}`} target="_blank" rel="noopener noreferrer" style={{ color: themeColor, fontWeight: 700, fontSize: '0.85rem', textDecoration: 'none' }}>View Project →</a>}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                }
+
+                // 4. LANGUAGES
+                if (sectionKey === "languages" && (showLanguage ?? true) && languages && languages.some(l => l.isActive)) {
+                  return (
+                    <div key="languages" className="reveal-anim" style={{ textAlign: 'center' }}>
+                      <h2 style={{ fontSize: '1.6rem', fontWeight: 900, marginBottom: '1rem', color: textColor }}>Languages</h2>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+                        {languages.filter(l => l.isActive).map((l, i) => (
+                          <span key={i} className="tag-pill" style={{ background: `${themeColor}12`, color: themeColor }}>{l.name}</span>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                }
+
+                // 5. HOBBIES
+                if (sectionKey === "hobbies" && (showHobby ?? true) && hobbies && hobbies.some(h => h.isActive)) {
+                  return (
+                    <div key="hobbies" className="reveal-anim" style={{ textAlign: 'center' }}>
+                      <h2 style={{ fontSize: '1.6rem', fontWeight: 900, marginBottom: '1rem', color: textColor }}>Interests & Hobbies</h2>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+                        {hobbies.filter(h => h.isActive).map((h, i) => (
+                          <span key={i} className="tag-pill" style={{ background: `${themeColor}08`, color: textColor }}>{h.name}</span>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                }
+
+                // 6. DAILY ACTIVITY
+                if (sectionKey === "daily" && (showDaily ?? true) && dailyActivities && dailyActivities.some(d => d.isActive)) {
+                  return (
+                    <div key="daily" className="reveal-anim">
+                      <h2 style={{ fontSize: '1.6rem', fontWeight: 900, marginBottom: '1.5rem', color: textColor }}>Daily Routine</h2>
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
+                        {dailyActivities.filter(d => d.isActive).map((d, i) => (
+                          <div key={i} style={{ background: 'white', padding: '1rem 1.5rem', borderRadius: '1rem', border: '1px solid #f2f2f2', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <span style={{ fontWeight: 700 }}>{d.title}</span>
+                            <span style={{ color: themeColor, fontWeight: 800, fontSize: '0.8rem' }}>{d.time}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                }
+
+                // 7. CUSTOM HEADINGS
+                if (sectionKey === "custom" && customHeadings && customHeadings.some(h => h.isActive)) {
+                  return (
+                    <div key="custom" className="reveal-anim">
+                      {customHeadings.filter(h => h.isActive).map((h, i) => (
+                        <div key={i} style={{ marginBottom: '3rem' }}>
+                          <h2 style={{ fontSize: '1.6rem', fontWeight: 900, marginBottom: '1.5rem', color: textColor, textAlign: 'center' }}>{h.title}</h2>
+                          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem' }}>
+                            {h.items && h.items.filter(it => it.isActive).map((it, j) => (
+                              <div key={j} className="custom-item-row">
+                                <h4 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 800 }}>{it.title}</h4>
+                                <p style={{ margin: '5px 0 0', color: subTextColor, fontSize: '0.9rem' }}>{it.subtitle}</p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   );
                 }
