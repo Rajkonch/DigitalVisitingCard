@@ -84,6 +84,13 @@ function LoginContent() {
       return;
     }
 
+    // Validate Mobile Number (Exactly 10 digits)
+    const mobileRegex = /^[0-9]{10}$/;
+    if (!mobileRegex.test(formData.mobile)) {
+      showToast("Please enter a valid 10-digit mobile number! 📱", "error");
+      return;
+    }
+
     setLoading(true);
     try {
       const payload = {

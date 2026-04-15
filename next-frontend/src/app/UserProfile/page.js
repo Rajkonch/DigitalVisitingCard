@@ -18,19 +18,62 @@ export default function UserProfile() {
     products: true
   });
 
+  const [dynamicSubscription, setDynamicSubscription] = useState({
+    plan: "Free Trial",
+    status: "Active",
+    startDate: "Loading...",
+    endDate: "Loading...",
+    billingCycle: "15 Days",
+    price: "₹0/trial"
+  });
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) { router.push("/login"); return; }
     
     API.get("/auth/profile").then(res => {
-      setUser(res.data);
-      localStorage.setItem("user", JSON.stringify(res.data));
+      const userData = res.data;
+      setUser(userData);
+      localStorage.setItem("user", JSON.stringify(userData));
+      calculateSubscription(userData);
     }).catch(err => {
       console.error(err);
       const storedUser = localStorage.getItem("user");
-      if (storedUser) setUser(JSON.parse(storedUser));
+      if (storedUser) {
+        const parsed = JSON.parse(storedUser);
+        setUser(parsed);
+        calculateSubscription(parsed);
+      }
     });
   }, [router]);
+
+  const calculateSubscription = (userData) => {
+    if (!userData) return;
+    
+    // Account Created Date
+    const createdDate = userData.createdAt ? new Date(userData.createdAt) : new Date();
+    
+    // 15 Days Trial Logic
+    const expiryDate = new Date(createdDate);
+    expiryDate.setDate(expiryDate.getDate() + 15);
+
+    const formatDate = (date) => {
+      return date.toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'short', 
+        day: 'numeric' 
+      });
+    };
+
+    setDynamicSubscription({
+      plan: "Free Trial",
+      status: "Active",
+      startDate: formatDate(createdDate),
+      endDate: formatDate(expiryDate),
+      billingCycle: "15 Days",
+      price: "₹0/trial"
+    });
+  };
 
   useEffect(() => {
     if (isSidebarOpen || isComingSoonOpen || isSettingsOpen) {
@@ -44,13 +87,13 @@ export default function UserProfile() {
     setVisibility(prev => ({ ...prev, [key]: !prev[key] }));
   };
 
-  const subscription = {
-    plan: "Premium Tier",
-    status: "Active",
-    startDate: "Jan 12, 2024",
-    endDate: "Jan 12, 2025",
-    billingCycle: "Annual",
-    price: "₹2,499/year"
+  const formatDate = (dateString) => {
+    if (!dateString) return "Processing...";
+    return new Date(dateString).toLocaleDateString('en-US', { 
+      year: 'numeric', 
+      month: 'short', 
+      day: 'numeric' 
+    });
   };
 
   return (
@@ -118,7 +161,7 @@ export default function UserProfile() {
                 />
               </div>
               <h2>{user?.name || "Member Name"}</h2>
-              <span className="user-tag">{subscription.plan}</span>
+              <span className="user-tag">{dynamicSubscription.plan}</span>
 
               <div className="detail-row">
                 <span className="detail-label">Email Address</span>
@@ -126,11 +169,11 @@ export default function UserProfile() {
               </div>
               <div className="detail-row">
                 <span className="detail-label">Mobile Number</span>
-                <span className="detail-value">{user?.mobile || "1234567890"}</span>
+                <span className="detail-value">{user?.mobile || "Not Provided"}</span>
               </div>
               <div className="detail-row">
                 <span className="detail-label">Account Created</span>
-                <span className="detail-value">Dec 10, 2023</span>
+                <span className="detail-value">{formatDate(user?.createdAt)}</span>
               </div>
               <div className="detail-row">
                 <span className="detail-label">Status</span>
@@ -157,39 +200,39 @@ export default function UserProfile() {
               </div>
               <div className="status-text">
                 <h3>Subscription Active</h3>
-                <p>Your premium features are fully unlocked.</p>
+                <p>Your {dynamicSubscription.plan} features are unlocked.</p>
               </div>
             </div>
 
             <div className="plan-details-grid">
               <div className="plan-item highlight">
                 <span className="item-label">Current Plan</span>
-                <p className="item-value">{subscription.plan}</p>
+                <p className="item-value">{dynamicSubscription.plan}</p>
               </div>
               <div className="plan-item">
                 <span className="item-label">Billing Cycle</span>
-                <p className="item-value">{subscription.billingCycle}</p>
+                <p className="item-value">{dynamicSubscription.billingCycle}</p>
               </div>
               <div className="plan-item">
                 <span className="item-label">Start Date</span>
-                <p className="item-value">{subscription.startDate}</p>
+                <p className="item-value">{dynamicSubscription.startDate}</p>
               </div>
               <div className="plan-item">
                 <span className="item-label">Expiry Date</span>
-                <p className="item-value" style={{ color: 'var(--secondary)' }}>{subscription.endDate}</p>
+                <p className="item-value" style={{ color: 'var(--secondary)' }}>{dynamicSubscription.endDate}</p>
               </div>
             </div>
 
             <div style={{ marginTop: '2.5rem', padding: '1.5rem', background: 'var(--surface-container-low)', borderRadius: '1rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                <span style={{ fontSize: '0.875rem', fontWeight: 600 }}>Auto-Renewal</span>
-                <span style={{ color: 'var(--success)', fontSize: '0.875rem', fontWeight: 700 }}>Enabled</span>
+                <span style={{ fontSize: '0.875rem', fontWeight: 600 }}>Plan Validity</span>
+                <span style={{ color: 'var(--success)', fontSize: '0.875rem', fontWeight: 700 }}>Active</span>
               </div>
-              <p style={{ fontSize: '0.75rem', color: 'var(--on-surface-variant)' }}>Your plan will automatically renew on {subscription.endDate}.</p>
+              <p style={{ fontSize: '0.75rem', color: 'var(--on-surface-variant)' }}>Your free trial will conclude on {dynamicSubscription.endDate}.</p>
             </div>
 
-            <button className="btn-profile btn-outline-profile" style={{ width: '100%', marginTop: '2rem', borderColor: 'var(--primary)', color: 'var(--primary)' }}>
-              Manage Billing & Invoices
+            <button className="btn-profile btn-outline-profile" onClick={() => setIsComingSoonOpen(true)} style={{ width: '100%', marginTop: '2rem', borderColor: 'var(--primary)', color: 'var(--primary)' }}>
+              Upgrade to Premium Plan
             </button>
           </div>
         </div>
