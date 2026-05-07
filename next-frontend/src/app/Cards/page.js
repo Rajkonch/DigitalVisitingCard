@@ -151,54 +151,40 @@ export default function CardsPage() {
 }
 
 function CardFront({ layout, data }) {
-  if (layout === 'sig-l1' || layout === 'sig-l2') return (
-    <div style={{height:'100%', display:'flex', flexDirection:'column', justifyContent:'space-between'}}>
-       <div style={{display:'flex', justifyContent:'space-between', alignItems:'start'}}>
-          <img src={data.photo} className="p-img" alt="" crossOrigin="anonymous" />
-          <div className="p-qr"><img src={data.qr} alt="" crossOrigin="anonymous" /></div>
-       </div>
-       <div>
-          <h2 className="p-name">{data.name}</h2>
-          <span className="p-role">Creative Professional</span>
-          <div className="p-info">
-             <div>{data.address}</div>
-             <div>{data.mobile}</div>
-             <div>{data.email}</div>
-          </div>
-       </div>
-    </div>
-  );
-  if (layout === 'sig-l3' || layout === 'sig-l4') return (
-    <div style={{height:'100%', display:'flex', flexDirection:'column', justifyContent:'space-between'}}>
-       <div style={{display:'flex', justifyContent:'space-between', alignItems:'start'}}>
-          <div>
-             <h2 className="p-name">{data.name}</h2>
-             <span className="p-role">Executive Manager</span>
-          </div>
-          <img src={data.photo} className="p-img" style={{borderRadius:'8px'}} alt="" crossOrigin="anonymous" />
-       </div>
-       <div style={{display:'flex', justifyContent:'space-between', alignItems:'end'}}>
-          <div className="p-info">
-             <div>{data.address}</div>
-             <div>{data.mobile}</div>
-          </div>
-          <div className="p-qr"><img src={data.qr} alt="" crossOrigin="anonymous" /></div>
-       </div>
+  // Layout logic with forced Address, Mobile, Email on Front
+  const InfoBox = () => (
+    <div className="p-info">
+       <div><span className="material-symbols-outlined" style={{fontSize:'10px'}}>location_on</span> {data.address}</div>
+       <div><span className="material-symbols-outlined" style={{fontSize:'10px'}}>call</span> {data.mobile}</div>
+       <div><span className="material-symbols-outlined" style={{fontSize:'10px'}}>mail</span> {data.email}</div>
     </div>
   );
 
-  // Standard Catalog Layouts
+  if (layout === 'sig-l1' || layout === 'sig-l2' || layout === 'sig-l3' || layout === 'sig-l4') {
+    return (
+      <div style={{height:'100%', display:'flex', flexDirection:'column', justifyContent:'space-between'}}>
+         <div style={{display:'flex', justifyContent:'space-between', alignItems:'start'}}>
+            <img src={data.photo} className="p-img" alt="" crossOrigin="anonymous" />
+            <div className="p-qr"><img src={data.qr} alt="" crossOrigin="anonymous" /></div>
+         </div>
+         <div style={{overflow:'hidden'}}>
+            <h2 className="p-name">{data.name}</h2>
+            <span className="p-role">{data.role}</span>
+            <InfoBox />
+         </div>
+      </div>
+    );
+  }
+
+  // Standard Catalog Layouts (1-4)
   if (layout === 1) return (
     <div className="l-wrap">
        <div className="l-main">
           <div style={{overflow:'hidden'}}>
              <h2 className="p-name">{data.name}</h2>
-             <span className="p-role">Product Specialist</span>
+             <span className="p-role">{data.role}</span>
           </div>
-          <div className="p-info">
-             <div>{data.mobile}</div>
-             <div>{data.email}</div>
-          </div>
+          <InfoBox />
        </div>
        <div className="l-side">
           <img src={data.photo} className="p-img" alt="" crossOrigin="anonymous" />
@@ -211,16 +197,13 @@ function CardFront({ layout, data }) {
     <div className="l-wrap" style={{flexDirection:'column'}}>
        <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
           <img src={data.photo} className="p-img" alt="" crossOrigin="anonymous" />
-          <div style={{textAlign:'right'}}>
+          <div style={{textAlign:'right', overflow:'hidden', maxWidth:'65%'}}>
              <h2 className="p-name">{data.name}</h2>
-             <span className="p-role">Tech Consultant</span>
+             <span className="p-role">{data.role}</span>
           </div>
        </div>
        <div style={{marginTop:'auto', display:'flex', justifyContent:'space-between', alignItems:'flex-end'}}>
-          <div className="p-info">
-             <div>{data.mobile}</div>
-             <div>{data.email}</div>
-          </div>
+          <InfoBox />
           <div className="p-qr"><img src={data.qr} alt="" crossOrigin="anonymous" /></div>
        </div>
     </div>
@@ -233,7 +216,7 @@ function CardBack({ type, data }) {
        <div className="p-qr" style={{width:'80px', height:'80px'}}><img src={data.qr} alt="" crossOrigin="anonymous" /></div>
        <div>
           <h2 className="p-name">{data.name}</h2>
-          <span className="p-role" style={{marginBottom:0}}>Creative Identity</span>
+          <span className="p-role" style={{marginBottom:0}}>{data.role}</span>
        </div>
        <div className="p-info" style={{opacity:0.8}}>
           <div>{data.mobile}</div>
