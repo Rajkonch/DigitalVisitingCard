@@ -5,36 +5,36 @@ import API from "../../utils/api";
 import "../../styles/Cards.css";
 
 const templates = [
-  { id: 1, name: "Vinkur Gold", class: "v1" },
-  { id: 2, name: "Karan Blue Wave", class: "v2" },
-  { id: 3, name: "Rahul Split", class: "v3" },
-  { id: 4, name: "Rajesh Purple", class: "v4" },
-  { id: 5, name: "Neha Emerald", class: "v5" },
-  { id: 6, name: "Rohit Cyber", class: "v6" },
-  { id: 7, name: "Pooja Swirl", class: "v7" },
-  { id: 8, name: "Amit Tech", class: "v8" },
-  { id: 9, name: "Anjali Eco", class: "v9" },
-  { id: 10, name: "Siddharth Neon", class: "v10" },
-  { id: 11, name: "Yash City", class: "v11" },
-  { id: 12, name: "Manish Finance", class: "v12" },
-  { id: 13, name: "Elite Gold", class: "t-gold-elite" },
-  { id: 14, name: "Sky Mix", class: "t-blue-mix" },
-  { id: 15, name: "Mint Fresh", class: "t-mint-mix" },
-  { id: 16, name: "Crimson Night", class: "t-crimson-dark" },
-  { id: 17, name: "Pure White", class: "t-white-pure" },
-  { id: 18, name: "Slate Pro", class: "t-slate-modern" },
-  { id: 19, name: "Sunset Glow", class: "t-sunset-glow" },
-  { id: 20, name: "Eco Forest", class: "t-eco-forest" },
-  { id: 21, name: "Neon Cyber", class: "t-neon-blue" },
-  { id: 22, name: "Classic Leather", class: "t-leather-brown" },
-  { id: 23, name: "Marble Elegant", class: "t-marble-white" },
-  { id: 24, name: "Navy Corp", class: "t-corp-navy" },
-  { id: 25, name: "Lavender Soft", class: "t-lavender" },
-  { id: 26, name: "Charcoal Slate", class: "t-charcoal" },
-  { id: 27, name: "Geometric Red", class: "t-geo-red" },
-  { id: 28, name: "Orange Burst", class: "t-orange-burst" },
-  { id: 29, name: "Tech Grid", class: "t-tech-mesh" },
-  { id: 30, name: "Teal Ocean", class: "t-teal-wave" },
+  { id: 1, name: "Premium Gold", class: "m1" },
+  { id: 2, name: "Corporate Blue", class: "m2" },
+  { id: 3, name: "Sunset Minimal", class: "m3" },
+  { id: 4, name: "Tech Indigo", class: "m4" },
+  { id: 5, name: "Emerald Luxe", class: "m5" },
+  { id: 6, name: "Cyber Neon", class: "m6" },
+  { id: 7, name: "Matte Slate", class: "m7" },
+  { id: 8, name: "Industrial Carbon", class: "m8" },
+  { id: 9, name: "Organic Green", class: "m9" },
+  { id: 10, name: "Modern Purple", class: "m10" },
+  { id: 11, name: "Glassmorphism", class: "m11" },
+  { id: 12, name: "Bauhaus Bold", class: "m12" },
+  { id: 13, name: "Royal Leather", class: "m13" },
+  { id: 14, name: "Clean White", class: "m14" },
+  { id: 15, name: "Oceanic Wave", class: "m15" },
+  { id: 16, name: "Minimal Dot", class: "m16" },
+  { id: 17, name: "Sunset Gradient", class: "m17" },
+  { id: 18, name: "Deep Crimson", class: "m18" },
+  { id: 19, name: "Holographic", class: "m19" },
+  { id: 20, name: "Brutalist", class: "m20" },
+  { id: 21, name: "Marble Elegant", class: "m21" },
+  { id: 22, name: "Neon Violet", class: "m22" },
+  { id: 23, name: "Sky Dual", class: "m23" },
+  { id: 24, name: "Professional Grey", class: "m24" },
+  { id: 25, name: "Eco Leaf", class: "m25" },
+  { id: 26, name: "Space Glow", class: "m26" },
+  { id: 27, name: "Retro Wave", class: "m27" },
+  { id: 28, name: "Prism Reflect", class: "m28" },
+  { id: 29, name: "Soft Clay", class: "m29" },
+  { id: 30, name: "Financial Elite", class: "m30" },
 ];
 
 export default function CardsPage() {
@@ -44,7 +44,7 @@ export default function CardsPage() {
   const cardRefs = useRef({});
 
   useEffect(() => {
-    // Inject html2canvas via CDN
+    // Inject html2canvas CDN
     const script = document.createElement("script");
     script.src = "https://html2canvas.hertzen.com/dist/html2canvas.min.js";
     script.async = true;
@@ -75,25 +75,34 @@ export default function CardsPage() {
   const handleDownload = (e, id, side) => {
     e.stopPropagation();
     if (!window.html2canvas) {
-      alert("Loading engine... Please try in 2 seconds.");
+      alert("Loading engine... Please wait 2 seconds.");
       return;
     }
 
-    const cardElement = cardRefs.current[id];
-    if (!cardElement) return;
+    const cardContainer = cardRefs.current[id];
+    const target = side === 'front' ? cardContainer.querySelector('.p-card-front') : cardContainer.querySelector('.p-card-back');
 
-    // Determine which face to capture
-    const elementToCapture = side === 'front' 
-      ? cardElement.querySelector('.p-card-front') 
-      : cardElement.querySelector('.p-card-back');
+    // To prevent "inverted text" on the back side, we temporarily remove the flip transform
+    const originalTransform = target.style.transform;
+    if (side === 'back') {
+      target.style.transform = 'none';
+      target.style.backfaceVisibility = 'visible';
+    }
 
-    window.html2canvas(elementToCapture, {
-      scale: 3, // High quality
+    window.html2canvas(target, {
+      scale: 3,
       useCORS: true,
+      logging: false,
       backgroundColor: null,
     }).then(canvas => {
+      // Restore styles
+      if (side === 'back') {
+        target.style.transform = originalTransform;
+        target.style.backfaceVisibility = 'hidden';
+      }
+      
       const link = document.createElement('a');
-      link.download = `BusinessCard_${id}_${side}.png`;
+      link.download = `Card_${id}_${side}.png`;
       link.href = canvas.toDataURL("image/png");
       link.click();
     });
@@ -101,62 +110,68 @@ export default function CardsPage() {
 
   const data = {
     name: profile?.name || "Somendra Singh",
-    role: profile?.designation || "Creative Director",
+    role: profile?.designation || "Executive Product Manager",
     email: profile?.email || "somendra@prismqr.com",
     mobile: profile?.mobile || "+91 63877 18208",
     website: "www.prismqr.com",
-    address: profile?.address || "Gandhi Nagar, Konch, Jalaun, UP",
+    address: profile?.address || "Cyber Park, Gurgaon, HR, India",
     photo: profile?.avatar || "https://api.dicebear.com/7.x/avataaars/svg?seed=Somendra",
-    qr: profile?.qrCodeUrl || profile?.qrCode || "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=PrismQR",
-    company: "Prism Digital Solutions"
+    qr: profile?.qrCodeUrl || profile?.qrCode || "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=PrismQR"
   };
 
   return (
-    <div className="cards-screen-wrapper">
-      <aside className="fixed-sidebar">
-        <div className="sidebar-logo">
+    <div className="dashboard-container">
+      {/* Sidebar - EXACT SAME as UserDashboard */}
+      <aside className="sidebar">
+        <div className="sidebar-logo-section">
           <img src="/logo.png" alt="Logo" style={{ height: '50px' }} />
         </div>
-        <nav className="sidebar-nav">
-          <a className="nav-link" onClick={() => router.push('/UserDashboard')}>
-            <span className="material-symbols-outlined">dashboard</span>
-            <span>Dashboard</span>
+        <nav className="nav-links">
+          <a className="nav-item" onClick={() => router.push('/UserDashboard')} style={{ cursor: 'pointer' }}>
+            <span className="material-symbols-outlined">home</span>
+            <span>Home</span>
           </a>
-          <a className="nav-link active">
-            <span className="material-symbols-outlined">style</span>
-            <span>Signature Series</span>
-          </a>
-          <a className="nav-link" onClick={() => router.push('/UserProfile')}>
+          <a className="nav-item" onClick={() => router.push('/UserProfile')} style={{ cursor: 'pointer' }}>
             <span className="material-symbols-outlined">person</span>
-            <span>My Profile</span>
+            <span>Profile</span>
           </a>
-          <a className="nav-link logout" onClick={() => router.push('/login')}>
+          <a className="nav-item active">
+            <span className="material-symbols-outlined">style</span>
+            <span>My Cards</span>
+          </a>
+        </nav>
+        <div className="sidebar-footer">
+          <button className="upgrade-btn">Get Premium</button>
+          <a className="nav-item" onClick={() => router.push('/login')} style={{ cursor: 'pointer' }}>
             <span className="material-symbols-outlined">logout</span>
             <span>Logout</span>
           </a>
-        </nav>
+        </div>
       </aside>
 
-      <div className="scrollable-content">
-        <header className="content-header">
-          <h1>Premium Business Cards</h1>
-          <p>Professional grade designs with instant high-quality download.</p>
-        </header>
+      {/* Main Content */}
+      <div className="main-wrapper">
+        <main className="cards-scroll-container">
+          <div className="cards-page-header">
+            <h1>Elite Card Collection</h1>
+            <p>30+ Handcrafted professional templates for your digital presence.</p>
+          </div>
 
-        <div className="cards-grid-main">
-          {templates.map((t) => (
-            <CardWrapper 
-              key={t.id} 
-              id={t.id} 
-              flipped={flippedCards[t.id]} 
-              toggle={toggleFlip} 
-              data={data}
-              templateClass={t.class}
-              onDownload={handleDownload}
-              innerRef={el => cardRefs.current[t.id] = el}
-            />
-          ))}
-        </div>
+          <div className="cards-grid-auto">
+            {templates.map((t) => (
+              <CardWrapper 
+                key={t.id} 
+                id={t.id} 
+                flipped={flippedCards[t.id]} 
+                toggle={toggleFlip} 
+                data={data}
+                templateClass={t.class}
+                onDownload={handleDownload}
+                innerRef={el => cardRefs.current[t.id] = el}
+              />
+            ))}
+          </div>
+        </main>
       </div>
     </div>
   );
@@ -164,54 +179,44 @@ export default function CardsPage() {
 
 function CardWrapper({ id, flipped, toggle, data, templateClass, onDownload, innerRef }) {
   return (
-    <div className={`premium-card-item ${flipped ? "is-flipped" : ""}`} ref={innerRef}>
-      {/* Floating Download Buttons */}
-      <div className="download-controls">
-         <button className="dl-btn" onClick={(e) => onDownload(e, id, 'front')}>
-           <span className="material-symbols-outlined">image</span> F
-         </button>
-         <button className="dl-btn" onClick={(e) => onDownload(e, id, 'back')}>
-           <span className="material-symbols-outlined">image</span> B
-         </button>
+    <div className={`p-card-container ${flipped ? "is-flipped" : ""}`} ref={innerRef}>
+      <div className="p-dl-overlay">
+         <button onClick={(e) => onDownload(e, id, 'front')}>Front</button>
+         <button onClick={(e) => onDownload(e, id, 'back')}>Back</button>
       </div>
-
       <div className="p-card-inner" onClick={() => toggle(id)}>
         {/* FRONT */}
         <div className={`p-card-front ${templateClass}`}>
-          <div className="p-content">
-            <div className="p-header">
-               <img src={data.photo} className="p-avatar" alt="" />
-               <div className="p-title-group">
-                  <h2 className="p-name">{data.name}</h2>
-                  <span className="p-role">{data.role}</span>
+          <div className="p-design-area">
+            <div className="p-info-box">
+               <h2 className="p-name">{data.name}</h2>
+               <span className="p-role">{data.role}</span>
+               <div className="p-contact">
+                 <div><span className="material-symbols-outlined">call</span> {data.mobile}</div>
+                 <div><span className="material-symbols-outlined">mail</span> {data.email}</div>
+                 <div><span className="material-symbols-outlined">language</span> {data.website}</div>
                </div>
             </div>
-            <div className="p-details">
-               <div className="p-row"><span className="material-symbols-outlined">call</span> {data.mobile}</div>
-               <div className="p-row"><span className="material-symbols-outlined">mail</span> {data.email}</div>
-               <div className="p-row"><span className="material-symbols-outlined">language</span> {data.website}</div>
+            <div className="p-graphic-side">
+               <div className="p-photo-wrap">
+                 <img src={data.photo} className="p-photo" alt="" crossOrigin="anonymous" />
+               </div>
+               <div className="p-qr-wrap">
+                 <img src={data.qr} className="p-qr" alt="QR" crossOrigin="anonymous" />
+               </div>
             </div>
-          </div>
-          <div className="p-qr-box">
-             <img src={data.qr} alt="QR" crossOrigin="anonymous" />
           </div>
         </div>
 
         {/* BACK */}
         <div className={`p-card-back ${templateClass}`}>
-           <div className="back-layout">
-              <div className="back-info">
-                 <h3 className="back-name">{data.name}</h3>
-                 <p className="back-role">{data.role}</p>
-                 <div className="back-address">
-                    <span className="material-symbols-outlined">location_on</span>
-                    {data.address}
-                 </div>
+           <div className="p-back-content">
+              <h3 className="back-name">{data.name}</h3>
+              <p className="back-role">{data.role}</p>
+              <div className="back-qr-large">
+                <img src={data.qr} alt="QR" crossOrigin="anonymous" />
               </div>
-              <div className="back-qr-zone">
-                 <img src={data.qr} alt="QR" crossOrigin="anonymous" />
-                 <span style={{fontSize: '0.5rem', fontWeight: 900}}>VERIFIED</span>
-              </div>
+              <div className="back-address">{data.address}</div>
            </div>
         </div>
       </div>
