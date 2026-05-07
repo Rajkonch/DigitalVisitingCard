@@ -5,12 +5,12 @@ import API from "../../utils/api";
 import "../../styles/Cards.css";
 
 const templates = [
-  // 1-15: LUXURY DARK
-  ...Array.from({ length: 15 }, (_, i) => ({ id: i + 1, name: `Luxury Dark ${i + 1}`, class: `ld ld${i + 1}` })),
+  // 1-15: LUXURY DARK (Mix of back types)
+  ...Array.from({ length: 15 }, (_, i) => ({ id: i + 1, name: `Luxury Dark ${i + 1}`, class: `ld ld${i + 1}`, backType: (i % 4) + 1 })),
   // 16-30: SIMPLE COLORFUL
-  ...Array.from({ length: 15 }, (_, i) => ({ id: i + 16, name: `Modern Color ${i + 1}`, class: `sc sc${i + 1}` })),
+  ...Array.from({ length: 15 }, (_, i) => ({ id: i + 16, name: `Modern Color ${i + 1}`, class: `sc sc${i + 1}`, backType: (i % 4) + 1 })),
   // 31-45: MULTI-COLOR MIX
-  ...Array.from({ length: 15 }, (_, i) => ({ id: i + 31, name: `Elite Mix ${i + 1}`, class: `mc mc${i + 1}` })),
+  ...Array.from({ length: 15 }, (_, i) => ({ id: i + 31, name: `Elite Mix ${i + 1}`, class: `mc mc${i + 1}`, backType: (i % 4) + 1 })),
 ];
 
 export default function CardsPage() {
@@ -60,54 +60,48 @@ export default function CardsPage() {
       ? cardContainer.querySelector('.p-card-front') 
       : cardContainer.querySelector('.p-card-back');
 
-    // FIX for inverted text: Disable flip transform temporarily
     const originalTransform = target.style.transform;
-    const originalBackface = target.style.backfaceVisibility;
-
     if (side === 'back') {
       target.style.transform = 'none';
       target.style.backfaceVisibility = 'visible';
     }
 
     window.html2canvas(target, {
-      scale: 4, // Ultra high quality
+      scale: 4,
       useCORS: true,
       logging: false,
       backgroundColor: null,
     }).then(canvas => {
       if (side === 'back') {
         target.style.transform = originalTransform;
-        target.style.backfaceVisibility = originalBackface;
+        target.style.backfaceVisibility = 'hidden';
       }
-      
       const link = document.createElement('a');
-      link.download = `BusinessCard_${id}_${side}.png`;
+      link.download = `PrismCard_${id}_${side}.png`;
       link.href = canvas.toDataURL("image/png");
       link.click();
     });
   };
 
   const data = {
-    name: profile?.name || "Rajkumar Konch",
-    role: profile?.designation || "Creative UI/UX Architect",
-    email: profile?.email || "rajkumar@prismqr.com",
+    name: profile?.name || "Somendra Singh",
+    role: profile?.designation || "Creative UI/UX Designer",
+    email: profile?.email || "somendra@prismqr.com",
     mobile: profile?.mobile || "+91 63877 18208",
     website: "www.prismqr.com",
     address: profile?.address || "Gandhi Nagar, Konch, Jalaun, UP, India",
-    photo: profile?.avatar || "https://api.dicebear.com/7.x/avataaars/svg?seed=Raj",
+    photo: profile?.avatar || "https://api.dicebear.com/7.x/avataaars/svg?seed=Somendra",
     qr: profile?.qrCodeUrl || profile?.qrCode || "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=PrismQR"
   };
 
   return (
     <div className="dashboard-container">
-      {/* Sidebar - EXACT REPLICATION */}
+      {/* SideNavBar - EXACT SAME AS USERDASHBOARD */}
       <aside className="sidebar">
         <div className="sidebar-logo-section">
-           <div className="logo-icon">P</div>
-           <div className="logo-text">
-             <h1>Prism QR</h1>
-             <p>Digital Identity</p>
-           </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.5rem 0' }}>
+            <img src="/logo.png" alt="Logo" style={{ height: '50px', width: 'auto', objectFit: 'contain' }} />
+          </div>
         </div>
         <nav className="nav-links">
           <a className="nav-item" onClick={() => router.push('/UserDashboard')} style={{ cursor: 'pointer' }}>
@@ -135,8 +129,8 @@ export default function CardsPage() {
       <div className="main-wrapper">
         <main className="cards-scroll-view">
           <div className="cards-header-section">
-            <h1>Premium Signature Collection</h1>
-            <p>45 Handcrafted 2026-ready templates for the modern professional.</p>
+            <h1>Signature Premium Series</h1>
+            <p>45 Professional handcrafted cards with varied front and back designs.</p>
           </div>
 
           <div className="cards-grid-display">
@@ -148,6 +142,7 @@ export default function CardsPage() {
                 toggle={toggleFlip} 
                 data={data}
                 templateClass={t.class}
+                backType={t.backType}
                 onDownload={handleDownload}
                 innerRef={el => cardRefs.current[t.id] = el}
               />
@@ -159,12 +154,12 @@ export default function CardsPage() {
   );
 }
 
-function CardWrapper({ id, flipped, toggle, data, templateClass, onDownload, innerRef }) {
+function CardWrapper({ id, flipped, toggle, data, templateClass, backType, onDownload, innerRef }) {
   return (
     <div className={`p-card-card ${flipped ? "is-flipped" : ""}`} ref={innerRef}>
       <div className="p-tools">
-         <button onClick={(e) => onDownload(e, id, 'front')}>Front</button>
-         <button onClick={(e) => onDownload(e, id, 'back')}>Back</button>
+         <button onClick={(e) => onDownload(e, id, 'front')}>Image F</button>
+         <button onClick={(e) => onDownload(e, id, 'back')}>Image B</button>
       </div>
       <div className="p-card-inner" onClick={() => toggle(id)}>
         {/* FRONT */}
@@ -178,9 +173,9 @@ function CardWrapper({ id, flipped, toggle, data, templateClass, onDownload, inn
                  </div>
               </div>
               <div className="p-card-info">
-                 <div><span className="material-symbols-outlined" style={{fontSize: '0.9rem'}}>call</span> {data.mobile}</div>
-                 <div><span className="material-symbols-outlined" style={{fontSize: '0.9rem'}}>mail</span> {data.email}</div>
-                 <div><span className="material-symbols-outlined" style={{fontSize: '0.9rem'}}>language</span> {data.website}</div>
+                 <div><span className="material-symbols-outlined" style={{fontSize: '0.8rem'}}>call</span> {data.mobile}</div>
+                 <div><span className="material-symbols-outlined" style={{fontSize: '0.8rem'}}>mail</span> {data.email}</div>
+                 <div><span className="material-symbols-outlined" style={{fontSize: '0.8rem'}}>language</span> {data.website}</div>
               </div>
            </div>
            <div className="p-card-qr-side">
@@ -190,26 +185,54 @@ function CardWrapper({ id, flipped, toggle, data, templateClass, onDownload, inn
            </div>
         </div>
 
-        {/* BACK */}
-        <div className={`p-card-back ${templateClass}`}>
-           <div className="back-inner">
-              <div className="back-left">
-                 <h3 className="back-name">{data.name}</h3>
-                 <span className="back-role">{data.role}</span>
-                 <div className="back-addr">
-                    <span className="material-symbols-outlined" style={{fontSize: '0.9rem'}}>location_on</span>
-                    {data.address}
-                 </div>
-              </div>
-              <div className="back-right">
-                 <div className="back-qr-box">
-                    <img src={data.qr} alt="QR" crossOrigin="anonymous" />
-                 </div>
-                 <span style={{fontSize: '0.5rem', fontWeight: 900}}>VERIFIED</span>
-              </div>
-           </div>
+        {/* BACK - Varied layouts */}
+        <div className={`p-card-back ${templateClass} back-type-${backType}`}>
+           <BackContent type={backType} data={data} />
+           <div className="p-powered">POWERED BY PRISM QR</div>
         </div>
       </div>
     </div>
+  );
+}
+
+function BackContent({ type, data }) {
+  if (type === 1) {
+    return (
+      <>
+        <div className="back-qr-large">
+          <img src={data.qr} alt="QR" crossOrigin="anonymous" />
+        </div>
+        <h3 className="back-name">{data.name}</h3>
+        <span className="back-role">{data.role}</span>
+        <div className="back-address">{data.address}</div>
+      </>
+    );
+  }
+  if (type === 2) {
+    return (
+      <div className="back-type-2">
+         <div className="back-info-side">
+            <h3 className="back-name">{data.name}</h3>
+            <span className="back-role">{data.role}</span>
+            <div className="back-address">{data.address}</div>
+         </div>
+         <div className="back-qr-side">
+            <img src={data.qr} alt="QR" crossOrigin="anonymous" />
+         </div>
+      </div>
+    );
+  }
+  // Default to Type 3
+  return (
+    <>
+      <div style={{ flex: 1 }}>
+        <h3 className="back-name">{data.name}</h3>
+        <span className="back-role">{data.role}</span>
+        <div className="back-address">{data.address}</div>
+      </div>
+      <div className="back-qr-large" style={{ margin: 0 }}>
+        <img src={data.qr} alt="QR" crossOrigin="anonymous" />
+      </div>
+    </>
   );
 }
