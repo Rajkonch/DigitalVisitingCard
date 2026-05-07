@@ -38,11 +38,11 @@ export default function CardsPage() {
     bio: profile?.bio || "Transforming digital landscapes with innovative QR solutions and modern branding.",
     mobile: profile?.mobile || "+91 63877 18208",
     email: profile?.email || "somendra@prismqr.com",
-    address: profile?.address || "Building 4B, Cyber City, Phase III, Gurgaon, HR",
+    address: profile?.address || "Building 4B, Cyber City, Gurgaon, HR",
     photo: profile?.avatar || "https://api.dicebear.com/7.x/avataaars/svg?seed=Somendra",
     qr: profile?.qrCodeUrl || profile?.qrCode || "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=PrismQR",
     website: "www.prismqr.com",
-    socials: profile?.links?.slice(0, 3) || [{icon: 'public', content: 'facebook.com'}, {icon: 'share', content: 'instagram.com'}]
+    company: "Prism Digital Solutions"
   };
 
   return (
@@ -59,15 +59,15 @@ export default function CardsPage() {
           </a>
           <a className="nav-item active" href="#">
             <span className="material-symbols-outlined">style</span>
-            <span>Card Collection</span>
+            <span>My Designs</span>
           </a>
           <a className="nav-item" onClick={() => router.push('/UserProfile')} style={{ cursor: 'pointer' }}>
             <span className="material-symbols-outlined">person</span>
-            <span>My Profile</span>
+            <span>Profile</span>
           </a>
         </nav>
         <div className="sidebar-footer">
-          <button className="upgrade-btn">Unlock All Designs</button>
+          <button className="upgrade-btn">Get Premium</button>
           <a className="nav-item" onClick={() => router.push('/login')} style={{ cursor: 'pointer' }}>
             <span className="material-symbols-outlined">logout</span>
             <span>Logout</span>
@@ -79,137 +79,144 @@ export default function CardsPage() {
         <main className="cards-page-container">
           <div className="cards-header">
             <h1>Signature Card Collection</h1>
-            <p>World-class professional designs tailored to your identity.</p>
+            <p>Premium professional designs curated for your digital identity.</p>
           </div>
 
-          <div className="cards-grid">
+          <div className="cards-grid-two-col">
             
-            {/* 1. Premium Dark & Gold */}
+            {/* 1. Red & Black Wave */}
             <CardWrapper id={1} flipped={flippedCards[1]} toggle={toggleFlip} back={data}>
               <div className="card-front t1-front">
-                <img src={data.photo} className="card-photo" alt="" />
                 <h2 className="c-name">{data.name}</h2>
-                <span className="c-role" style={{letter-spacing: '4px'}}>{data.role}</span>
-                <div style={{marginTop: '1rem', fontSize: '0.8rem', opacity: 0.8}}>
-                  {data.mobile} • {data.website}
+                <span className="c-role" style={{color: '#e11d48'}}>{data.role}</span>
+                <div style={{marginTop: '1.5rem'}}>
+                  <div className="c-detail"><span className="material-symbols-outlined" style={{fontSize: '1rem'}}>call</span> {data.mobile}</div>
+                  <div className="c-detail"><span className="material-symbols-outlined" style={{fontSize: '1rem'}}>mail</span> {data.email}</div>
+                  <div className="c-detail"><span className="material-symbols-outlined" style={{fontSize: '1rem'}}>language</span> {data.website}</div>
+                </div>
+                <div className="t1-wave"></div>
+                <div className="t1-qr-overlay">
+                  <img src={data.qr} style={{width: '100%'}} alt="QR" />
                 </div>
               </div>
             </CardWrapper>
 
-            {/* 2. Corporate Geometric */}
+            {/* 2. Minimalist Large QR */}
             <CardWrapper id={2} flipped={flippedCards[2]} toggle={toggleFlip} back={data}>
               <div className="card-front t2-front">
-                <div className="t2-accent">
-                  <img src={data.photo} style={{width: '70px', height: '70px', borderRadius: '12px', border: '3px solid #fff'}} alt="" />
+                <div className="t2-left">
+                  <h2 className="c-name" style={{fontSize: '1.8rem'}}>{data.name}</h2>
+                  <span className="c-role" style={{fontStyle: 'italic', color: '#666'}}>{data.role}</span>
+                  <div style={{marginTop: '2rem'}}>
+                    <div className="c-detail" style={{fontWeight: 700}}>{data.mobile}</div>
+                    <div className="c-detail">{data.email}</div>
+                    <div className="c-detail" style={{opacity: 0.7}}>{data.website}</div>
+                  </div>
                 </div>
-                <div className="t2-info">
-                  <h2 className="c-name" style={{color: '#000080'}}>{data.name}</h2>
-                  <span className="c-role">{data.role}</span>
-                  <div className="c-detail"><span className="material-symbols-outlined" style={{fontSize: '1rem', color: '#000080'}}>call</span> {data.mobile}</div>
-                  <div className="c-detail"><span className="material-symbols-outlined" style={{fontSize: '1rem', color: '#000080'}}>mail</span> {data.email}</div>
+                <div className="t2-right">
+                  <img src={data.qr} className="t2-qr-large" alt="QR" />
                 </div>
               </div>
             </CardWrapper>
 
-            {/* 3. Clean Minimalist */}
+            {/* 3. Green & Black Corporate */}
             <CardWrapper id={3} flipped={flippedCards[3]} toggle={toggleFlip} back={data}>
               <div className="card-front t3-front">
-                <div className="t3-border"></div>
-                <div className="t3-content">
-                  <h2 className="c-name" style={{fontSize: '1.8rem'}}>{data.name}</h2>
-                  <span className="c-role" style={{color: '#e11d48'}}>{data.role}</span>
-                  <div style={{marginTop: '1.5rem'}}>
-                    <div className="c-detail">{data.mobile}</div>
-                    <div className="c-detail" style={{opacity: 0.6}}>{data.email}</div>
-                    <div className="c-detail" style={{opacity: 0.6}}>{data.website}</div>
-                  </div>
+                <div className="t3-left">
+                   <h2 className="c-name" style={{fontSize: '1.5rem', textAlign: 'center'}}>{data.name}</h2>
+                   <span className="c-role">{data.role}</span>
+                   <img src={data.qr} style={{width: '80px', marginTop: '1rem'}} alt="QR" />
+                </div>
+                <div className="t3-right">
+                   <div className="t3-right-accent">
+                      <span className="material-symbols-outlined" style={{marginRight: '10px'}}>apartment</span>
+                      <span style={{fontWeight: 800, fontSize: '0.8rem'}}>{data.company}</span>
+                   </div>
+                   <div className="c-detail"><span className="material-symbols-outlined" style={{fontSize: '1rem'}}>location_on</span> {data.address}</div>
+                   <div className="c-detail"><span className="material-symbols-outlined" style={{fontSize: '1rem'}}>call</span> {data.mobile}</div>
+                   <div className="c-detail"><span className="material-symbols-outlined" style={{fontSize: '1rem'}}>language</span> {data.website}</div>
                 </div>
               </div>
             </CardWrapper>
 
-            {/* 4. Tech Gradient */}
+            {/* 4. Aviato Red Strip */}
             <CardWrapper id={4} flipped={flippedCards[4]} toggle={toggleFlip} back={data}>
               <div className="card-front t4-front">
-                <div className="t4-mesh"></div>
-                <div className="t4-content">
-                  <div style={{display: 'flex', justifyContent: 'space-between'}}>
-                    <h2 className="c-name">{data.name}</h2>
-                    <span className="material-symbols-outlined" style={{color: '#00f2fe'}}>qr_code_2</span>
+                <div className="t4-top">
+                  <img src={data.photo} className="card-photo" style={{width: '80px', height: '80px', borderRadius: '50%'}} alt="" />
+                  <div className="info-group">
+                    <div className="c-detail"><span className="material-symbols-outlined" style={{fontSize: '1rem'}}>call</span> {data.mobile}</div>
+                    <div className="c-detail"><span className="material-symbols-outlined" style={{fontSize: '1rem'}}>mail</span> {data.email}</div>
+                    <div className="c-detail" style={{fontSize: '0.7rem'}}><span className="material-symbols-outlined" style={{fontSize: '1rem'}}>location_on</span> {data.address}</div>
                   </div>
-                  <span className="c-role" style={{color: '#00f2fe'}}>{data.role}</span>
-                  <div style={{marginTop: 'auto'}}>
-                    <p style={{fontSize: '0.75rem', marginBottom: '5px', opacity: 0.7}}>DIGITAL HUB • {new Date().getFullYear()}</p>
-                    <div className="c-detail" style={{fontWeight: 700}}>{data.mobile}</div>
+                </div>
+                <div className="t4-bottom">
+                  <div>
+                    <h2 className="c-name" style={{fontSize: '1.2rem'}}>{data.name}</h2>
+                    <span className="c-role" style={{fontSize: '0.65rem'}}>{data.role}</span>
                   </div>
+                  <img src={data.qr} style={{width: '50px', background: '#fff', padding: '2px', borderRadius: '4px'}} alt="QR" />
                 </div>
               </div>
             </CardWrapper>
 
-            {/* 5. Architectural Vertical */}
+            {/* 5. Teal Geometric */}
             <CardWrapper id={5} flipped={flippedCards[5]} toggle={toggleFlip} back={data}>
               <div className="card-front t5-front">
-                <div className="t5-sidebar">
-                  <div className="t5-v-text">ESTABLISHED 2024</div>
-                </div>
-                <div className="t5-main">
-                  <h2 className="c-name">{data.name}</h2>
+                <div className="t5-info">
+                  <h2 className="c-name" style={{color: '#008080'}}>{data.name}</h2>
                   <span className="c-role">{data.role}</span>
-                  <div style={{marginTop: '1rem', borderTop: '1px solid #ddd', paddingTop: '1rem'}}>
+                  <div style={{marginTop: '1rem'}}>
                     <div className="c-detail">{data.mobile}</div>
                     <div className="c-detail">{data.email}</div>
+                    <div className="c-detail" style={{fontSize: '0.75rem'}}>{data.address}</div>
                   </div>
+                </div>
+                <div className="t5-accent">
+                   <div style={{textAlign: 'center', color: '#fff'}}>
+                      <img src={data.qr} style={{width: '70px', background: '#fff', padding: '3px', marginBottom: '10px'}} alt="QR" />
+                      <p style={{fontSize: '0.6rem', fontWeight: 900}}>{data.company}</p>
+                   </div>
                 </div>
               </div>
             </CardWrapper>
 
-            {/* 6. Creative Brush */}
+            {/* 6. Luxury Gold */}
             <CardWrapper id={6} flipped={flippedCards[6]} toggle={toggleFlip} back={data}>
               <div className="card-front t6-front">
-                <div className="t6-circle"></div>
-                <div style={{display: 'flex', gap: '1.5rem', alignItems: 'center'}}>
-                  <img src={data.photo} className="card-photo" style={{width: '60px', height: '60px'}} alt="" />
-                  <div className="info-group">
-                    <h2 className="c-name">{data.name}</h2>
-                    <span className="c-role">{data.role}</span>
-                  </div>
-                </div>
-                <div style={{marginTop: 'auto'}}>
-                  <p style={{fontSize: '0.7rem', color: '#666', marginBottom: '10px'}}>{data.bio}</p>
-                  <div style={{display: 'flex', gap: '15px'}}>
-                    <span className="c-detail" style={{fontWeight: 700}}>{data.mobile}</span>
-                    <span className="c-detail">{data.website}</span>
-                  </div>
+                <img src={data.photo} className="card-photo" style={{border: '2px solid #d4af37', marginBottom: '1rem'}} alt="" />
+                <h2 className="c-name">{data.name}</h2>
+                <span className="c-role">{data.role}</span>
+                <div style={{marginTop: '1rem', fontSize: '0.8rem'}}>
+                  {data.email} • {data.mobile}
                 </div>
               </div>
             </CardWrapper>
 
-            {/* 7. Slate Duo */}
+            {/* 7. Tech Mesh */}
             <CardWrapper id={7} flipped={flippedCards[7]} toggle={toggleFlip} back={data}>
               <div className="card-front t7-front">
-                <img src={data.photo} className="t7-photo" alt="" />
-                <div className="info-group">
+                <div className="t7-mesh"></div>
+                <div style={{position: 'relative', zIndex: 2, height: '100%', display: 'flex', flexDirection: 'column'}}>
                   <h2 className="c-name">{data.name}</h2>
-                  <span className="c-role" style={{color: '#00f2fe', marginBottom: '0.5rem'}}>{data.role}</span>
-                  <div className="c-detail">{data.mobile}</div>
-                  <div className="c-detail">{data.email}</div>
-                  <div className="c-detail" style={{opacity: 0.5}}>{data.address.split(',')[0]}</div>
+                  <span className="c-role" style={{color: '#00f2fe'}}>{data.role}</span>
+                  <div style={{marginTop: 'auto'}}>
+                    <div className="c-detail">{data.mobile}</div>
+                    <div className="c-detail">{data.website}</div>
+                  </div>
                 </div>
               </div>
             </CardWrapper>
 
-            {/* 8. Neo-Modern Black */}
+            {/* 8. Vertical Slate */}
             <CardWrapper id={8} flipped={flippedCards[8]} toggle={toggleFlip} back={data}>
               <div className="card-front t8-front">
-                <div style={{display: 'flex', justifyContent: 'space-between', width: '100%'}}>
-                   <div className="info-group">
-                      <h2 className="c-name" style={{fontSize: '2rem'}}>{data.name.split(' ')[0]}<br />{data.name.split(' ')[1]}</h2>
-                      <span className="c-role" style={{marginTop: '5px'}}>{data.role}</span>
-                   </div>
-                   <div style={{textAlign: 'right'}}>
-                      <div className="c-detail" style={{fontWeight: 900}}>{data.mobile}</div>
-                      <div className="c-detail">{data.email}</div>
-                      <div className="c-detail" style={{marginTop: '2rem'}}>PRISM DIGITAL • {new Date().getFullYear()}</div>
-                   </div>
+                <img src={data.photo} className="card-photo" style={{width: '90px', height: '90px'}} alt="" />
+                <div className="info-group">
+                  <h2 className="c-name">{data.name}</h2>
+                  <span className="c-role" style={{color: '#00f2fe'}}>{data.role}</span>
+                  <div className="c-detail">{data.mobile}</div>
+                  <div className="c-detail">{data.email}</div>
                 </div>
               </div>
             </CardWrapper>
