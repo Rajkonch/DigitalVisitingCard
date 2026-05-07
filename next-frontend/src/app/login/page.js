@@ -153,7 +153,7 @@ function LoginContent() {
       {toast.show && (
         <div className={`modern-toast ${toast.type}`}>
           <span className="material-symbols-outlined">
-            {toast.type === "success" ? "check_circle" : "error"}
+            {toast.type === "success" ? "check_circle" : toast.type === "info" ? "info" : "error"}
           </span>
           <p>{toast.message}</p>
         </div>
@@ -226,6 +226,22 @@ function LoginContent() {
                 <button className="auth-btn solid-btn primary-gradient-btn" type="submit" disabled={loading}>
                   {loading ? "Creating Account..." : "Start for Free"}
                 </button>
+
+                <div className="divider">
+                  <span>or join with</span>
+                </div>
+
+                <div className="social-login">
+                  <button type="button" className="social-btn" onClick={() => showToast("Google Login coming soon! 🚧", "info")}>
+                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" width="20" alt="Google" />
+                    Google
+                  </button>
+                  <button type="button" className="social-btn" onClick={() => showToast("GitHub Login coming soon! 🚧", "info")}>
+                    <img src="https://www.svgrepo.com/show/512317/github-142.svg" width="20" alt="GitHub" />
+                    GitHub
+                  </button>
+                </div>
+
                 <p className="mobile-toggle">Already have an account? <span onClick={() => setIsRegister(false)}>Log In</span></p>
               </div>
             </form>
@@ -266,6 +282,22 @@ function LoginContent() {
                 <button className="auth-btn solid-btn primary-gradient-btn" type="submit" disabled={loading}>
                   {loading ? "Signing In..." : "Enter Prism"}
                 </button>
+
+                <div className="divider">
+                  <span>or continue with</span>
+                </div>
+
+                <div className="social-login">
+                  <button type="button" className="social-btn" onClick={() => showToast("Google Login coming soon! 🚧", "info")}>
+                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" width="20" alt="Google" />
+                    Google
+                  </button>
+                  <button type="button" className="social-btn" onClick={() => showToast("GitHub Login coming soon! 🚧", "info")}>
+                    <img src="https://www.svgrepo.com/show/512317/github-142.svg" width="20" alt="GitHub" />
+                    GitHub
+                  </button>
+                </div>
+
                 <p className="mobile-toggle">New Here? <span onClick={() => setIsRegister(true)}>Sign Up</span></p>
               </div>
             </form>

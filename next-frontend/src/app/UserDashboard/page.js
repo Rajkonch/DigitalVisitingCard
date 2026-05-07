@@ -159,6 +159,10 @@ function DashboardContent() {
             <span className="material-symbols-outlined">person</span>
             <span>Profile</span>
           </a>
+          <a className="nav-item" onClick={() => router.push('/Cards')} style={{ cursor: 'pointer' }}>
+            <span className="material-symbols-outlined">style</span>
+            <span>My Cards</span>
+          </a>
           <a className="nav-item" onClick={handleComingSoon} style={{ cursor: 'pointer' }}>
             <span className="material-symbols-outlined">analytics</span>
             <span>Analytics</span>
