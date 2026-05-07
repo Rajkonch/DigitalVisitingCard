@@ -1,56 +1,98 @@
-/* Cards.css - Replicated Professional Designs from Images */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Montserrat:wght@100..900&family=Space+Grotesk:wght@300..700&display=swap');
+/* Cards.css - 2026 Premium Collection (20+ Designs) */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Space+Grotesk:wght@300..700&display=swap');
 
 :root {
-  --card-width: 450px;
-  --card-height: 260px;
-  --card-radius: 12px;
-  --gold: #d4af37;
-  --navy: #000080;
-  --slate: #1e293b;
-  --prism-red: #e11d48;
-  --prism-teal: #008080;
-  --prism-green: #22c55e;
+  --sidebar-width: 280px;
+  --card-w: 480px;
+  --card-h: 270px;
+  --primary-gold: #c5a059;
+  --deep-bg: #0a0a0c;
+  --card-radius: 20px;
 }
 
-.cards-page-container {
-  min-height: 100vh;
-  background: #f1f5f9;
-  padding: 4rem 2rem;
-  font-family: 'Montserrat', sans-serif;
+/* Layout Management */
+.cards-screen-wrapper {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden; /* Prevent whole page scroll */
+  background: #0f1115;
+  color: #fff;
+  font-family: 'Outfit', sans-serif;
 }
 
-.cards-header {
-  text-align: center;
-  margin-bottom: 4rem;
+.fixed-sidebar {
+  width: var(--sidebar-width);
+  height: 100vh;
+  background: #16181d;
+  border-right: 1px solid rgba(255,255,255,0.05);
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  flex-shrink: 0;
 }
 
-.cards-header h1 {
-  font-size: 3rem;
-  font-weight: 900;
-  color: var(--slate);
-  letter-spacing: -1px;
-  margin-bottom: 1rem;
+.sidebar-nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-top: 3rem;
 }
 
-/* 2 Column Grid with Padding */
-.cards-grid-two-col {
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  color: #888;
+  text-decoration: none;
+  border-radius: 12px;
+  transition: all 0.3s;
+  cursor: pointer;
+  margin-bottom: 0.5rem;
+}
+
+.nav-link:hover, .nav-link.active {
+  background: rgba(255,255,255,0.05);
+  color: #fff;
+}
+
+.nav-link.active .material-symbols-outlined { color: #00cffc; }
+.nav-link.logout { color: #ff4d4d; border-top: 1px solid rgba(255,255,255,0.05); margin-top: auto; padding-top: 1.5rem; }
+
+.scrollable-content {
+  flex: 1;
+  overflow-y: auto; /* Only this section scrolls */
+  padding: 3rem;
+  background: radial-gradient(circle at top right, #1a1c23, #0f1115);
+}
+
+.content-header {
+  margin-bottom: 3rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding-bottom: 2rem;
+}
+
+.content-header h1 { font-size: 2.5rem; font-weight: 800; letter-spacing: -1px; }
+.content-header p { color: #888; margin-top: 0.5rem; }
+
+/* Grid Layout */
+.cards-grid-main {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 4rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1rem;
+  gap: 3rem;
+  padding-bottom: 5rem;
 }
 
-/* Base Card Structure */
-.card-wrapper {
+/* Card Core Styles */
+.premium-card-item {
   perspective: 2000px;
-  height: var(--card-height);
+  height: var(--card-h);
   width: 100%;
 }
 
-.card-inner {
+.p-card-inner {
   position: relative;
   width: 100%;
   height: 100%;
@@ -59,121 +101,143 @@
   cursor: pointer;
 }
 
-.card-wrapper.flipped .card-inner {
-  transform: rotateY(180deg);
-}
+.premium-card-item.is-flipped .p-card-inner { transform: rotateY(180deg); }
 
-.card-front, .card-back {
+.p-card-front, .p-card-back {
   position: absolute;
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
   border-radius: var(--card-radius);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.4);
   display: flex;
   overflow: hidden;
 }
 
-.card-back {
+.p-card-back {
   transform: rotateY(180deg);
-  background: #ffffff;
-  padding: 2rem;
-  border: 1px solid #e2e8f0;
-}
-
-/* Typography & Icons */
-.c-name { font-weight: 800; font-size: 1.4rem; margin: 0; line-height: 1.2; }
-.c-role { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1rem; display: block; }
-.c-detail { font-size: 0.8rem; display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
-
-/* --- TEMPLATE 1: RED & BLACK WAVE --- */
-.t1-front {
   background: #fff;
-  flex-direction: column;
+  color: #000;
   padding: 2rem;
-  position: relative;
 }
-.t1-wave {
-  position: absolute;
-  bottom: 0; left: 0; width: 100%; height: 80px;
+
+/* Front Base Typography */
+.p-content { padding: 2rem; flex: 1; display: flex; flex-direction: column; z-index: 2; }
+.p-header { display: flex; gap: 1.5rem; align-items: center; margin-bottom: 1.5rem; }
+.p-avatar { width: 70px; height: 70px; border-radius: 18px; object-fit: cover; }
+.p-name { font-size: 1.4rem; font-weight: 800; margin: 0; }
+.p-role { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; opacity: 0.7; }
+.p-details { display: flex; flex-direction: column; gap: 8px; margin-top: auto; }
+.p-row { font-size: 0.85rem; display: flex; align-items: center; gap: 10px; }
+.p-qr-small { width: 80px; height: 100%; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; padding: 1rem; }
+.p-qr-small img { width: 100%; filter: invert(1); }
+
+/* --- 22+ MODERN TEMPLATES (2026 STYLE) --- */
+
+/* 1. Matte Gold Luxury */
+.t-luxury-gold { background: #000; color: var(--primary-gold); border: 1px solid var(--primary-gold); }
+.t-luxury-gold .p-qr-small { border-left: 1px solid var(--primary-gold); }
+
+/* 2. Glassmorphism */
+.t-glassmorphism { background: rgba(255,255,255,0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); }
+.t-glassmorphism::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent); }
+
+/* 3. Midnight Mesh */
+.t-midnight-mesh { 
+  background: #000;
+  background-image: radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%);
+}
+
+/* 4. Cyber Neon */
+.t-cyber-neon { background: #000; border: 1px solid #00f2fe; }
+.t-cyber-neon .p-name { text-shadow: 0 0 10px #00f2fe; }
+
+/* 5. Bauhaus */
+.t-bauhaus { background: #fff; color: #000; border-right: 20px solid #ff3e00; }
+.t-bauhaus .p-qr-small { background: #ff3e00; filter: none; }
+
+/* 6. Carbon Pro */
+.t-carbon-pro { 
   background: #111;
-  clip-path: ellipse(70% 100% at 50% 100%);
-}
-.t1-wave::before {
-  content: '';
-  position: absolute;
-  top: -10px; left: 0; width: 100%; height: 20px;
-  background: var(--prism-red);
-  clip-path: ellipse(70% 100% at 50% 100%);
-}
-.t1-qr-overlay {
-  position: absolute;
-  bottom: 15px; right: 20px;
-  width: 60px; height: 60px;
-  background: #fff;
-  padding: 5px;
-  border-radius: 4px;
+  background-image: repeating-linear-gradient(45deg, #111 0px, #111 2px, #1a1a1a 2px, #1a1a1a 4px);
 }
 
-/* --- TEMPLATE 2: CLEAN MINIMALIST LARGE QR --- */
-.t2-front {
-  background: #fff;
-  padding: 2rem;
-}
-.t2-left { flex: 1; display: flex; flex-direction: column; justify-content: center; }
-.t2-right { width: 120px; display: flex; align-items: center; justify-content: center; border-left: 1px solid #eee; }
-.t2-qr-large { width: 100px; height: 100px; }
+/* 7. Minimal Slate */
+.t-slate-clean { background: #1e293b; border-left: 10px solid #38bdf8; }
 
-/* --- TEMPLATE 3: GREEN & BLACK CORPORATE --- */
-.t3-front {
-  background: #fff;
-}
-.t3-left { width: 45%; padding: 2rem; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-.t3-right { flex: 1; background: #111; padding: 2rem; color: #fff; display: flex; flex-direction: column; justify-content: center; }
-.t3-right-accent { height: 40px; background: var(--prism-green); margin: 10px -2rem; padding: 0 2rem; display: flex; align-items: center; }
+/* 8. Clay Soft 3D */
+.t-claymorphism { background: #f0f4f8; color: #334155; border-radius: 40px; box-shadow: inset 5px 5px 10px #d1d9e6, inset -5px -5px 10px #ffffff; }
+.t-claymorphism .p-qr-small { filter: none; opacity: 0.8; }
 
-/* --- TEMPLATE 4: AVIATO RED STRIP --- */
-.t4-front {
-  background: #fff;
-  flex-direction: column;
-  padding: 0;
-}
-.t4-top { flex: 1; padding: 1.5rem; display: flex; align-items: center; gap: 1.5rem; }
-.t4-bottom { height: 80px; background: var(--prism-red); color: #fff; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; position: relative; }
-.t4-bottom::before {
-  content: '';
-  position: absolute;
-  top: -15px; left: 0; width: 100%; height: 15px;
-  background: var(--prism-red);
-  clip-path: polygon(0 100%, 100% 100%, 100% 0);
+/* 9. Royal Leather */
+.t-leather { background: #2b1810; color: #d4a373; border: 10px solid #2b1810; box-shadow: inset 0 0 50px #000; }
+
+/* 10. Brutalist Raw */
+.t-brutalist { background: #000; color: #fff; font-family: 'Space Grotesk', sans-serif; border: 5px solid #fff; }
+
+/* 11. Holographic */
+.t-holographic { 
+  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+  background-image: conic-gradient(from 180deg at 50% 50%, #70e1f5 0%, #ffd194 100%);
+  opacity: 0.9;
 }
 
-/* --- TEMPLATE 5: TEAL GEOMETRIC --- */
-.t5-front {
-  background: #fff;
+/* 12. Oceanic */
+.t-oceanic { background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); }
+
+/* 13. Eco Leaf */
+.t-eco-leaf { background: #064e3b; color: #6ee7b7; border-bottom: 8px solid #059669; }
+
+/* 14. Space Orbit */
+.t-space-orbit { background: #000; background-image: radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px); }
+
+/* 15. Retro Vibe */
+.t-retro { background: #ff7e5f; background-image: linear-gradient(to right, #feb47b, #ff7e5f); color: #000; }
+
+/* 16. Marble Elegant */
+.t-marble { background: #fff; color: #333; background-image: url('https://www.transparenttextures.com/patterns/marble-similar.png'); }
+
+/* 17. Sunset Glow */
+.t-sunset { background: linear-gradient(to right, #f83600 0%, #f9d423 100%); color: #fff; }
+
+/* 18. Corp Duo */
+.t-corp-duo { background: linear-gradient(90deg, #fff 50%, #0f172a 50%); }
+.t-corp-duo .p-header { color: #000; }
+.t-corp-duo .p-details { color: #fff; }
+
+/* 19. Minimal Dot */
+.t-minimal-dot { background: #fff; color: #000; background-image: radial-gradient(#ddd 1px, transparent 0); background-size: 10px 10px; }
+
+/* 20. Elite Mono */
+.t-elite-mono { background: #000; color: #fff; border-top: 15px solid #fff; }
+
+/* 21. Prism Reflect */
+.t-prism-reflect { background: #000; box-shadow: 0 0 20px rgba(0,207,252,0.3); }
+
+/* 22. Deep Forest */
+.t-deep-forest { background: #022c22; color: #bef264; }
+
+/* Back Styles */
+.back-wrap { display: flex; width: 100%; height: 100%; gap: 2rem; }
+.back-info-side { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+.back-name { font-size: 1.5rem; font-weight: 900; margin-bottom: 5px; }
+.back-role { color: #666; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1.5rem; }
+.back-address { font-size: 0.8rem; color: #444; display: flex; align-items: center; gap: 8px; }
+.back-qr-side { width: 140px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; border-left: 1px solid #eee; }
+.large-qr { width: 110px; height: 110px; }
+.qr-label { font-size: 9px; font-weight: 900; color: #00cffc; letter-spacing: 1px; }
+
+/* Scrollbar Customization */
+.scrollable-content::-webkit-scrollbar { width: 6px; }
+.scrollable-content::-webkit-scrollbar-track { background: #0f1115; }
+.scrollable-content::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+
+/* Responsive Overrides */
+@media (max-width: 1200px) {
+  .cards-grid-main { grid-template-columns: 1fr; }
 }
-.t5-info { flex: 1; padding: 2rem; display: flex; flex-direction: column; justify-content: center; }
-.t5-accent { width: 40%; background: #111; position: relative; display: flex; align-items: center; justify-content: center; }
-.t5-accent::before {
-  content: '';
-  position: absolute;
-  top: 0; left: -30px; width: 60px; height: 100%;
-  background: #111;
-  clip-path: polygon(50% 0, 100% 0, 50% 100%, 0% 100%);
-  border-left: 10px solid var(--prism-teal);
-}
 
-/* --- TEMPLATE 6: LUXURY GOLD --- */
-.t6-front { background: #000; color: var(--gold); padding: 2rem; border: 2px solid var(--gold); align-items: center; flex-direction: column; justify-content: center; text-align: center; }
-
-/* --- TEMPLATE 7: TECH GRADIENT --- */
-.t7-front { background: #000; color: #fff; padding: 2rem; position: relative; }
-.t7-mesh { position: absolute; inset: 0; background: radial-gradient(circle at 80% 20%, rgba(0, 242, 254, 0.2), transparent 40%); }
-
-/* --- TEMPLATE 8: VERTICAL SLATE --- */
-.t8-front { background: var(--slate); color: #fff; padding: 2rem; display: flex; gap: 2rem; align-items: center; }
-
-/* Responsive */
-@media (max-width: 1024px) {
-  .cards-grid-two-col { grid-template-columns: 1fr; }
+@media (max-width: 768px) {
+  .fixed-sidebar { display: none; }
+  .scrollable-content { padding: 1.5rem; }
 }
