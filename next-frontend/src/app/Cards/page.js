@@ -4,18 +4,24 @@ import { useRouter } from "next/navigation";
 import API from "../../utils/api";
 import "../../styles/Cards.css";
 
-const templates = Array.from({ length: 45 }, (_, i) => {
-  let cat = "ld";
-  if (i >= 15) cat = "sc";
-  if (i >= 30) cat = "mc";
+const signatureTemplates = Array.from({ length: 15 }, (_, i) => ({
+  id: `sig-${i + 1}`,
+  class: `sig${i + 1}`,
+  layout: `sig-l${i + 1}`,
+  back: `sig-b${i + 1}`
+}));
+
+const standardTemplates = Array.from({ length: 45 }, (_, i) => {
+  let cat = i < 15 ? "ld" : i < 30 ? "sc" : "mc";
   return {
     id: i + 1,
-    cat: cat,
-    class: `${cat} ${cat}${ (i % 15) + 1 }`,
+    class: `${cat} ${cat}${(i % 15) + 1}`,
     layout: (i % 4) + 1,
     back: (i % 3) + 1
   };
 });
+
+const allTemplates = [...signatureTemplates, ...standardTemplates];
 
 export default function CardsPage() {
   const router = useRouter();
@@ -63,19 +69,18 @@ export default function CardsPage() {
   };
 
   const data = {
-    name: profile?.name || "Somendra Singh",
-    role: profile?.designation || "Executive Product Manager",
-    email: profile?.email || "somendra@prismqr.com",
-    mobile: profile?.mobile || "+91 63877 18208",
+    name: profile?.name || "Rajkumar Konch",
+    role: profile?.designation || "Creative Professional",
+    email: profile?.email || "konchshivam111@gmail.com",
+    mobile: profile?.mobile || "6387718208",
     website: "www.prismqr.com",
-    address: profile?.address || "Cyber Park, Gurgaon, HR, India",
-    photo: profile?.avatar || "https://api.dicebear.com/7.x/avataaars/svg?seed=Somendra",
+    address: profile?.address || "Gandhi Nagar Konch",
+    photo: profile?.avatar || "https://api.dicebear.com/7.x/avataaars/svg?seed=Raj",
     qr: profile?.qrCodeUrl || profile?.qrCode || "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=PrismQR"
   };
 
   return (
     <div className="dashboard-container">
-      {/* FIXED SIDEBAR */}
       <aside className="sidebar">
         <div className="sidebar-logo-section">
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.5rem 0' }}>
@@ -96,7 +101,7 @@ export default function CardsPage() {
             <span>My Cards</span>
           </a>
         </nav>
-        <div className="sidebar-footer">
+        <div className="sidebar-footer" style={{marginTop: 'auto'}}>
           <button className="upgrade-btn">Get Premium</button>
           <a className="nav-item" onClick={() => router.push('/login')} style={{ cursor: 'pointer' }}>
             <span className="material-symbols-outlined">logout</span>
@@ -105,16 +110,19 @@ export default function CardsPage() {
         </div>
       </aside>
 
-      {/* SCROLLABLE MAIN CONTENT */}
       <div className="main-wrapper">
         <main className="cards-scroll-view">
           <div className="cards-header-section">
-            <h1>Signature Collection 2026</h1>
-            <p>45 Premium business card templates • Standard 85×55mm • Forced 3-Column Grid</p>
+            <div style={{display:'inline-flex', alignItems:'center', gap:'4px', padding:'4px 12px', background:'rgba(46, 91, 255, 0.1)', border:'1px solid rgba(46, 91, 255, 0.2)', borderRadius:'100px', marginBottom:'16px'}}>
+               <span style={{width:'8px', height:'8px', background:'#2e5bff', borderRadius:'50%'}}></span>
+               <span style={{fontSize:'12px', fontWeight:'600', color:'#2e5bff', letterSpacing:'1px'}}>PREMIUM GALLERY</span>
+            </div>
+            <h1>Modern <span style={{color:'#2e5bff', fontStyle:'italic'}}>Signature</span> Collection</h1>
+            <p>15 Signature Series exhibition followed by our professional catalog.</p>
           </div>
 
           <div className="cards-grid-display">
-            {templates.map((t) => (
+            {allTemplates.map((t) => (
               <div key={t.id} className={`p-card-card ${flippedCards[t.id] ? "is-flipped" : ""}`} ref={el => cardRefs.current[t.id] = el}>
                 <div className="p-tools">
                    <button onClick={(e) => handleDownload(e, t.id, 'front')}>F</button>
@@ -124,8 +132,8 @@ export default function CardsPage() {
                    <div className={`p-card-front ${t.class}`}>
                       <CardFront layout={t.layout} data={data} />
                    </div>
-                   <div className={`p-card-back ${t.class} back-type-${t.back}`}>
-                      <CardBack type={t.back} data={data} />
+                   <div className={`p-card-back ${t.class}`}>
+                      <CardBack type={t.back || t.layout} data={data} themeClass={t.class} />
                       <div className="p-powered">POWERED BY PRISM QR</div>
                    </div>
                 </div>
@@ -139,112 +147,101 @@ export default function CardsPage() {
 }
 
 function CardFront({ layout, data }) {
-  if (layout === 1) return (
-    <div className="l-wrap">
-       <div className="l-main">
-          <div style={{overflow: 'hidden'}}>
-             <h2 className="p-name">{data.name}</h2>
-             <span className="p-role">{data.role}</span>
+  // Signature Collection Layouts
+  if (layout === 'sig-l1') return (
+    <div style={{height:'100%', display:'flex', flexDirection:'column', justifyContent:'space-between'}}>
+       <div style={{display:'flex', justifyContent:'space-between', alignItems:'start'}}>
+          <img src={data.photo} className="p-img" alt="" crossOrigin="anonymous" />
+          <div className="p-qr"><img src={data.qr} alt="" crossOrigin="anonymous" /></div>
+       </div>
+       <div>
+          <h2 className="p-name">{data.name}</h2>
+          <span className="p-role">Creative Professional</span>
+          <div className="p-info">
+             <div><span className="material-symbols-outlined" style={{fontSize:'14px'}}>location_on</span> {data.address}</div>
+             <div><span className="material-symbols-outlined" style={{fontSize:'14px'}}>call</span> {data.mobile}</div>
+             <div><span className="material-symbols-outlined" style={{fontSize:'14px'}}>mail</span> {data.email}</div>
           </div>
-          <div className="p-contact">
+       </div>
+    </div>
+  );
+  if (layout === 'sig-l2') return (
+    <div style={{height:'100%', display:'flex', flexDirection:'column', justifyContent:'space-between'}}>
+       <div style={{display:'flex', justifyContent:'space-between', alignItems:'start'}}>
+          <img src={data.photo} className="p-img" alt="" crossOrigin="anonymous" />
+          <div className="p-qr" style={{background:'rgba(255,255,255,0.8)'}}><img src={data.qr} alt="" crossOrigin="anonymous" /></div>
+       </div>
+       <div>
+          <h2 className="p-name" style={{color:'#111'}}>{data.name}</h2>
+          <div className="p-info" style={{color:'#333', marginTop:'8px'}}>
+             <div>{data.address}</div>
+             <div>{data.mobile} | {data.email}</div>
+          </div>
+       </div>
+    </div>
+  );
+  if (layout === 'sig-l3') return (
+    <div style={{height:'100%', display:'flex', flexDirection:'column', justifyContent:'space-between'}}>
+       <div style={{display:'flex', justifyContent:'space-between', alignItems:'start'}}>
+          <div>
+             <h2 className="p-name">{data.name}</h2>
+             <span className="p-role">Executive Manager</span>
+          </div>
+          <img src={data.photo} className="p-img" style={{borderRadius:'8px', width:'45px', height:'45px'}} alt="" crossOrigin="anonymous" />
+       </div>
+       <div style={{display:'flex', justifyContent:'space-between', alignItems:'end'}}>
+          <div className="p-info">
+             <div>{data.address}</div>
              <div>{data.mobile}</div>
              <div>{data.email}</div>
           </div>
-       </div>
-       <div className="l-side">
-          <img src={data.photo} className="p-card-img" alt="" crossOrigin="anonymous" />
-          <div className="p-card-qr-box">
-             <img src={data.qr} alt="QR" crossOrigin="anonymous" />
-          </div>
+          <div className="p-qr" style={{width:'45px', height:'45px'}}><img src={data.qr} alt="" crossOrigin="anonymous" /></div>
        </div>
     </div>
   );
-  if (layout === 2) return (
-    <div className="l-wrap" style={{flexDirection: 'column'}}>
-       <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem', overflow: 'hidden'}}>
-          <img src={data.photo} className="p-card-img" alt="" crossOrigin="anonymous" />
-          <div style={{textAlign: 'right', overflow: 'hidden'}}>
-             <h2 className="p-name">{data.name}</h2>
-             <span className="p-role">{data.role}</span>
-          </div>
-       </div>
-       <div style={{marginTop: 'auto', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end'}}>
-          <div className="p-contact" style={{maxWidth: '60%'}}>
-             <div>{data.mobile}</div>
-             <div>{data.email}</div>
-          </div>
-          <div className="p-card-qr-box">
-             <img src={data.qr} alt="QR" crossOrigin="anonymous" />
-          </div>
-       </div>
-    </div>
-  );
-  if (layout === 3) return (
-    <div className="l-wrap" style={{flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center'}}>
-       <img src={data.photo} className="p-card-img" style={{marginBottom: '6px'}} alt="" crossOrigin="anonymous" />
-       <h2 className="p-name">{data.name}</h2>
-       <span className="p-role">{data.role}</span>
-       <div className="p-card-qr-box" style={{marginTop: '6px'}}>
-          <img src={data.qr} alt="QR" crossOrigin="anonymous" />
-       </div>
-    </div>
-  );
+  // Default and Standard Layouts
   return (
-    <div className="l-wrap">
-       <div className="l-main">
-          <h2 className="p-name" style={{fontSize: '1.2rem'}}>{data.name}</h2>
-          <span className="p-role">{data.role}</span>
-          <div className="p-contact">
+    <div style={{height:'100%', display:'flex', flexDirection:'column', justifyContent:'space-between'}}>
+       <div style={{display:'flex', justifyContent:'space-between', alignItems:'start'}}>
+          <h2 className="p-name">{data.name}</h2>
+          <img src={data.photo} className="p-img" alt="" crossOrigin="anonymous" />
+       </div>
+       <div style={{display:'flex', justifyContent:'space-between', alignItems:'end'}}>
+          <div className="p-info">
+             <span className="p-role" style={{marginBottom:'4px'}}>{data.role}</span>
              <div>{data.mobile}</div>
              <div>{data.email}</div>
           </div>
-       </div>
-       <div style={{display: 'flex', flexDirection: 'column', gap: '6px', alignItems: 'center', flexShrink: 0}}>
-          <div className="p-card-qr-box">
-             <img src={data.qr} alt="QR" crossOrigin="anonymous" />
-          </div>
-          <img src={data.photo} className="p-card-img" style={{width: '32px', height: '32px'}} alt="" crossOrigin="anonymous" />
+          <div className="p-qr"><img src={data.qr} alt="" crossOrigin="anonymous" /></div>
        </div>
     </div>
   );
 }
 
-function CardBack({ type, data }) {
-  if (type === 1) return (
-    <div className="back-type-1" style={{display:'flex', flexDirection:'column', height:'100%', overflow:'hidden'}}>
-       <div className="back-qr-l" style={{margin: 'auto auto 6px auto'}}>
-          <img src={data.qr} alt="QR" crossOrigin="anonymous" />
+function CardBack({ type, data, themeClass }) {
+  const isSignature = typeof type === 'string' && type.startsWith('sig');
+  
+  if (isSignature) return (
+    <div style={{height:'100%', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', textAlign:'center', gap:'12px'}}>
+       <div className="p-qr" style={{width:'80px', height:'80px'}}><img src={data.qr} alt="" crossOrigin="anonymous" /></div>
+       <div>
+          <h2 className="p-name">{data.name}</h2>
+          <span className="p-role" style={{marginBottom:0}}>{data.role}</span>
        </div>
-       <h3 className="back-title" style={{whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis'}}>{data.name}</h3>
-       <p className="back-desc">{data.role}</p>
-       <div className="back-addr" style={{marginTop: 'auto'}}>{data.address}</div>
-    </div>
-  );
-  if (type === 2) return (
-    <div className="back-type-2" style={{height:'100%', overflow:'hidden'}}>
-       <div style={{flex: 1, overflow:'hidden'}}>
-          <h3 className="back-title">{data.name}</h3>
-          <p className="back-desc">{data.role}</p>
-          <div className="back-addr">{data.address}</div>
-       </div>
-       <div className="back-qr-l">
-          <img src={data.qr} alt="QR" crossOrigin="anonymous" />
+       <div className="p-info" style={{opacity:0.8}}>
+          <div>{data.mobile}</div>
+          <div>{data.website}</div>
        </div>
     </div>
   );
+
   return (
-    <div className="back-type-3" style={{display:'flex', flexDirection:'column', height:'100%', overflow:'hidden'}}>
-       <div style={{display: 'flex', justifyContent: 'space-between'}}>
-          <div style={{overflow:'hidden'}}>
-             <h3 className="back-title">{data.name}</h3>
-             <span className="back-role">{data.role}</span>
-          </div>
-          <div className="back-qr-l" style={{width: '45px', height: '45px'}}>
-             <img src={data.qr} alt="QR" crossOrigin="anonymous" />
-          </div>
-       </div>
-       <div style={{marginTop: 'auto', overflow:'hidden'}}>
-          <div className="back-addr">{data.address}</div>
+    <div style={{height:'100%', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', textAlign:'center', gap:'10px'}}>
+       <div className="p-qr" style={{width:'70px', height:'70px'}}><img src={data.qr} alt="" crossOrigin="anonymous" /></div>
+       <h2 className="p-name">{data.name}</h2>
+       <div className="p-info" style={{opacity:0.7}}>
+          <div>{data.address}</div>
+          <div>{data.website}</div>
        </div>
     </div>
   );
