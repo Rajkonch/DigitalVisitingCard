@@ -1,61 +1,56 @@
-/* Cards.css */
+/* Cards.css - Modern Stylish Business Cards */
+:root {
+  --card-width: 380px;
+  --card-height: 230px;
+  --card-radius: 20px;
+  --transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
 .cards-page-container {
   min-height: 100vh;
-  background: #f0f2f5;
-  padding: 2rem;
+  background: #f8fafc;
+  padding: 3rem;
   font-family: 'Plus Jakarta Sans', sans-serif;
+  color: #1e293b;
 }
 
 .cards-header {
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
 }
 
 .cards-header h1 {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: 800;
-  color: #1a1a1a;
-}
-
-.custom-card-btn {
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
   background: linear-gradient(135deg, #00647b, #00cffc);
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 12px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.custom-card-btn:hover {
-  transform: translateY(-2px);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(var(--card-width), 1fr));
+  gap: 3rem;
 }
 
-/* Card Flip Logic */
+/* Card Wrapper & 3D Flip */
 .card-wrapper {
-  perspective: 1000px;
-  height: 220px;
-  cursor: pointer;
+  perspective: 2000px;
+  height: var(--card-height);
+  width: 100%;
 }
 
 .card-inner {
   position: relative;
   width: 100%;
   height: 100%;
-  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: var(--transition);
   transform-style: preserve-3d;
+  cursor: pointer;
 }
 
 .card-wrapper.flipped .card-inner {
@@ -67,165 +62,172 @@
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  border-radius: var(--card-radius);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   display: flex;
-  flex-direction: column;
 }
 
 .card-back {
   transform: rotateY(180deg);
-  background: white;
-}
-
-/* Templates */
-
-/* Template 1: Modern Minimal */
-.t1-front {
   background: #ffffff;
   padding: 1.5rem;
-  border-left: 8px solid #00647b;
+  align-items: center;
+  border: 1px solid #e2e8f0;
 }
 
-/* Template 2: Dark Premium */
+/* Shared Elements */
+.card-photo {
+  width: 70px;
+  height: 70px;
+  border-radius: 18px;
+  object-fit: cover;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
+
+.info-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.c-name { font-weight: 800; font-size: 1.3rem; margin: 0; }
+.c-role { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.8; }
+.c-detail { font-size: 0.85rem; display: flex; align-items: center; gap: 6px; margin-top: 4px; }
+.c-detail i { font-size: 1rem; }
+
+/* Template 1: Modern Neo-Glass */
+.t1-front {
+  background: linear-gradient(135deg, #ffffff, #f1f5f9);
+  padding: 1.5rem;
+  border: 1px solid rgba(255,255,255,0.8);
+}
+.t1-front::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: radial-gradient(circle at 70% 30%, rgba(0, 207, 252, 0.15), transparent 40%);
+  pointer-events: none;
+}
+
+/* Template 2: Dark Mesh Premium */
 .t2-front {
-  background: #1a1a1a;
-  color: white;
+  background: #0f172a;
+  color: #f8fafc;
   padding: 1.5rem;
+  background-image: 
+    radial-gradient(at 0% 0%, hsla(190, 95%, 40%, 0.15) 0, transparent 50%), 
+    radial-gradient(at 100% 100%, hsla(240, 95%, 40%, 0.15) 0, transparent 50%);
 }
+.t2-front .card-photo { border: 2px solid rgba(255,255,255,0.1); }
 
-/* Template 3: Gradient Wave */
+/* Template 3: Corporate Split */
 .t3-front {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: white;
+}
+.t3-left {
+  width: 35%;
+  background: #1e293b;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   color: white;
+  padding: 1rem;
+}
+.t3-right {
+  flex: 1;
   padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-/* Template 4: Corporate Blue */
+/* Template 4: Tech Stripe Neon */
 .t4-front {
-  background: #f8fafc;
+  background: #111;
+  color: #fff;
   padding: 1.5rem;
   position: relative;
 }
 .t4-front::after {
   content: '';
   position: absolute;
-  top: 0; right: 0;
-  width: 100px; height: 100%;
-  background: #1e293b;
-  clip-path: polygon(25% 0, 100% 0, 100% 100%, 0% 100%);
+  bottom: 0; right: 0;
+  width: 150px; height: 10px;
+  background: #00ffcc;
+  box-shadow: 0 0 20px #00ffcc;
 }
 
-/* Template 5: Luxury Gold */
+/* Template 5: Luxury Gold Centered */
 .t5-front {
   background: #000;
-  color: #d4af37;
+  color: #e2b053;
   padding: 1.5rem;
-  border: 1px solid #d4af37;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border: 2px solid #e2b053;
 }
-.t5-front .card-photo {
-  border-color: #d4af37;
-}
+.t5-front .card-photo { border-radius: 50%; border: 3px solid #e2b053; margin-bottom: 0.5rem; }
 
-/* Template 6: Glassmorphism */
+/* Template 6: Modern Bio Card */
 .t6-front {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
-  padding: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  background-image: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 100%);
+  background: #fff;
+  padding: 1.25rem;
+  flex-direction: column;
 }
+.t6-header { display: flex; gap: 1rem; align-items: center; margin-bottom: 0.75rem; }
+.t6-bio { font-size: 0.75rem; color: #64748b; line-height: 1.4; margin-bottom: 1rem; font-style: italic; }
+.t6-socials { display: flex; gap: 10px; }
+.t6-socials span { font-size: 1.2rem; color: #00647b; }
 
-/* Template 7: Geometric Red */
+/* Template 7: Diagonal High Contrast */
 .t7-front {
   background: #fff;
+  background-image: linear-gradient(110deg, #e11d48 40%, #ffffff 40%);
   padding: 1.5rem;
-  position: relative;
-  overflow: hidden;
+  color: #fff;
 }
-.t7-front::before {
-  content: '';
-  position: absolute;
-  top: -20px; right: -20px;
-  width: 100px; height: 100px;
-  background: #e11d48;
-  border-radius: 50%;
-  opacity: 0.1;
-}
+.t7-right-content { color: #1e293b; margin-left: 42%; display: flex; flex-direction: column; justify-content: center; height: 100%; }
 
-/* Template 8: Eco Green */
+/* Template 8: Eco Minimalist */
 .t8-front {
   background: #f0fdf4;
   color: #166534;
-  padding: 1.5rem;
-  border-bottom: 8px solid #22c55e;
+  padding: 2rem;
+  justify-content: space-between;
 }
+.t8-left { display: flex; flex-direction: column; justify-content: center; }
 
-/* Card Content Styles */
-.card-photo {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 1rem;
-  border: 2px solid rgba(0,0,0,0.05);
-}
-
-.card-name {
-  font-size: 1.25rem;
-  font-weight: 800;
-  margin: 0;
-}
-
-.card-designation {
-  font-size: 0.85rem;
-  opacity: 0.8;
-  margin-bottom: 0.5rem;
-}
-
-.card-mobile {
-  font-size: 0.9rem;
+/* Back Side Details */
+.back-container {
   display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-/* Back Side Layout */
-.card-back-content {
-  display: flex;
+  width: 100%;
   height: 100%;
-  align-items: center;
-  padding: 1rem;
 }
-
-.back-left {
+.back-info {
   flex: 1;
-  padding-right: 1rem;
-  border-right: 1px solid #eee;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
 }
-
-.back-right {
+.back-qr-wrapper {
   width: 100px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  gap: 10px;
 }
-
-.back-address {
-  font-size: 0.8rem;
-  line-height: 1.4;
-  color: #444;
-}
-
-.back-qr {
-  width: 80px;
-  height: 80px;
-}
+.back-qr { width: 90px; height: 90px; }
+.qr-label { font-size: 10px; font-weight: 800; text-transform: uppercase; color: #94a3b8; }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .cards-grid {
-    grid-template-columns: 1fr;
-  }
+  .cards-page-container { padding: 1.5rem; }
+  .cards-grid { grid-template-columns: 1fr; }
+  :root { --card-width: 100%; }
 }
