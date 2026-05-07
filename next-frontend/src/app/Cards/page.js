@@ -5,28 +5,39 @@ import API from "../../utils/api";
 import "../../styles/Cards.css";
 
 const templates = [
-  { id: 1, name: "Matte Gold Luxury", class: "t-luxury-gold" },
-  { id: 2, name: "Frosted Glass", class: "t-glassmorphism" },
-  { id: 3, name: "Midnight Mesh", class: "t-midnight-mesh" },
-  { id: 4, name: "Cyber Neon", class: "t-cyber-neon" },
-  { id: 5, name: "Bauhaus Primary", class: "t-bauhaus" },
-  { id: 6, name: "Carbon Pro", class: "t-carbon-pro" },
-  { id: 7, name: "Minimalist Slate", class: "t-slate-clean" },
-  { id: 8, name: "Clay Soft 3D", class: "t-claymorphism" },
-  { id: 9, name: "Royal Leather", class: "t-leather" },
-  { id: 10, name: "Brutalist Raw", class: "t-brutalist" },
-  { id: 11, name: "Holographic Wave", class: "t-holographic" },
-  { id: 12, name: "Oceanic Gradient", class: "t-oceanic" },
-  { id: 13, name: "Eco Leaf", class: "t-eco-leaf" },
-  { id: 14, name: "Space Orbit", class: "t-space-orbit" },
-  { id: 15, name: "Retro Vibe", class: "t-retro" },
-  { id: 16, name: "Marble Elegant", class: "t-marble" },
-  { id: 17, name: "Sunset Glow", class: "t-sunset" },
-  { id: 18, name: "Corporate Duo", class: "t-corp-duo" },
-  { id: 19, name: "Minimal Dot", class: "t-minimal-dot" },
-  { id: 20, name: "Elite Mono", class: "t-elite-mono" },
-  { id: 21, name: "Prism Reflect", class: "t-prism-reflect" },
-  { id: 22, name: "Deep Forest", class: "t-deep-forest" },
+  { id: 1, name: "Elite Gold", class: "t-gold-elite" },
+  { id: 2, name: "Sky Mix", class: "t-blue-mix" },
+  { id: 3, name: "Mint Fresh", class: "t-mint-mix" },
+  { id: 4, name: "Crimson Night", class: "t-crimson-dark" },
+  { id: 5, name: "Pure White", class: "t-white-pure" },
+  { id: 6, name: "Slate Pro", class: "t-slate-modern" },
+  { id: 7, name: "Sunset Glow", class: "t-sunset-glow" },
+  { id: 8, name: "Eco Forest", class: "t-eco-forest" },
+  { id: 9, name: "Neon Cyber", class: "t-neon-blue" },
+  { id: 10, name: "Classic Leather", class: "t-leather-brown" },
+  { id: 11, name: "Marble Elegant", class: "t-marble-white" },
+  { id: 12, name: "Navy Corp", class: "t-corp-navy" },
+  { id: 13, name: "Lavender Soft", class: "t-lavender" },
+  { id: 14, name: "Charcoal Slate", class: "t-charcoal" },
+  { id: 15, name: "Geometric Red", class: "t-geo-red" },
+  { id: 16, name: "Orange Burst", class: "t-orange-burst" },
+  { id: 17, name: "Tech Grid", class: "t-tech-mesh" },
+  { id: 18, name: "Teal Ocean", class: "t-teal-wave" },
+  { id: 19, name: "Royal Purple", class: "t-royal-purple" },
+  { id: 20, name: "Industrial Concrete", class: "t-concrete" },
+  // Adding more variations to reach 30+
+  { id: 21, name: "Golden Aura", class: "t-gold-elite" },
+  { id: 22, name: "Azure Mix", class: "t-blue-mix" },
+  { id: 23, name: "Emerald Mix", class: "t-mint-mix" },
+  { id: 24, name: "Dark Ruby", class: "t-crimson-dark" },
+  { id: 25, name: "Clean Studio", class: "t-white-pure" },
+  { id: 26, name: "Titanium Slate", class: "t-slate-modern" },
+  { id: 27, name: "Dusk Gradient", class: "t-sunset-glow" },
+  { id: 28, name: "Bio Green", class: "t-eco-forest" },
+  { id: 29, name: "Matrix Glow", class: "t-neon-blue" },
+  { id: 30, name: "Saddle Brown", class: "t-leather-brown" },
+  { id: 31, name: "Stone Texture", class: "t-marble-white" },
+  { id: 32, name: "Midnight Navy", class: "t-corp-navy" },
 ];
 
 export default function CardsPage() {
@@ -57,53 +68,52 @@ export default function CardsPage() {
     }));
   };
 
+  const handleDownload = (e, id, type) => {
+    e.stopPropagation();
+    alert(`Downloading ${type} for Card ${id}... (Feature requires html2canvas)`);
+  };
+
   const data = {
-    name: profile?.name || "Somendra Singh",
-    role: profile?.designation || "Product Architect",
-    email: profile?.email || "somendra@prismqr.com",
+    name: profile?.name || "Raj Kumar",
+    role: profile?.designation || "Senior Software Engineer",
+    email: profile?.email || "rajkumar@prismqr.com",
     mobile: profile?.mobile || "+91 63877 18208",
     website: "www.prismqr.com",
-    address: profile?.address || "Cyber Hub, Gurgaon, HR",
-    photo: profile?.avatar || "https://api.dicebear.com/7.x/avataaars/svg?seed=Somendra",
+    address: profile?.address || "Gandhi Nagar, Konch, Jalaun, UP",
+    photo: profile?.avatar || "https://api.dicebear.com/7.x/avataaars/svg?seed=Raj",
     qr: profile?.qrCodeUrl || profile?.qrCode || "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=PrismQR"
   };
 
   return (
     <div className="cards-screen-wrapper">
-      {/* Fixed Sidebar */}
       <aside className="fixed-sidebar">
         <div className="sidebar-logo">
           <img src="/logo.png" alt="Logo" style={{ height: '50px' }} />
         </div>
         <nav className="sidebar-nav">
-          <div className="nav-group">
-            <a className="nav-link" onClick={() => router.push('/UserDashboard')}>
-              <span className="material-symbols-outlined">dashboard</span>
-              <span>Dashboard</span>
-            </a>
-            <a className="nav-link active">
-              <span className="material-symbols-outlined">style</span>
-              <span>Designs</span>
-            </a>
-            <a className="nav-link" onClick={() => router.push('/UserProfile')}>
-              <span className="material-symbols-outlined">person</span>
-              <span>Profile</span>
-            </a>
-          </div>
-          <div className="nav-footer">
-            <a className="nav-link logout" onClick={() => router.push('/login')}>
-              <span className="material-symbols-outlined">logout</span>
-              <span>Sign Out</span>
-            </a>
-          </div>
+          <a className="nav-link" onClick={() => router.push('/UserDashboard')}>
+            <span className="material-symbols-outlined">dashboard</span>
+            <span>Dashboard</span>
+          </a>
+          <a className="nav-link active">
+            <span className="material-symbols-outlined">style</span>
+            <span>All Designs</span>
+          </a>
+          <a className="nav-link" onClick={() => router.push('/UserProfile')}>
+            <span className="material-symbols-outlined">person</span>
+            <span>Profile</span>
+          </a>
+          <a className="nav-link logout" onClick={() => router.push('/login')}>
+            <span className="material-symbols-outlined">logout</span>
+            <span>Logout</span>
+          </a>
         </nav>
       </aside>
 
-      {/* Scrollable Content Area */}
       <div className="scrollable-content">
         <header className="content-header">
-          <h1>2026 Signature Series</h1>
-          <p>Over 20+ world-class digital visiting card templates.</p>
+          <h1>Elite Business Cards</h1>
+          <p>Explore 30+ premium templates with matching front & back designs.</p>
         </header>
 
         <div className="cards-grid-main">
@@ -115,6 +125,7 @@ export default function CardsPage() {
               toggle={toggleFlip} 
               data={data}
               templateClass={t.class}
+              onDownload={handleDownload}
             />
           ))}
         </div>
@@ -123,13 +134,17 @@ export default function CardsPage() {
   );
 }
 
-function CardWrapper({ id, flipped, toggle, data, templateClass }) {
+function CardWrapper({ id, flipped, toggle, data, templateClass, onDownload }) {
   return (
     <div className={`premium-card-item ${flipped ? "is-flipped" : ""}`} onClick={() => toggle(id)}>
+      {/* Download Options Floating */}
+      <div className="card-download-btn" onClick={(e) => onDownload(e, id, 'Front Image')}>
+        <span className="material-symbols-outlined" style={{fontSize: '1.2rem'}}>download</span>
+      </div>
+
       <div className="p-card-inner">
         {/* FRONT */}
         <div className={`p-card-front ${templateClass}`}>
-          <div className="design-element"></div>
           <div className="p-content">
             <div className="p-header">
                <img src={data.photo} className="p-avatar" alt="" />
@@ -139,32 +154,32 @@ function CardWrapper({ id, flipped, toggle, data, templateClass }) {
                </div>
             </div>
             <div className="p-details">
-               <div className="p-row"><span className="material-symbols-outlined">call</span> {data.mobile}</div>
-               <div className="p-row"><span className="material-symbols-outlined">mail</span> {data.email}</div>
-               <div className="p-row"><span className="material-symbols-outlined">language</span> {data.website}</div>
+               <div className="p-row"><span className="material-symbols-outlined" style={{fontSize: '0.9rem'}}>call</span> {data.mobile}</div>
+               <div className="p-row"><span className="material-symbols-outlined" style={{fontSize: '0.9rem'}}>mail</span> {data.email}</div>
+               <div className="p-row"><span className="material-symbols-outlined" style={{fontSize: '0.9rem'}}>language</span> {data.website}</div>
             </div>
           </div>
-          <div className="p-qr-small">
+          <div className="p-qr-box">
              <img src={data.qr} alt="QR" />
           </div>
         </div>
 
-        {/* BACK */}
-        <div className="p-card-back">
-          <div className="back-wrap">
-            <div className="back-info-side">
-               <h3 className="back-name">{data.name}</h3>
-               <p className="back-role">{data.role}</p>
-               <div className="back-address">
-                 <span className="material-symbols-outlined">location_on</span>
-                 {data.address}
-               </div>
-            </div>
-            <div className="back-qr-side">
-               <img src={data.qr} className="large-qr" alt="QR" />
-               <span className="qr-label">PRO MEMBER</span>
-            </div>
-          </div>
+        {/* BACK - Inherits the same class for consistency */}
+        <div className={`p-card-back ${templateClass}`}>
+           <div className="back-layout">
+              <div className="back-info">
+                 <h3 className="back-name">{data.name}</h3>
+                 <p className="back-role">{data.role}</p>
+                 <div className="back-address">
+                    <span className="material-symbols-outlined" style={{fontSize: '0.9rem'}}>location_on</span>
+                    {data.address}
+                 </div>
+              </div>
+              <div className="back-qr-zone">
+                 <img src={data.qr} alt="QR" />
+                 <span style={{fontSize: '0.6rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '1px'}}>Verified QR</span>
+              </div>
+           </div>
         </div>
       </div>
     </div>
