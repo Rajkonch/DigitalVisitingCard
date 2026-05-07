@@ -73,7 +73,7 @@ export default function CardsPage() {
       {/* Fixed Sidebar */}
       <aside className="fixed-sidebar">
         <div className="sidebar-logo">
-          <img src="/logo.png" alt="Logo" style={{ height: '40px' }} />
+          <img src="/logo.png" alt="Logo" style={{ height: '50px' }} />
         </div>
         <nav className="sidebar-nav">
           <div className="nav-group">
