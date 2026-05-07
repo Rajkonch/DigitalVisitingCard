@@ -54,22 +54,46 @@ export default function CardsPage() {
     setFlippedCards(p => ({ ...p, [id]: !p[id] }));
   };
 
-  const handleDownload = (e, id, side) => {
+  const handleFullDownload = async (e, id) => {
     e.stopPropagation();
     if (!window.html2canvas) return alert("Engine loading...");
-    const card = cardRefs.current[id];
-    const target = side === 'front' ? card.querySelector('.p-card-front') : card.querySelector('.p-card-back');
     
-    const oldTransform = target.style.transform;
-    if (side === 'back') { target.style.transform = 'none'; target.style.backfaceVisibility = 'visible'; }
+    const card = cardRefs.current[id];
+    const front = card.querySelector('.p-card-front');
+    const back = card.querySelector('.p-card-back');
 
-    window.html2canvas(target, { scale: 4, useCORS: true, backgroundColor: null }).then(canvas => {
-      if (side === 'back') { target.style.transform = oldTransform; target.style.backfaceVisibility = 'hidden'; }
+    try {
+      // 1. Capture Front
+      const canvasF = await window.html2canvas(front, { scale: 4, useCORS: true, backgroundColor: null });
+
+      // 2. Capture Back (with flip fix)
+      const oldTransform = back.style.transform;
+      back.style.transform = 'none';
+      back.style.backfaceVisibility = 'visible';
+      const canvasB = await window.html2canvas(back, { scale: 4, useCORS: true, backgroundColor: null });
+      back.style.transform = oldTransform;
+      back.style.backfaceVisibility = 'hidden';
+
+      // 3. Combine into one Vertical Image
+      const finalCanvas = document.createElement('canvas');
+      finalCanvas.width = canvasF.width;
+      finalCanvas.height = canvasF.height + canvasB.height + 40; // 40px gap
+      const ctx = finalCanvas.getContext('2d');
+      
+      // Fill background (optional, but good for combined image)
+      ctx.fillStyle = '#f8f9fb';
+      ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
+      
+      ctx.drawImage(canvasF, 0, 0);
+      ctx.drawImage(canvasB, 0, canvasF.height + 40);
+
       const link = document.createElement('a');
-      link.download = `BusinessCard_${id}_${side}.png`;
-      link.href = canvas.toDataURL("image/png");
+      link.download = `FullCard_${id}.png`;
+      link.href = finalCanvas.toDataURL("image/png");
       link.click();
-    });
+    } catch (err) {
+      console.error("Download Error:", err);
+    }
   };
 
   const data = {
@@ -122,15 +146,21 @@ export default function CardsPage() {
                <span style={{fontSize:'12px', fontWeight:'600', color:'#2e5bff', letterSpacing:'1px'}}>PREMIUM GALLERY</span>
             </div>
             <h1>Signature Series <span style={{color:'#2e5bff', fontStyle:'italic'}}>2026</span></h1>
-            <p>45 Unique high-fidelity templates arranged professionally in 85x55mm.</p>
+            <p>Export your identity in one click • Combined Front & Back High Quality.</p>
           </div>
 
           <div className="cards-grid-display">
             {allTemplates.map((t) => (
               <div key={t.id} className={`p-card-card ${flippedCards[t.id] ? "is-flipped" : ""}`} ref={el => cardRefs.current[t.id] = el}>
                 <div className="p-tools">
-                   <button onClick={(e) => handleDownload(e, t.id, 'front')}>F</button>
-                   <button onClick={(e) => handleDownload(e, t.id, 'back')}>B</button>
+                   <button 
+                     onClick={(e) => handleFullDownload(e, t.id)} 
+                     title="Download Combined Front & Back"
+                     style={{display:'flex', alignItems:'center', gap:'4px'}}
+                   >
+                     <span className="material-symbols-outlined" style={{fontSize:'16px'}}>download</span>
+                     Full Card
+                   </button>
                 </div>
                 <div className="p-card-inner" onClick={() => toggleFlip(t.id)}>
                    <div className={`p-card-front ${t.class}`}>
@@ -151,7 +181,6 @@ export default function CardsPage() {
 }
 
 function CardFront({ layout, data }) {
-  // Layout logic with forced Address, Mobile, Email on Front
   const InfoBox = () => (
     <div className="p-info">
        <div><span className="material-symbols-outlined" style={{fontSize:'10px'}}>location_on</span> {data.address}</div>
@@ -176,7 +205,6 @@ function CardFront({ layout, data }) {
     );
   }
 
-  // Standard Catalog Layouts (1-4)
   if (layout === 1) return (
     <div className="l-wrap">
        <div className="l-main">
