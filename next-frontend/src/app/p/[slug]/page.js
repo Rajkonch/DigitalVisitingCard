@@ -36,6 +36,47 @@ export default function PublicProfile() {
     return "Good Evening";
   };
 
+  const escapeVCardValue = (value = "") => {
+    return String(value)
+      .replace(/\\/g, "\\\\")
+      .replace(/\n/g, "\\n")
+      .replace(/,/g, "\\,")
+      .replace(/;/g, "\\;");
+  };
+
+  const handleSaveContact = () => {
+    if (!card) return;
+
+    const profileUrl = typeof window !== "undefined" ? window.location.href : "";
+    const visiblePhone = card.showMobile && card.mobile ? card.mobile : "";
+    const visibleEmail = card.showEmail && card.email ? card.email : "";
+    const visibleAddress = card.showAddress && card.address ? card.address : "";
+    const fileName = `${card.name || "contact"}`.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "contact";
+
+    const vcard = [
+      "BEGIN:VCARD",
+      "VERSION:3.0",
+      `FN:${escapeVCardValue(card.name || "Digital Contact")}`,
+      card.designation ? `TITLE:${escapeVCardValue(card.designation)}` : "",
+      visiblePhone ? `TEL;TYPE=CELL:${escapeVCardValue(visiblePhone)}` : "",
+      visibleEmail ? `EMAIL;TYPE=INTERNET:${escapeVCardValue(visibleEmail)}` : "",
+      visibleAddress ? `ADR;TYPE=WORK:;;${escapeVCardValue(visibleAddress)};;;;` : "",
+      profileUrl ? `URL:${escapeVCardValue(profileUrl)}` : "",
+      card.bio ? `NOTE:${escapeVCardValue(card.bio)}` : "",
+      "END:VCARD"
+    ].filter(Boolean).join("\r\n");
+
+    const blob = new Blob([vcard], { type: "text/vcard;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${fileName}.vcf`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   if (loading) return (
     <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f5f7f9' }}>
       <div className="loader"></div>
@@ -256,6 +297,31 @@ export default function PublicProfile() {
               )}
             </div>
           )}
+
+          <button
+            type="button"
+            onClick={handleSaveContact}
+            className="reveal-anim"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '10px',
+              border: 'none',
+              borderRadius: '999px',
+              padding: '0.95rem 1.5rem',
+              marginBottom: '2rem',
+              background: themeColor || '#00647b',
+              color: '#fff',
+              fontWeight: 800,
+              fontSize: '0.95rem',
+              cursor: 'pointer',
+              boxShadow: `0 12px 28px ${themeColor || '#00647b'}30`
+            }}
+          >
+            <span className="material-symbols-outlined" style={{ fontSize: '1.2rem' }}>person_add</span>
+            Save Contact
+          </button>
           
           <p className="p-bio reveal-anim" style={{ fontSize: '1.1rem', lineHeight: 1.7, color: subTextColor, maxWidth: '700px', margin: '0 auto' }}>{bio}</p>
         </section>
